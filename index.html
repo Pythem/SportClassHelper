@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>小学体育与健康 AI 作业设计素材生成器</title>
+  <style>
+    :root{
+      --bg:#f6f7fb; --card:#ffffff; --text:#172033; --muted:#667085; --line:#e5e7eb;
+      --primary:#2563eb; --primary-dark:#1d4ed8; --soft:#eff6ff; --warn:#fff7ed; --warn-line:#fed7aa;
+      --ok:#ecfdf3; --ok-line:#bbf7d0; --danger:#fef2f2; --danger-line:#fecaca;
+      --shadow:0 12px 34px rgba(15,23,42,.08); --radius:18px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",Arial,sans-serif;line-height:1.55}
+    header{position:sticky;top:0;background:rgba(246,247,251,.88);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);z-index:10}
+    .topbar{max-width:1180px;margin:0 auto;padding:18px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .brand h1{font-size:22px;margin:0 0 3px;font-weight:760;letter-spacing:-.02em}
+    .brand p{margin:0;color:var(--muted);font-size:13px}
+    main{max-width:1180px;margin:24px auto 56px;padding:0 20px;display:grid;grid-template-columns:minmax(320px,420px) 1fr;gap:20px}
+    @media(max-width:900px){main{grid-template-columns:1fr}.topbar{align-items:flex-start}.brand h1{font-size:19px}}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+    .panel{padding:22px}
+    .panel h2{font-size:17px;margin:0 0 4px}.panel .hint{margin:0 0 18px;color:var(--muted);font-size:13px}
+    label{display:block;font-size:13px;color:#344054;font-weight:650;margin:14px 0 6px}
+    input,textarea,select{width:100%;border:1px solid #d0d5dd;border-radius:12px;padding:11px 12px;font-size:14px;background:white;color:var(--text);outline:none;transition:.16s border,.16s box-shadow;font-family:inherit}
+    textarea{min-height:78px;resize:vertical}
+    input:focus,textarea:focus,select:focus{border-color:#93c5fd;box-shadow:0 0 0 4px rgba(37,99,235,.10)}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+    @media(max-width:640px){.row,.row-3{grid-template-columns:1fr}}
+    button{border:0;border-radius:12px;padding:11px 14px;font-weight:700;cursor:pointer;font-size:14px;font-family:inherit;transition:.16s transform,.16s background,.16s opacity}
+    button:active{transform:translateY(1px)}button:disabled{opacity:.55;cursor:not-allowed}
+    .btn-primary{background:var(--primary);color:white}.btn-primary:hover{background:var(--primary-dark)}
+    .btn-ghost{background:#f2f4f7;color:#344054}.btn-ghost:hover{background:#e9edf3}
+    .btn-light{background:var(--soft);color:#1d4ed8}.btn-light:hover{background:#dbeafe}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.full{width:100%}
+    .stack{display:flex;flex-direction:column;gap:16px}.placeholder{color:var(--muted);text-align:center;padding:44px 22px;border:1px dashed #cbd5e1;border-radius:16px;background:#fbfdff}
+    .section-title{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}.section-title h3{font-size:16px;margin:0}.tag{font-size:12px;color:#1d4ed8;background:var(--soft);padding:4px 8px;border-radius:999px;font-weight:700}
+    .understanding-grid{display:grid;grid-template-columns:160px 1fr;gap:10px;margin-top:8px}
+    .understanding-grid .key{font-weight:700;color:#344054;background:#f8fafc;border:1px solid var(--line);border-radius:12px;padding:12px}.understanding-grid textarea{min-height:52px}
+    @media(max-width:700px){.understanding-grid{grid-template-columns:1fr}.understanding-grid .key{padding:10px}}
+    .result-block{border:1px solid var(--line);border-radius:16px;padding:16px;background:white;margin-bottom:14px}.result-block h4{margin:0;font-size:15px}.result-block p{margin:8px 0 0}.copy-btn{padding:7px 10px;font-size:12px;border-radius:10px;background:#f2f4f7;color:#344054}
+    .mini-table{width:100%;border-collapse:collapse;margin-top:10px;font-size:13px}.mini-table th,.mini-table td{border:1px solid var(--line);padding:9px 10px;text-align:left;vertical-align:top}.mini-table th{background:#f8fafc}
+    .notice{border-radius:14px;padding:12px 14px;font-size:13px;color:#475467;background:#f8fafc;border:1px solid var(--line)}.notice.warn{background:var(--warn);border-color:var(--warn-line)}.notice.ok{background:var(--ok);border-color:var(--ok-line)}.notice.danger{background:var(--danger);border-color:var(--danger-line)}
+    .footer-reminder{margin-top:18px}.loading{display:none;align-items:center;gap:8px;color:var(--muted);font-size:13px}.spinner{width:15px;height:15px;border:2px solid #d0d5dd;border-top-color:var(--primary);border-radius:50%;animation:spin 1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+    .modal-backdrop{display:none;position:fixed;inset:0;background:rgba(15,23,42,.48);z-index:30;align-items:center;justify-content:center;padding:20px}.modal{width:min(620px,100%);background:white;border-radius:22px;box-shadow:0 30px 80px rgba(15,23,42,.28);border:1px solid var(--line)}.modal-head{padding:18px 20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}.modal-head h3{margin:0;font-size:17px}.modal-body{padding:20px}.close{background:#f2f4f7;color:#344054;width:36px;height:36px;border-radius:999px;padding:0}
+    .small{font-size:12px;color:var(--muted)}.checklist{padding-left:20px;margin:8px 0 0}.checklist li{margin:4px 0}.raw{white-space:pre-wrap;background:#0f172a;color:#e5e7eb;border-radius:14px;padding:14px;overflow:auto;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12px}.hidden{display:none!important}
+    .raw-output{white-space:pre-wrap;background:#f8fafc;border:1px solid var(--line);border-radius:12px;padding:12px;line-height:1.75;font-family:inherit;font-size:14px;}
+</style>
+</head>
+<body>
+<header>
+  <div class="topbar">
+    <div class="brand">
+      <h1>小学体育与健康 AI 作业设计素材生成器</h1>
+      <p>输入真实授课内容，生成可供教师筛选、删改、编排的课堂作业设计素材。</p>
+    </div>
+    <button class="btn-light" id="openSettings">AI 设置</button>
+  </div>
+</header>
+<main>
+  <section class="card panel">
+    <h2>教师输入区</h2>
+    <p class="hint">只填真实课堂信息。AI 不使用固定体育项目模板，具体内容以你填写和确认的信息为准。生成结果是教师备课素材，不是最终成品。</p>
+    <div class="row">
+      <div><label for="grade">年级</label><input id="grade" value="四年级" /></div>
+      <div><label for="subject">学科</label><input id="subject" value="体育与健康" disabled /></div>
+    </div>
+    <label for="lessonContent">授课内容</label>
+    <input id="lessonContent" value="短绳连续跳" placeholder="如：短绳连续跳、立定跳远、快速跑" />
+    <label for="basis">教材 / 课标依据</label>
+    <textarea id="basis" placeholder="如：现行体育与健康教材对应内容；《义务教育体育与健康课程标准（2022年版）》相关要求">现行体育与健康教材对应内容；《义务教育体育与健康课程标准（2022年版）》相关要求</textarea>
+    <label for="focus">本课重点</label>
+    <textarea id="focus" placeholder="如：节奏控制，减少绊绳和中断">节奏控制，减少绊绳和中断</textarea>
+    <label for="students">学生基础</label>
+    <textarea id="students" placeholder="如：多数学生能连续跳，但容易中断">多数学生能完成连续跳，但存在节奏不稳、容易中断等问题</textarea>
+    <label for="conditions">场地器材</label>
+    <textarea id="conditions" placeholder="如：普通操场，短绳若干，教师计时">普通操场或篮球场，短绳若干，教师计时</textarea>
+    <div class="actions">
+      <button class="btn-primary full" id="generateUnderstanding">生成本课理解卡</button>
+    </div>
+    <div class="loading" id="loadingUnderstanding"><span class="spinner"></span><span>正在生成本课理解卡...</span></div>
+    <div class="notice warn footer-reminder">
+      AI 生成内容是教师备课素材初稿。请结合课程标准、教材内容、学生基础和课堂安全要求筛选、删改、编排后使用。
+    </div>
+  </section>
+
+  <section class="stack">
+    <div class="card panel" id="understandingCard">
+      <div class="section-title"><h3>本课理解卡</h3><span class="tag">第一步</span></div>
+      <div class="placeholder">先填写左侧信息，点击“生成本课理解卡”。确认 AI 理解正确后，再生成作业素材包。</div>
+    </div>
+
+    <div class="card panel" id="materialsCard">
+      <div class="section-title"><h3>作业素材包</h3><span class="tag">第二步</span></div>
+      <div class="placeholder">确认本课理解卡后，这里会生成可复制的课堂作业设计素材。</div>
+    </div>
+  </section>
+</main>
+
+<div class="modal-backdrop" id="settingsModal">
+  <div class="modal">
+    <div class="modal-head"><h3>AI 设置</h3><button class="close" id="closeSettings">×</button></div>
+    <div class="modal-body">
+      <label for="apiKey">DeepSeek API Key</label>
+      <input id="apiKey" type="password" placeholder="sk-..." autocomplete="off" />
+      <div class="small">默认仅保存在当前浏览器会话中；不要在公共电脑上保存密钥。</div>
+      <label for="baseUrl">API 地址</label>
+      <input id="baseUrl" value="https://api.deepseek.com" />
+      <div class="row">
+        <div>
+          <label for="modelSelect">模型</label>
+          <select id="modelSelect"><option value="deepseek-chat">deepseek-chat</option></select>
+        </div>
+        <div>
+          <label for="manualModel">手动模型名</label>
+          <input id="manualModel" placeholder="可选：手动填写模型名" />
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn-ghost" id="fetchModels">获取模型列表</button>
+        <button class="btn-ghost" id="testConnection">测试连接</button>
+        <button class="btn-primary" id="saveSettings">保存设置</button>
+      </div>
+      <div class="loading" id="loadingSettings"><span class="spinner"></span><span>正在请求 DeepSeek...</span></div>
+      <div id="settingsMsg" class="notice hidden" style="margin-top:12px"></div>
+      <div class="notice warn" style="margin-top:14px">如果 GitHub Pages 纯前端请求遇到浏览器跨域限制，可后续再改为代理方案；第一版先保持纯前端。</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const $ = (id)=>document.getElementById(id);
+const state = { understanding:null, materials:null };
+
+function getSettings(){
+  return {
+    apiKey: sessionStorage.getItem('pe_api_key') || $('apiKey').value.trim(),
+    baseUrl: (sessionStorage.getItem('pe_base_url') || $('baseUrl').value.trim() || 'https://api.deepseek.com').replace(/\/$/,''),
+    model: $('manualModel').value.trim() || $('modelSelect').value || sessionStorage.getItem('pe_model') || 'deepseek-chat'
+  };
+}
+function saveSettings(){
+  sessionStorage.setItem('pe_api_key', $('apiKey').value.trim());
+  sessionStorage.setItem('pe_base_url', $('baseUrl').value.trim() || 'https://api.deepseek.com');
+  const m = $('manualModel').value.trim() || $('modelSelect').value || 'deepseek-chat';
+  sessionStorage.setItem('pe_model', m);
+}
+function showSettingsMsg(text, type='ok'){
+  const el=$('settingsMsg'); el.className='notice '+type; el.textContent=text; el.classList.remove('hidden');
+}
+function openSettings(){ $('settingsModal').style.display='flex'; }
+function closeSettings(){ $('settingsModal').style.display='none'; }
+$('openSettings').onclick=openSettings; $('closeSettings').onclick=closeSettings; $('saveSettings').onclick=()=>{saveSettings();showSettingsMsg('已保存到当前浏览器会话。','ok')};
+$('settingsModal').addEventListener('click',e=>{ if(e.target===$('settingsModal')) closeSettings(); });
+
+async function callDeepSeek(messages, maxTokens=1200, options={}){
+  const s=getSettings();
+  if(!s.apiKey){ openSettings(); throw new Error('请先在 AI 设置中填写 DeepSeek API Key。'); }
+  const payload={model:s.model,messages,temperature:0.2,max_tokens:maxTokens};
+  if(options.jsonMode){ payload.response_format={type:'json_object'}; }
+  let res = await fetch(`${s.baseUrl}/chat/completions`,{
+    method:'POST',
+    headers:{'Content-Type':'application/json','Authorization':`Bearer ${s.apiKey}`},
+    body:JSON.stringify(payload)
+  });
+  // 有些模型或代理不支持 response_format。失败时自动退回普通模式，避免教师被卡住。
+  if(!res.ok && options.jsonMode){
+    const fallbackPayload={...payload}; delete fallbackPayload.response_format;
+    res = await fetch(`${s.baseUrl}/chat/completions`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':`Bearer ${s.apiKey}`},
+      body:JSON.stringify(fallbackPayload)
+    });
+  }
+  if(!res.ok){
+    const t=await res.text().catch(()=>res.statusText);
+    throw new Error(`DeepSeek 请求失败：${res.status} ${t}`);
+  }
+  const data=await res.json();
+  return data?.choices?.[0]?.message?.content || '';
+}
+function extractJsonObject(text){
+  let cleaned=String(text||'').trim();
+  cleaned=cleaned.replace(/^```json\s*/i,'').replace(/^```\s*/i,'').replace(/```\s*$/,'').trim();
+  const first=cleaned.indexOf('{');
+  const last=cleaned.lastIndexOf('}');
+  if(first>=0 && last>first){ return cleaned.slice(first,last+1); }
+  return cleaned;
+}
+function parseJsonLike(text){
+  const cleaned=extractJsonObject(text);
+  try{return JSON.parse(cleaned);}catch(e){
+    throw new Error('AI 返回内容未能解析为结构化结果。');
+  }
+}
+async function repairToJson(rawText, schemaHint){
+  const messages=[
+    {role:'system',content:'你只负责把文本整理为合法 JSON。必须只返回一个 JSON 对象，不要解释，不要 Markdown。所有字符串必须使用双引号，不能有尾随逗号。'},
+    {role:'user',content:`请把下面 AI 返回内容整理为指定结构的合法 JSON。\n\n指定结构：\n${schemaHint}\n\n原始内容：\n${rawText}`}
+  ];
+  const fixed=await callDeepSeek(messages,1200,{jsonMode:true});
+  return parseJsonLike(fixed);
+}
+function collectInputs(){
+  return {
+    grade:$('grade').value.trim(), subject:$('subject').value.trim(), lessonContent:$('lessonContent').value.trim(), basis:$('basis').value.trim(),
+    focus:$('focus').value.trim(), students:$('students').value.trim(), conditions:$('conditions').value.trim()
+  };
+}
+function requireInputs(){
+  const d=collectInputs();
+  for(const [k,v] of Object.entries(d)){ if(!v && k!=='subject') throw new Error('请先补充完整：年级、授课内容、教材/课标依据、本课重点、学生基础、场地器材。'); }
+  return d;
+}
+function understandingPrompt(d){
+  return [
+    {role:'system',content:'你是一名小学体育与健康教研员。你帮助教师进行课堂作业设计，但不能替教师决定最终内容。必须依据教师输入，不扩展为其他体育项目，不生成完整教案。'},
+    {role:'user',content:`请根据以下真实授课信息，生成“本课理解卡”。只返回合法 JSON 对象，不要解释，不要 Markdown，不要代码块。所有字段名和字符串必须使用双引号。
+
+教师输入：
+- 年级：${d.grade}
+- 学科：${d.subject}
+- 授课内容：${d.lessonContent}
+- 教材/课标依据：${d.basis}
+- 本课重点：${d.focus}
+- 学生基础：${d.students}
+- 场地器材：${d.conditions}
+
+输出 JSON 字段固定为：
+{
+  "teachingContent":"20-60字，概括本课授课内容，并尽量贴近教师输入的教材/课标依据",
+  "skillFocus":"20-60字，概括本课技能/能力重点",
+  "possibleDifficulties":"20-60字，概括学生可能困难",
+  "assignmentDirection":"20-60字，说明课堂作业设计方向，不能生成长期训练计划",
+  "safetyBoundary":"20-60字，说明安全与负担边界"
+}
+
+要求：
+1. 不要生成课堂作业素材包；
+2. 不要生成课件页码；
+3. 不要让学生课堂直接使用 AI；
+4. 不要使用固定体育项目模板，具体内容只依据教师输入。`}
+  ];
+}
+function materialsPrompt(d,u){
+  return [
+    {role:'system',content:'你是一名小学体育与健康课堂作业设计助手。你只生成教师可二次加工的课堂作业素材初稿，不生成完整教案，不替教师最终决定。'},
+    {role:'user',content:`请根据教师确认后的“本课理解卡”，生成课堂作业设计素材包。只返回合法 JSON 对象，不要解释，不要 Markdown，不要代码块。所有字段名和字符串必须使用双引号。
+
+教师原始输入：
+- 年级：${d.grade}
+- 学科：${d.subject}
+- 授课内容：${d.lessonContent}
+- 教材/课标依据：${d.basis}
+- 本课重点：${d.focus}
+- 学生基础：${d.students}
+- 场地器材：${d.conditions}
+
+教师确认后的本课理解卡：
+- 本课授课内容：${u.teachingContent}
+- 本课技能重点：${u.skillFocus}
+- 学生可能困难：${u.possibleDifficulties}
+- 课堂作业方向：${u.assignmentDirection}
+- 安全与负担边界：${u.safetyBoundary}
+
+输出 JSON 字段固定为：
+{
+  "assignmentTask":"80-120字，本课课堂作业任务，说明学生课堂要完成什么",
+  "realContext":"80-120字，真实情境与来源，来自课堂、校园或生活实际，不编故事",
+  "assignmentContent":[
+    {"title":"小任务标题","description":"不超过60字，说明学生做什么、记录什么或评价什么"}
+  ],
+  "rubric":[
+    {"dimension":"评价维度","good":"达成较好","ok":"基本达成","improve":"需要改进"}
+  ],
+  "explanationNotes":{
+    "designIntent":"80-150字，说明作业设计意图",
+    "detectedContent":"80-150字，说明检测的知识、能力、方法",
+    "coreLiteracy":"80-150字，说明核心素养指向",
+    "difficultyAndScenario":"80-150字，说明难易情况和适用教学场景"
+  },
+  "aiUseNote":"100-180字，说明生成式AI如何辅助教师生成初稿、教师如何审核修订、学生不直接使用AI"
+}
+
+硬性要求：
+1. assignmentContent 给 3-5 个小任务，允许内容相对完整，供教师筛选删改；
+2. rubric 给 3-5 个评价维度，每个维度 3 级评价；
+3. explanationNotes 只生成说明材料可用的要点，不生成完整参赛文档；
+4. 不生成完整教案、课件页码、课后改进建议、长期训练计划；
+4. 不让学生课堂直接使用 AI；
+5. 不以成绩排名为主要目标；
+6. 具体内容必须依据确认后的本课理解卡，不套固定体育项目模板。`}
+  ];
+}
+function renderUnderstanding(data){
+  state.understanding=data;
+  const rows=[
+    ['本课授课内容','teachingContent'],['本课技能重点','skillFocus'],['学生可能困难','possibleDifficulties'],['课堂作业方向','assignmentDirection'],['安全与负担边界','safetyBoundary']
+  ];
+  $('understandingCard').innerHTML=`
+    <div class="section-title"><h3>本课理解卡</h3><span class="tag">可修改确认</span></div>
+    <div class="notice ok">请教师先确认 AI 是否理解了真实授课内容。可直接修改右侧内容，再生成作业素材包。</div>
+    <div class="understanding-grid">
+      ${rows.map(([label,key])=>`<div class="key">${label}</div><textarea data-u="${key}">${escapeHtml(data[key]||'')}</textarea>`).join('')}
+    </div>
+    <div class="actions">
+      <button class="btn-primary" id="confirmGenerate">确认并生成作业素材</button>
+      <button class="btn-ghost" id="backModify">修改输入后重新解析</button>
+    </div>
+    <div class="loading" id="loadingMaterials"><span class="spinner"></span><span>正在生成作业素材包...</span></div>`;
+  $('confirmGenerate').onclick=generateMaterials;
+  $('backModify').onclick=()=>window.scrollTo({top:0,behavior:'smooth'});
+}
+function getEditedUnderstanding(){
+  const obj={}; document.querySelectorAll('[data-u]').forEach(t=>obj[t.dataset.u]=t.value.trim()); return obj;
+}
+function renderMaterials(m, rawText=''){
+  state.materials=m;
+  const warnings=[];
+  if(!m.assignmentTask) warnings.push('缺少“本课课堂作业任务”。');
+  if(!m.realContext) warnings.push('缺少“真实情境与来源”。');
+  if(!Array.isArray(m.assignmentContent)||m.assignmentContent.length===0) warnings.push('缺少“课堂作业内容建议”。');
+  if(!Array.isArray(m.rubric)||m.rubric.length===0) warnings.push('缺少“评价要点与结构化量表”。');
+  if(!m.explanationNotes) warnings.push('缺少“作业说明要点”。');
+  if(!m.aiUseNote) warnings.push('缺少“生成式 AI 应用说明”。');
+  const assignmentContent=Array.isArray(m.assignmentContent)?m.assignmentContent:[];
+  const rubric=Array.isArray(m.rubric)?m.rubric:[];
+  $('materialsCard').innerHTML=`
+    <div class="section-title"><h3>作业素材包</h3><span class="tag">教师备课素材</span></div>
+    <div class="notice ok">以下内容面向教师备课，可筛选、删改后用于课件和作业说明；不建议原样全部放入课堂。</div>
+    ${warnings.length?`<div class="notice warn"><b>使用前提醒：</b>${warnings.join(' ')}</div>`:''}
+    ${block('本课课堂作业任务', `<p>${escapeHtml(m.assignmentTask||'')}</p>`, m.assignmentTask||'')}
+    ${block('真实情境与来源', `<p>${escapeHtml(m.realContext||'')}</p>`, m.realContext||'')}
+    ${block('课堂作业内容建议', renderTaskTable(assignmentContent), assignmentContent.map((x,i)=>`${i+1}. ${x.title||''}：${x.description||''}`).join('\n'))}
+    ${block('评价要点与结构化量表', renderRubricTable(rubric), rubric.map(x=>`${x.dimension||''}｜${x.good||''}｜${x.ok||''}｜${x.improve||''}`).join('\n'))}
+    ${block('作业说明要点', renderNotesTable(m.explanationNotes||{}), notesToText(m.explanationNotes||{}))}
+    ${block('生成式 AI 应用说明', `<p>${escapeHtml(m.aiUseNote||'')}</p>`, m.aiUseNote||'')}
+    <div class="notice warn footer-reminder"><b>教师使用前请确认：</b>
+      <ul class="checklist">
+        <li>是否符合本课教材内容和教学重点；</li>
+        <li>是否适合本班学生基础；</li>
+        <li>是否能在一课时内完成；</li>
+        <li>是否包含表现记录、问题诊断和评价依据；</li>
+        <li>是否符合体育课堂安全要求。</li>
+      </ul>
+    </div>`;
+}
+function block(title,html,copyText){
+  const id='copy_'+Math.random().toString(36).slice(2);
+  setTimeout(()=>{ const el=$(id); if(el) el.onclick=()=>copyToClipboard(copyText); },0);
+  return `<div class="result-block"><div class="section-title"><h4>${title}</h4><button class="copy-btn" id="${id}">复制</button></div>${html||''}</div>`;
+}
+function renderTaskTable(items){
+  if(!items.length) return '<p class="small">未生成。</p>';
+  return `<table class="mini-table"><thead><tr><th style="width:30%">小任务</th><th>内容建议</th></tr></thead><tbody>${items.map(x=>`<tr><td>${escapeHtml(x.title||'')}</td><td>${escapeHtml(x.description||'')}</td></tr>`).join('')}</tbody></table>`;
+}
+function renderRubricTable(items){
+  if(!items.length) return '<p class="small">未生成。</p>';
+  return `<table class="mini-table"><thead><tr><th>评价维度</th><th>达成较好</th><th>基本达成</th><th>需要改进</th></tr></thead><tbody>${items.map(x=>`<tr><td>${escapeHtml(x.dimension||'')}</td><td>${escapeHtml(x.good||'')}</td><td>${escapeHtml(x.ok||'')}</td><td>${escapeHtml(x.improve||'')}</td></tr>`).join('')}</tbody></table>`;
+}
+function renderNotesTable(notes){
+  const rows=[['设计意图','designIntent'],['检测内容','detectedContent'],['核心素养指向','coreLiteracy'],['难易与适用场景','difficultyAndScenario']];
+  return `<table class="mini-table"><tbody>${rows.map(([label,key])=>`<tr><th style="width:28%">${label}</th><td>${escapeHtml(notes[key]||'')}</td></tr>`).join('')}</tbody></table>`;
+}
+function notesToText(notes){
+  return `设计意图：${notes.designIntent||''}\n检测内容：${notes.detectedContent||''}\n核心素养指向：${notes.coreLiteracy||''}\n难易与适用场景：${notes.difficultyAndScenario||''}`;
+}
+function renderRawMaterials(rawText){
+  $('materialsCard').innerHTML=`
+    <div class="section-title"><h3>作业素材包</h3><span class="tag">原文兜底</span></div>
+    <div class="notice warn"><b>提示：</b>AI 没有按固定结构返回，但已生成可用素材。请教师直接复制下方原文，按需要删改后使用。</div>
+    ${block('AI 返回原文', `<pre class="raw-output">${escapeHtml(rawText||'')}</pre>`, rawText||'')}
+    <div class="notice warn footer-reminder"><b>教师使用前请确认：</b>
+      <ul class="checklist">
+        <li>是否符合本课教材内容和教学重点；</li>
+        <li>是否适合本班学生基础；</li>
+        <li>是否能在一课时内完成；</li>
+        <li>是否包含表现记录、问题诊断和评价依据；</li>
+        <li>是否符合体育课堂安全要求。</li>
+      </ul>
+    </div>`;
+}
+function escapeHtml(s){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
+async function copyToClipboard(text){
+  try{ await navigator.clipboard.writeText(text); alert('已复制'); }catch(e){ alert('复制失败，请手动选择文本复制。'); }
+}
+async function generateUnderstanding(){
+  try{
+    saveSettings();
+    const d=requireInputs();
+    $('loadingUnderstanding').style.display='flex';
+    const text=await callDeepSeek(understandingPrompt(d),800,{jsonMode:true});
+    let data;
+    try{ data=parseJsonLike(text); }
+    catch(parseErr){
+      data=await repairToJson(text, '{"teachingContent":"","skillFocus":"","possibleDifficulties":"","assignmentDirection":"","safetyBoundary":""}');
+    }
+    renderUnderstanding(data);
+  }catch(e){ alert(e.message||String(e)); }
+  finally{ $('loadingUnderstanding').style.display='none'; }
+}
+async function generateMaterials(){
+  try{
+    saveSettings();
+    const d=requireInputs();
+    const u=getEditedUnderstanding();
+    $('loadingMaterials').style.display='flex';
+    const text=await callDeepSeek(materialsPrompt(d,u),2200,{jsonMode:true});
+    let data;
+    try{ data=parseJsonLike(text); }
+    catch(parseErr){
+      try{
+        data=await repairToJson(text, '{"assignmentTask":"","realContext":"","assignmentContent":[{"title":"","description":""}],"rubric":[{"dimension":"","good":"","ok":"","improve":""}],"explanationNotes":{"designIntent":"","detectedContent":"","coreLiteracy":"","difficultyAndScenario":""},"aiUseNote":""}');
+      }catch(repairErr){
+        renderRawMaterials(text);
+        return;
+      }
+    }
+    renderMaterials(data,text);
+  }catch(e){ alert(e.message||String(e)); }
+  finally{ const el=$('loadingMaterials'); if(el) el.style.display='none'; }
+}
+$('generateUnderstanding').onclick=generateUnderstanding;
+
+function choosePreferredModel(ids){
+  const lower=ids.map(x=>String(x));
+  const priority=[id=>/pro/i.test(id), id=>/reasoner/i.test(id), id=>/chat/i.test(id) && !/flash/i.test(id), id=>!/flash/i.test(id), id=>true];
+  for(const pred of priority){ const found=lower.find(pred); if(found) return found; }
+  return 'deepseek-chat';
+}
+$('fetchModels').onclick=async()=>{
+  try{
+    saveSettings(); const s=getSettings();
+    if(!s.apiKey){throw new Error('请先填写 API Key。')}
+    $('loadingSettings').style.display='flex';
+    const res=await fetch(`${s.baseUrl}/models`,{headers:{'Authorization':`Bearer ${s.apiKey}`}});
+    if(!res.ok){throw new Error(`获取模型失败：${res.status}`)}
+    const data=await res.json();
+    const ids=(data.data||[]).map(x=>x.id).filter(Boolean);
+    if(!ids.length) throw new Error('未获取到模型列表。');
+    $('modelSelect').innerHTML=ids.map(id=>`<option value="${escapeHtml(id)}">${escapeHtml(id)}</option>`).join('');
+    $('modelSelect').value=choosePreferredModel(ids);
+    $('manualModel').value='';
+    saveSettings();
+    showSettingsMsg(`已获取 ${ids.length} 个模型，当前选择：${$('modelSelect').value}`,'ok');
+  }catch(e){showSettingsMsg(e.message||String(e),'danger')}
+  finally{$('loadingSettings').style.display='none';}
+};
+$('testConnection').onclick=async()=>{
+  try{
+    saveSettings(); $('loadingSettings').style.display='flex';
+    await callDeepSeek([{role:'user',content:'请只回复：连接成功'}],80);
+    showSettingsMsg('连接成功。','ok');
+  }catch(e){showSettingsMsg(e.message||String(e),'danger')}
+  finally{$('loadingSettings').style.display='none';}
+};
+(function init(){
+  $('apiKey').value=sessionStorage.getItem('pe_api_key')||'';
+  $('baseUrl').value=sessionStorage.getItem('pe_base_url')||'https://api.deepseek.com';
+  const model=sessionStorage.getItem('pe_model'); if(model){ $('manualModel').value=model; }
+})();
+</script>
+</body>
+</html>
