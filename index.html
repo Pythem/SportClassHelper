@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>体育课堂 AI 作业支持工具</title>
+    <title>一课优练</title>
     <style>
       :root {
         --bg: #f4f6fa;
@@ -740,6 +740,38 @@
         color: var(--muted);
       }
       details.collapsible-block[open] > summary::after { content: "收起"; }
+      details.right-panel-section {
+        padding: 0;
+        overflow: hidden;
+      }
+      details.right-panel-section > summary {
+        padding: 13px 15px;
+        min-height: 46px;
+      }
+      details.right-panel-section > summary h3 {
+        margin: 0;
+        font-size: 15px;
+      }
+      details.right-panel-section > .right-panel-body {
+        border-top: 1px solid var(--line);
+        padding: 0 15px 15px;
+      }
+      details.right-panel-section.major {
+        border-color: #b2ccff;
+        background: #fbfdff;
+      }
+      details.right-panel-section.major > summary {
+        background: #f8faff;
+      }
+      details.right-panel-section .block,
+      details.right-panel-section .student-task,
+      details.right-panel-section .student-primary-card,
+      details.right-panel-section .notice,
+      details.right-panel-section .metric-card,
+      details.right-panel-section .resource-card,
+      details.right-panel-section .form-section {
+        box-shadow: none;
+      }
       @media (max-width: 980px) { .learning-chain-grid, .execution-card-grid, .status-row { grid-template-columns: 1fr; } }
       @media (max-width: 760px) {
         .resource-grid {
@@ -1335,6 +1367,104 @@
         }
       }
 
+
+
+      /* v3.3：右侧主区域真实折叠 + 宽屏工作区优化 */
+      @media (min-width: 1500px) {
+        .topbar,
+        .tabs-wrap,
+        main {
+          max-width: 1680px;
+        }
+        .grid-2 {
+          grid-template-columns: 400px minmax(0, 1fr);
+          gap: 24px;
+        }
+      }
+      @media (min-width: 1760px) {
+        .topbar,
+        .tabs-wrap,
+        main {
+          max-width: 1760px;
+        }
+        .grid-2 {
+          grid-template-columns: 400px minmax(0, 1fr);
+        }
+      }
+      .right-panel-details {
+        display: block;
+      }
+      .right-panel-details > summary {
+        list-style: none;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        cursor: pointer;
+        user-select: none;
+      }
+      .right-panel-details > summary::-webkit-details-marker {
+        display: none;
+      }
+      .right-panel-summary-main {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 0;
+        flex-wrap: wrap;
+      }
+      .right-panel-summary-main h2 {
+        margin: 0;
+        font-size: 18px;
+      }
+      .right-panel-summary-meta {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex: none;
+      }
+      .right-panel-toggle {
+        border-radius: 999px;
+        padding: 4px 9px;
+        background: #eef2f7;
+        color: #475467;
+        font-size: 12px;
+        font-weight: 800;
+      }
+      .right-panel-details[open] .right-panel-toggle::before {
+        content: "收起";
+      }
+      .right-panel-details:not([open]) .right-panel-toggle::before {
+        content: "展开";
+      }
+      .right-panel-body {
+        margin-top: 14px;
+      }
+      .right-panel-details:not([open]) {
+        min-height: 0;
+      }
+      .right-panel-details:not([open]) > summary {
+        margin-bottom: 0;
+      }
+      @media (min-width: 1500px) {
+        .execution-card-grid,
+        .learning-chain-grid {
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+      }
+      @media (min-width: 981px) and (max-width: 1499px) {
+        .execution-card-grid,
+        .learning-chain-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+      @media (max-width: 980px) {
+        .execution-card-grid,
+        .learning-chain-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
       .hidden {
         display: none !important;
       }
@@ -1368,7 +1498,7 @@
     <header>
       <div class="topbar">
         <div class="brand">
-          <h1>体育课堂 AI 作业支持工具</h1>
+          <h1>一课优练</h1>
           <p>
             教师确定本课内容、重点和目标；AI辅助生成统一热身、4个学练任务、课堂表现记录和统一体能课课练，再依据学生表现选项、原因补充和身体状态生成AI分层个性化练习，并延伸为短时、安全、适量的AI课后巩固作业；教师全程审核确认。
           </p>
@@ -1885,7 +2015,7 @@
       // =========================
       // 基础配置与通用工具
       // =========================
-      const APP_VERSION = "3.1.0";
+      const APP_VERSION = "3.2.0";
       const SCHEMA_VERSION = 14;
       const DRAFT_FORMAT_VERSION = 4;
       const MIN_LEARNING_TASKS = 4;
@@ -2930,6 +3060,76 @@
           ? `<b>本次未生成成功。</b> ${esc(localizeSystemMessage(alert.message, "当前生成未完成。"))}${alert.details?.length ? `<details style="margin-top:8px"><summary>查看原因</summary><div class="small" style="margin-top:8px">${esc(alert.details.slice(0, 5).map((item) => localizeSystemMessage(item, "")).join("；"))}</div></details>` : ""}`
           : "";
       }
+
+
+
+
+      // v3.3：右侧主区域真实折叠。只改显示层，不改变字段、按钮、数据和生成逻辑。
+      const RIGHT_PANEL_META = Object.freeze({
+        understandingCard: "本课理解与核对",
+        packageCard: "课堂固定任务：热身、统一学练与统一体能",
+        baselineCard: "记录统一学练表现",
+        inGuidanceCard: "我的AI分层个性化练习",
+        retestCard: "记录个性化练习完成与变化",
+        afterTaskCard: "AI课后巩固作业",
+      });
+
+      function enhanceRightPanelCard(card, fallbackTitle = "内容") {
+        if (!card || card.dataset.enhancingPanel === "true") return;
+        if (card.firstElementChild?.classList?.contains("right-panel-details")) return;
+        if (!card.childNodes.length) return;
+        card.dataset.enhancingPanel = "true";
+        try {
+          const sectionHead = Array.from(card.children).find((child) => child.classList?.contains("section-head"));
+          const title = text(sectionHead?.querySelector("h2")?.textContent || fallbackTitle);
+          const tag = sectionHead?.querySelector(".tag")?.cloneNode(true);
+          if (sectionHead) sectionHead.remove();
+
+          const details = document.createElement("details");
+          details.className = "right-panel-details";
+          const savedState = card.dataset.rightPanelOpen;
+          details.open = savedState ? savedState === "true" : true;
+
+          const summary = document.createElement("summary");
+          summary.innerHTML = `<div class="right-panel-summary-main"><h2>${esc(title)}</h2></div><div class="right-panel-summary-meta"><span class="right-panel-toggle" aria-hidden="true"></span></div>`;
+          if (tag) summary.querySelector(".right-panel-summary-meta").prepend(tag);
+
+          const body = document.createElement("div");
+          body.className = "right-panel-body";
+          while (card.firstChild) body.appendChild(card.firstChild);
+
+          details.appendChild(summary);
+          details.appendChild(body);
+          details.addEventListener("toggle", () => {
+            card.dataset.rightPanelOpen = details.open ? "true" : "false";
+          });
+          card.appendChild(details);
+        } finally {
+          card.dataset.enhancingPanel = "false";
+        }
+      }
+
+      function enhanceAllRightPanels() {
+        Object.entries(RIGHT_PANEL_META).forEach(([id, title]) => enhanceRightPanelCard($(id), title));
+      }
+
+      function installRightPanelEnhancer() {
+        enhanceAllRightPanels();
+        const observer = new MutationObserver((mutations) => {
+          const shouldRun = mutations.some((mutation) => {
+            const target = mutation.target;
+            if (!target) return false;
+            if (target.id && RIGHT_PANEL_META[target.id]) return true;
+            return Object.keys(RIGHT_PANEL_META).some((id) => target.closest?.(`#${cssEscape(id)}`));
+          });
+          if (shouldRun) queueMicrotask(enhanceAllRightPanels);
+        });
+        Object.keys(RIGHT_PANEL_META).forEach((id) => {
+          const card = $(id);
+          if (card) observer.observe(card, { childList: true });
+        });
+      }
+      installRightPanelEnhancer();
 
 
       function scrollCardIntoView(id) {
@@ -5620,6 +5820,18 @@ ${guidance.length ? `\n【本次调整要求】\n${guidance.join("\n")}` : ""}`,
         return `<ul class="summary-list">${values.map((item) => `<li>${esc(item)}</li>`).join("")}</ul>`;
       }
 
+
+      function rightPanelSection(title, body, options = {}) {
+        const open = Boolean(options.open);
+        const tag = cleanString(options.tag || "", 40);
+        const tagClass = cleanString(options.tagClass || "", 20);
+        const major = Boolean(options.major);
+        return `<details class="collapsible-block right-panel-section ${major ? "major" : ""}" ${open ? "open" : ""}>
+          <summary><h3>${esc(title)}</h3>${tag ? `<span class="tag ${esc(tagClass)}">${esc(tag)}</span>` : ""}</summary>
+          <div class="right-panel-body">${body || ""}</div>
+        </details>`;
+      }
+
       function renderContextAssessment(analysis = {}) {
         const assessment = analysis.contextAssessment || {};
         const known = arr(assessment.knownFacts);
@@ -5740,8 +5952,8 @@ ${guidance.length ? `\n【本次调整要求】\n${guidance.join("\n")}` : ""}`,
           <div class="notice ${published ? "" : "ok"}">${published ? "这是已发布课次的只读版本。需要修改时请复制为新草稿。" : "请只核对三个问题：教什么是否准确、重点目标是否承接、有没有明显遗漏。"}</div>
           <div id="understandingStaleNotice" class="notice warn hidden" style="margin-top:12px"></div>
           ${blocking.length ? `<div class="notice warn" style="margin-top:12px"><b>需要补充：</b>${esc(blocking.map((item) => item.question).join("；"))}</div>` : ""}
-          ${renderContentAnalysisSummary(runtime.contentAnalysis)}
           ${renderUnderstandingSummaryCards(understanding)}
+          ${runtime.contentAnalysis ? rightPanelSection("AI对本课内容的理解", renderContentAnalysisSummary(runtime.contentAnalysis), { open: false, tag: "展开查看" }) : ""}
           ${renderUnderstandingDetails(understanding)}
           <div class="actions">${actions}</div>`;
 
@@ -7769,11 +7981,11 @@ ${JSON.stringify(contract, null, 2)}`;
           </div>
           ${task1Package.timeAutoRepair ? `<div class="notice ok" style="margin-top:12px"><b>时间已自动补足：</b>${esc(arr(task1Package.timeAutoRepair.repairs).join("；"))}。放松练习和结束整理由教师按课堂常规处理，不进入本工具生成链路，也不计入40分钟有效课堂作业链校验。</div>` : ""}
           ${auditPanel}
-          <div class="block"><div class="block-title"><h3>教师上课执行卡</h3><div class="actions" style="margin-top:0"><button class="btn btn-small btn-light" id="copyTask1Btn">复制上课执行卡</button></div></div>${renderClassroomExecutionCard(task1, evidence, classWarmup, classFitness, packageData.teacherInput, packageData.understanding)}</div>
-          <div class="block"><div class="block-title"><h3>课堂表现记录</h3></div><p class="small muted">${esc(evidence.collectionMethod)}；预计填写${esc(evidence.estimatedInputSeconds)}秒。</p>${renderQuickEvidenceTable(evidence)}</div>
-          <details class="collapsible-block"><summary><h3>查看完整学练说明</h3></summary>${renderTask1LearningChain(task1, classWarmup, classFitness, packageData.teacherInput, packageData.understanding)}</details>
-          <details class="collapsible-block"><summary><h3>查看表现记录定义</h3></summary>${evidence.fields.map(renderEvidenceFieldSummary).join("")}</details>
-          <details class="collapsible-block"><summary><h3>查看生成依据与版本记录</h3></summary>${renderGenerationBasis(packageData)}<h4 style="margin-top:14px">过程记录</h4>${renderProcessTrace(packageData.generationTrace || runtime.processTrace)}</details>
+          ${rightPanelSection("教师上课执行卡", `<div class="block-title"><div class="actions" style="margin-top:0"><button class="btn btn-small btn-light" id="copyTask1Btn">复制上课执行卡</button></div></div>${renderClassroomExecutionCard(task1, evidence, classWarmup, classFitness, packageData.teacherInput, packageData.understanding)}`, { open: true, tag: "默认展开", major: true })}
+          ${rightPanelSection("课堂表现记录", `<p class="small muted">${esc(evidence.collectionMethod)}；预计填写${esc(evidence.estimatedInputSeconds)}秒。</p>${renderQuickEvidenceTable(evidence)}`, { open: false, tag: `${evidence.fields.length}项` })}
+          <details class="collapsible-block right-panel-section"><summary><h3>查看完整学练说明</h3></summary><div class="right-panel-body">${renderTask1LearningChain(task1, classWarmup, classFitness, packageData.teacherInput, packageData.understanding)}</div></details>
+          <details class="collapsible-block right-panel-section"><summary><h3>查看表现记录定义</h3></summary><div class="right-panel-body">${evidence.fields.map(renderEvidenceFieldSummary).join("")}</div></details>
+          <details class="collapsible-block right-panel-section"><summary><h3>查看生成依据与版本记录</h3></summary><div class="right-panel-body">${renderGenerationBasis(packageData)}<h4 style="margin-top:14px">过程记录</h4>${renderProcessTrace(packageData.generationTrace || runtime.processTrace)}</div></details>
           <div class="actions">
             <button class="btn btn-primary" id="publishLessonBtn" data-base-disabled="${publishBlocked ? "true" : "false"}" ${publishBlocked ? "disabled" : ""}>${isPublished ? "本课已发布" : audit.counts?.blockers ? "需先修复问题" : unresolvedConfirmations ? `确认课堂条件并发布（${unresolvedConfirmations}项）` : "教师审核并发布"}</button>
             ${isPublished ? '<button class="btn btn-secondary" id="duplicatePublishedLessonBtn">复制为新草稿</button>' : '<button class="btn btn-secondary" id="regenerateAllStage1Btn">重新生成一版</button>'}
@@ -9217,8 +9429,8 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
           <div class="notice purple">只记录支持后续判断的少量表现。提交后先保存真实记录，再确定安全路线并生成AI分层个性化练习。</div>
           <div id="task1SaveStatus" class="notice hidden" style="margin-top:12px"></div>
           ${hasHistory ? `<div class="notice" style="margin-top:12px"><b>发现该编号的上次记录。</b> 本次表单默认保持空白，避免历史数据被误当作新记录。<div class="actions"><button class="btn btn-small btn-secondary" id="loadPreviousTask1EvidenceBtn" type="button">载入上次记录</button><button class="btn btn-small btn-light" id="clearTask1EvidenceFormBtn" type="button">从空白开始</button></div></div>` : ""}
-          <details class="collapsible-block" style="margin-top:14px"><summary><h3>查看本课统一学练</h3></summary>${renderStudentLearningOverview(task, lesson.task1Package.classWarmup || defaultClassWarmup(lesson.teacherInput, lesson.understanding), lesson.task1Package.classFitness)}${renderTask1LearningChain(task, lesson.task1Package.classWarmup || defaultClassWarmup(lesson.teacherInput, lesson.understanding), lesson.task1Package.classFitness)}</details>
-          <form id="task1EvidenceForm">
+          <details class="collapsible-block right-panel-section" style="margin-top:14px"><summary><h3>查看本课统一学练</h3></summary><div class="right-panel-body">${renderStudentLearningOverview(task, lesson.task1Package.classWarmup || defaultClassWarmup(lesson.teacherInput, lesson.understanding), lesson.task1Package.classFitness)}${renderTask1LearningChain(task, lesson.task1Package.classWarmup || defaultClassWarmup(lesson.teacherInput, lesson.understanding), lesson.task1Package.classFitness)}</div></details>
+          <details class="collapsible-block right-panel-section major" open><summary><h3>填写统一学练表现</h3><span class="tag purple">当前操作</span></summary><div class="right-panel-body"><form id="task1EvidenceForm">
             ${renderGroupedEvidenceFields(fields, task, "task1")}
             <div class="form-section">
               <label style="margin-top:0" for="task1ProblemReasonNote">问题原因补充（可选）</label>
@@ -9228,7 +9440,7 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
             ${healthStatusHtml("task1", "task2RoutePreview")}
             <div class="actions"><button class="btn btn-primary full" type="submit" id="submitTask1EvidenceBtn" disabled>请先完成必填记录</button></div>
             <div class="loading-line" id="task2Loading" aria-live="polite"><span class="spinner"></span><span>系统正在先判断安全路线，再生成相应的个性化练习……</span></div>
-          </form>`;
+          </form></div></details>`;
         const form = $("task1EvidenceForm");
         form.addEventListener("change", () => updateTask2RoutePreview(record));
         form.addEventListener("input", () => updateTask2RoutePreview(record));
@@ -9537,7 +9749,7 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
             <div class="basis-grid"><div class="basis-card"><h4><span class="actor-badge student">学生数据</span></h4><p>动作表现证据与健康信号分开记录。</p></div><div class="basis-card"><h4><span class="actor-badge local">系统分流</span></h4><p>${esc(route.reason)}</p></div><div class="basis-card"><h4><span class="actor-badge ${route.generatedBy === "local" ? "local" : "ai"}">${route.generatedBy === "local" ? "本地生成" : "AI生成"}</span></h4><p>只在分流允许的范围内生成内容。</p></div><div class="basis-card"><h4><span class="actor-badge teacher">教师审核</span></h4><p>决定是否采用、修改或重新生成。</p></div></div>
             ${renderProcessTrace(task2Record.trace || [])}
           </details>
-          <div class="student-primary-card">
+          <details class="collapsible-block right-panel-section major" open><summary><h3>AI分层个性化练习卡</h3><span class="tag purple">当前结果</span></summary><div class="right-panel-body"><div class="student-primary-card">
             <h3>${esc(displayDraft.task2.title)}</h3>
             <div class="task-line"><b>任务模式</b><span>${esc(routeLabel(route))}</span></div>
             <div class="task-line"><b>难度分层</b><span><span class="tag purple">${esc(displayDraft.difficultyTier?.label || task2DifficultyTierLabel(displayDraft.difficultyTier?.tier))}</span><br>${esc(displayDraft.difficultyTier?.reason || task2DifficultyTierDescription(displayDraft.difficultyTier?.tier))}</span></div>
@@ -9550,10 +9762,10 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
             <div class="task-line"><b>做到什么样</b><span>${esc(displayDraft.task2.successCriteria.join("；"))}</span></div>
             <div class="task-line"><b>安全</b><span>${esc(displayDraft.task2.safetyNote)}</span></div>
             ${approved ? '<div class="copy-row"><button class="btn btn-small btn-secondary" id="copyTask2Btn">复制任务卡</button></div>' : ""}
-          </div>
-          ${renderFitnessModuleCard(displayDraft.fitnessModule)}
-          ${renderTask2EvidenceSummary(displayDraft.task2EvidenceModel)}
-          <details class="collapsible-block"><summary><h3>教师查看：诊断依据与本地检查</h3></summary>
+          </div></div></details>
+          ${rightPanelSection("统一体能课课练参与建议", renderFitnessModuleCard(displayDraft.fitnessModule), { open: false })}
+          ${rightPanelSection("练后变化记录项", renderTask2EvidenceSummary(displayDraft.task2EvidenceModel), { open: false })}
+          <details class="collapsible-block right-panel-section"><summary><h3>教师查看：诊断依据与本地检查</h3></summary><div class="right-panel-body">
             <p><b>整体表现：</b>${esc(displayDraft.task1Diagnosis.evidenceSummary)}</p>
             <div class="resource-grid">${displayDraft.task1Diagnosis.performanceByLearningTask.map((item, index) => `<div class="resource-card"><div class="resource-title">学练${cnIndex(index + 1)}｜${esc(item.title)}</div><p class="small">${esc(item.summary)}</p></div>`).join("")}</div>
             <p><b>主问题分类：</b>${esc(displayDraft.task1Diagnosis.problemClassification?.mainCategory || "")}</p>
@@ -9563,7 +9775,7 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
             <p><b>个性化调整：</b>${esc(displayDraft.personalization.adjustments.join("；"))}</p>
             <p><b>教师审核依据：</b>${esc(displayDraft.teacherRationale)}</p>
             ${renderLocalReview(task2Record.localReview)}
-          </details>
+          </div></details>
           ${teacherDispositionControl(record, approved, route)}
           <div class="review-box"><h3>教师审核</h3><div class="actions">
             ${approved ? `<button class="btn btn-primary" id="goAfterTask2Btn">进入AI课后巩固作业流程</button>${route.generatedBy === "local" ? "" : '<button class="btn btn-secondary" id="task2RegenerateApprovedBtn">重新生成AI分层个性化练习</button>'}` : `<button class="btn btn-primary" id="task2ApproveBtn" ${localBlocked ? "disabled" : ""}>${route.mode === "teacher_decision" ? "确认教师处理结果" : "审核通过"}</button>${route.generatedBy === "local" ? "" : '<button class="btn btn-secondary" id="task2RegenerateDraftBtn">让系统调整</button>'}<button class="btn btn-danger" id="task2RejectBtn">${route.mode === "teacher_decision" ? "暂不确认" : "不采用"}</button>`}
@@ -10031,13 +10243,13 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
           <div class="notice purple">这里记录同一个AI分层个性化练习的完成情况和练后变化；统一体能课课练负荷与身体状态仍单独记录。提交后先保存真实记录，再确定课后路线并生成巩固作业。</div>
           <div id="task2CompletionSaveStatus" class="notice hidden" style="margin-top:12px"></div>
           ${hasHistory ? `<div class="notice" style="margin-top:12px"><b>发现上次完成记录。</b> 本次表单默认保持空白，避免旧值被误当作新证据。<div class="actions"><button class="btn btn-small btn-secondary" id="loadPreviousTask2CompletionBtn" type="button">载入上次记录</button><button class="btn btn-small btn-light" id="clearTask2CompletionFormBtn" type="button">从空白开始</button></div></div>` : ""}
-          <details class="collapsible-block" style="margin-top:14px" open><summary><h3>已审核的个性化练习</h3></summary><div class="block"></div></details>
-          <form id="task2CompletionForm">
+          <details class="collapsible-block right-panel-section" style="margin-top:14px"><summary><h3>查看已审核的个性化练习</h3></summary><div class="right-panel-body"><div class="block"></div></div></details>
+          <details class="collapsible-block right-panel-section major" open><summary><h3>填写练后变化与身体状态</h3><span class="tag purple">当前操作</span></summary><div class="right-panel-body"><form id="task2CompletionForm">
             ${task2CompletionAndChangeHtml(approvedTask2, record.task2?.teacherDecision || {}, fields)}
             ${healthStatusHtml("task2", "task3RoutePreview")}
             <div class="actions"><button class="btn btn-primary full" type="submit" id="submitTask2CompletionBtn" disabled>请先完成必填记录</button></div>
             <div class="loading-line" id="task3Loading"><span class="spinner"></span><span>系统正在先判断课后路线，再生成相应安排……</span></div>
-          </form>`;
+          </form></div></details>`;
         const block = $("retestCard").querySelector("details .block");
         if (block) block.innerHTML = `<h3>${esc(approvedTask2.task2.title)}</h3><p><b>模式：</b>${esc(routeLabel(approvedTask2.route))}</p><p><b>目标：</b>${esc(approvedTask2.task2.goal)}</p><p><b>步骤：</b>${esc(approvedTask2.task2.instructions.join("；"))}</p>${approvedTask2.fitnessModule.mode === "omitted" ? `<p><b>统一体能课课练：</b>暂停参加（${esc(approvedTask2.fitnessModule.omissionReason || "安全分流") }）</p>` : `<p><b>统一体能课课练：</b>${esc(classFitnessTierLabel(approvedTask2.fitnessModule.tier || classFitnessTier(approvedTask2.fitnessModule)))}｜${esc(approvedTask2.fitnessModule.dose)}</p>`}`;
         const form = $("task2CompletionForm");
@@ -10201,7 +10413,7 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
             <div class="basis-grid"><div class="basis-card"><h4><span class="actor-badge student">四类数据</span></h4><p>动作表现、任务完成、体能课课练负荷、健康信号分开使用。</p></div><div class="basis-card"><h4><span class="actor-badge local">系统分流</span></h4><p>${esc(route.reason)}</p></div><div class="basis-card"><h4><span class="actor-badge ${route.generatedBy === "local" ? "local" : "ai"}">${route.generatedBy === "local" ? "本地生成" : "AI生成"}</span></h4><p>只在分流允许的范围内生成。</p></div><div class="basis-card"><h4><span class="actor-badge teacher">教师审核</span></h4><p>确认课后条件、安全与负担。</p></div></div>
             ${renderProcessTrace(task3Record.trace || [])}
           </details>
-          <div class="student-primary-card">
+          <details class="collapsible-block right-panel-section major" open><summary><h3>AI课后巩固作业卡</h3><span class="tag purple">当前结果</span></summary><div class="right-panel-body"><div class="student-primary-card">
             <h3>${esc(draft.task3.title)}</h3>
             <div class="task-line"><b>安排模式</b><span>${esc(routeLabel(route))}</span></div>
             <div class="task-line"><b>我还要处理</b><span>${esc(draft.remainingNeed)}</span></div>
@@ -10215,8 +10427,8 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
             <div class="task-line"><b>下节课反馈</b><span>${esc(draft.task3.nextLessonFeedback)}</span></div>
             <div class="task-line"><b>安全</b><span>${esc(draft.task3.safetyNote)}</span></div>
             ${approved ? '<div class="copy-row"><button class="btn btn-small btn-secondary" id="copyTask3Btn">复制课后巩固作业</button></div>' : ""}
-          </div>
-          <details class="collapsible-block"><summary><h3>教师查看：连续分析与本地检查</h3></summary>
+          </div></div></details>
+          <details class="collapsible-block right-panel-section"><summary><h3>教师查看：连续分析与本地检查</h3></summary><div class="right-panel-body">
             <p><b>统一学练：</b>${esc(draft.chainAnalysis.task1Summary)}</p>
             <p><b>统一学练表现：</b>${esc(draft.chainAnalysis.task1Performance)}</p>
             <p><b>个性化练习：</b>${esc(draft.chainAnalysis.task2Summary)}</p>
@@ -10224,7 +10436,7 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
             <p><b>变化结论：</b>${esc(draft.chainAnalysis.changeConclusion)}</p>
             <p><b>教师审核依据：</b>${esc(draft.teacherRationale)}</p>
             ${renderLocalReview(task3Record.localReview)}
-          </details>
+          </div></details>
           <div class="review-box"><h3>教师审核</h3><div class="actions">
             ${approved ? (route.generatedBy === "local" ? "" : '<button class="btn btn-secondary" id="task3RegenerateApprovedBtn">重新生成AI课后巩固作业</button>') : `<button class="btn btn-primary" id="task3ApproveBtn" ${localBlocked ? "disabled" : ""}>${route.mode === "teacher_decision" ? "确认教师处理安排" : "审核通过并发布"}</button>${route.generatedBy === "local" ? "" : '<button class="btn btn-secondary" id="task3RegenerateDraftBtn">让系统调整</button>'}<button class="btn btn-danger" id="task3RejectBtn">${route.mode === "teacher_decision" ? "暂不确认" : "不采用"}</button>`}
           </div></div>
