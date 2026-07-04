@@ -1370,7 +1370,7 @@
         <div class="brand">
           <h1>体育课堂 AI 作业支持工具</h1>
           <p>
-            教师确定本课内容、重点和目标；AI先生成热身、4个学练任务（第4个为游戏或比赛应用）和8—10分钟统一体能课课练，再依据学生表现生成可独立完成的个性化练习和课后作业，记录均以小学课堂易观察、易自评的选项为主；统一体能必须先完成本课身体能力需求分析，聚焦1个主能力和最多1个辅助能力，教师全程审核确认。
+            教师确定本课内容、重点和目标；AI辅助生成统一热身、4个学练任务、课堂表现记录和统一体能课课练，再依据学生表现选项、原因补充和身体状态生成AI分层个性化练习，并延伸为短时、安全、适量的AI课后巩固作业；教师全程审核确认。
           </p>
         </div>
         <div class="top-actions">
@@ -1385,8 +1385,8 @@
       <div class="tabs-wrap">
         <nav class="tabs" aria-label="教学流程">
           <button class="tab active" data-page="prep">1. 课前准备：统一学练</button>
-          <button class="tab" data-page="inclass">2. 课中实施：个性化练习</button>
-          <button class="tab" data-page="afterclass">3. 课后延伸：课后作业</button>
+          <button class="tab" data-page="inclass">2. 课中实施：AI分层个性化练习</button>
+          <button class="tab" data-page="afterclass">3. 课后延伸：AI课后巩固作业</button>
         </nav>
       </div>
     </header>
@@ -1469,15 +1469,15 @@
 
               <details class="collapsible-block">
                 <summary><h3>时间微调（通常不用改）</h3></summary>
-                <p class="small muted">留空时由AI在40分钟课堂内提出可执行分配，教师在理解卡中确认。热身、4个学练、个性化练习和体能课课练共同构成课堂主流程。</p>
+                <p class="small muted">留空时由AI在40分钟课堂内提出可执行分配，教师在理解卡中确认。热身、4个学练、AI分层个性化练习预留和体能课课练共同构成课堂主流程。</p>
                 <div class="row-3">
                   <div><label for="warmupMinutes">热身</label><input id="warmupMinutes" type="number" min="4" max="8" placeholder="留空" /></div>
                   <div><label for="commonTaskMinutes">4个学练任务</label><input id="commonTaskMinutes" type="number" min="18" max="25" placeholder="留空" /></div>
-                  <div><label for="inClassMinutes">个性化练习</label><input id="inClassMinutes" type="number" min="4" max="8" placeholder="留空" /></div>
+                  <div><label for="inClassMinutes">AI分层个性化练习</label><input id="inClassMinutes" type="number" min="4" max="8" placeholder="留空" /></div>
                 </div>
                 <div class="row">
                   <div><label for="classFitnessMinutes">体能课课练</label><input id="classFitnessMinutes" type="number" min="8" max="10" placeholder="留空，默认8—10分钟" /></div>
-                  <div><label for="afterClassMinutes">课后上限</label><input id="afterClassMinutes" type="number" min="1" max="30" placeholder="留空" /></div>
+                  <div><label for="afterClassMinutes">课后巩固上限</label><input id="afterClassMinutes" type="number" min="1" max="12" placeholder="留空，默认短时" /></div>
                 </div>
               </details>
 
@@ -1533,7 +1533,7 @@
                 <span class="tag">第二步</span>
               </div>
               <div class="placeholder">
-                确认本课理解后，AI一次生成统一热身、4个递进学练（第4个为游戏或比赛应用）、8—10分钟统一体能课课练和少量课堂表现记录；个性化练习和课后作业只在获得真实表现后生成。
+                确认本课理解后，AI一次生成统一热身、4个递进学练（第4个为游戏或比赛应用）、8—10分钟统一体能课课练和少量课堂表现记录；AI分层个性化练习和AI课后巩固作业只在获得真实表现后生成。
               </div>
             </div>
           </div>
@@ -1549,9 +1549,9 @@
         <div class="grid-2">
           <aside>
             <div class="card">
-              <h2>记录表现并生成个性化练习</h2>
+              <h2>记录表现并生成AI分层个性化练习</h2>
               <p class="sub">
-                学生完成统一学练后，先保存少量动作表现和身体状态，再生成个性化练习补充练习。AI生成失败时记录仍会保留，可直接重试，不需要重新填写。
+                学生完成统一学练后，先保存少量动作表现、问题原因补充和身体状态，再生成AI分层个性化练习。AI生成失败时记录仍会保留，可直接重试，不需要重新填写。
               </p>
               <label for="inLessonSelect"
                 >本课课次<span class="required">*</span></label
@@ -1582,7 +1582,7 @@
                 <li>学生停止运动并站在安全位置后再操作设备。</li>
                 <li>按真实表现填写；可结合自评、同伴观察和教师确认。</li>
                 <li>真实表现先保存，AI失败不会清空学生记录。</li>
-                <li>个性化练习须经教师审核后才可执行。</li>
+                <li>AI分层个性化练习须经教师审核后才可执行。</li>
               </ul>
             </div>
           </aside>
@@ -1593,7 +1593,7 @@
             </div>
             <div class="card" id="inGuidanceCard">
               <div class="placeholder">
-                提交统一学练表现后，这里生成个性化练习（个性化练习）。
+                提交统一学练表现和原因补充后，这里生成AI分层个性化练习。
               </div>
             </div>
           </div>
@@ -1601,17 +1601,17 @@
       </section>
 
       <section class="page" id="page-afterclass">
-        <div class="page-guide hidden" aria-label="课后作业生成流程">
+        <div class="page-guide hidden" aria-label="AI课后巩固作业生成流程">
           <div class="guide-step active"><b>1. 分层记录变化</b>个性化练习、体能课课练负荷与身体状态分开记录</div>
           <div class="guide-step"><b>2. 系统先安全分流</b>决定练习、低负荷、观察或教师处理</div>
-          <div class="guide-step"><b>3. 生成课后安排</b>在允许范围内生成，教师审核后发布</div>
+          <div class="guide-step"><b>3. 生成课后巩固安排</b>在允许范围内生成，教师审核后发布</div>
         </div>
         <div class="grid-2">
           <aside>
             <div class="card">
-              <h2>记录变化并生成课后作业</h2>
+              <h2>记录变化并生成AI课后巩固作业</h2>
               <p class="sub">
-                学生完成教师确认的个性化练习后，先保存动作变化、完成情况和身体状态，再生成短时课后作业。生成失败时完成记录仍会保留。
+                学生完成教师确认的AI分层个性化练习后，先保存动作变化、完成情况、体能参与负荷和身体状态，再生成短时、安全、适量的AI课后巩固作业。生成失败时完成记录仍会保留。
               </p>
               <label for="afterLessonSelect"
                 >本课课次<span class="required">*</span></label
@@ -1639,7 +1639,7 @@
             <div class="card">
               <h3>使用顺序</h3>
               <p class="small muted">
-                热身、统一学练与统一体能课课练先由教师审核确定；学生完成4个学练任务并记录真实表现后生成个性化练习（个性化练习），再记录个性化练习变化和统一体能课课练参与情况，最后生成课后作业。每一步都由教师确认。
+                热身、统一学练与统一体能课课练先由教师审核确定；学生完成4个学练任务并记录真实表现和原因补充后生成AI分层个性化练习，再记录练后变化、统一体能课课练参与情况和身体状态，最后生成AI课后巩固作业。每一步都由教师确认。
               </p>
             </div>
           </aside>
@@ -1652,7 +1652,7 @@
             </div>
             <div class="card" id="afterTaskCard">
               <div class="placeholder">
-                保存个性化练习后的变化、统一体能课课练参与情况和身体状态后，这里生成课后作业。
+                保存AI分层个性化练习后的变化、统一体能课课练参与情况和身体状态后，这里生成AI课后巩固作业。
               </div>
             </div>
           </div>
@@ -1818,13 +1818,13 @@
        * 7. 未发布草稿不得在打开页面时静默恢复，必须由教师明确选择继续、删除或新建。
        * 8. 教师审核流程必须轻量，不设置口令、密码或额外登录门槛。
        * 9. 本网站定位是教师课堂作业工具，不是材料提交生成器或填报系统；文件要求只约束课堂作业设计方向，不转化为网站功能。
-       * 10. 界面和提示词优先使用体育教学常用表达，如“学练任务、学习活动、练习活动、游戏或比赛、评价反馈、统一学练/2、课后作业”；避免重新发明不必要术语。
+       * 10. 界面和提示词优先使用体育教学常用表达，如“学练任务、学习活动、练习活动、游戏或比赛、评价反馈、统一学练、AI分层个性化练习、AI课后巩固作业”；避免重新发明不必要术语。
        * 11. 体能课课练属于教师统一课堂组织，应在课前随热身和统一学练一起生成并经教师审核；课标约束下体能课课练时间按8—10分钟处理；学生阶段只按身体状态给出“常规/降低负荷/暂停观察”参与档位，不得由AI为每个学生生成一套不同的最后体能动作。
        * 12. 本工具默认一课时不少于40分钟；课堂固定结构应包含统一热身、4个学练任务（第4个为游戏或比赛应用）、个性化练习和统一体能课课练。
        * 13. 个性化练习是每个学生自己的个性化练习，必须以本人独立完成为主；不得依赖同伴、家长、其他学生帮助设障碍、喊信号、观察或配合。
        * 14. 小学课堂所有动作表现记录和练后变化记录必须优先使用可观察或可自评的选项，不得要求学生填写次数、米数、百分比、计算结果或长文本。
        * 15. 统一体能课课练必须先抽象本课身体能力需求，只服务本课已确认的技术重点、难点、学练任务和表现证据；不得因运动项目相同而引入本课未涉及的专项情境或技术。
-       * 16. 体能课课练默认最多2—3个动作、队形尽量不变、默认不新增器材；未提供室内、垫子、软地面等条件时，不得生成趴地、跪地、仰卧、俯撑、平板支撑等地面支撑类动作。
+       * 16. 体能课课练默认最多2—3个动作、队形尽量不变、默认不新增器材；如教师明确采用双人或小组统一组织，可允许同伴同步练习、观察和提醒，但不得依赖拉拽、阻挡、抢断、身体辅助或危险配合；未提供室内、垫子、软地面等条件时，不得生成趴地、跪地、仰卧、俯撑、平板支撑等地面支撑类动作。
        * 17. 体能课课练8—10分钟必须有有效时间结构：组织说明、有效练习、间歇转换和反馈整理均需可核对，不能只写标称时间。
        * 18. 表现记录的“字段语义”也必须选项化；不仅 inputType 不能是 number，label、definition、help、interpretationGuide 和 options 也不得保留成功率、次数、米数、百分比、计数、正字等统计口径。
        * 19. 地面支撑类体能动作必须生成前禁止、归一化时替换、发布前阻断；不能把含风险动作的旧内容继续渲染为可用绿色卡片。
@@ -1885,7 +1885,7 @@
       // =========================
       // 基础配置与通用工具
       // =========================
-      const APP_VERSION = "3.0.0";
+      const APP_VERSION = "3.1.0";
       const SCHEMA_VERSION = 14;
       const DRAFT_FORMAT_VERSION = 4;
       const MIN_LEARNING_TASKS = 4;
@@ -1943,8 +1943,20 @@
               "'": "&#39;",
             })[char],
         );
+      const UNSUPPORTED_AI_CAPABILITY_TERMS = ["动作" + "捕捉", "动作" + "识别", "视频" + "识别", "姿态" + "识别", "自动" + "识别" + "姿态", "自动" + "检测" + "姿态"];
+      function sanitizeGeneratedSafetyText(value) {
+        let output = text(value);
+        UNSUPPORTED_AI_CAPABILITY_TERMS.forEach((term) => {
+          output = output
+            .replace(new RegExp(`AI\s*${term}(?:分析)?`, "g"), "课堂表现记录与原因补充")
+            .replace(new RegExp(`${term}(?:分析)?`, "g"), "课堂表现记录与原因补充");
+        });
+        return output
+          .replace(new RegExp(`(?:每日|每天|每次|时长规划[:：]?\s*)?\s*${"2" + "0"}\s*[-—–~至]\s*${"3" + "0"}\s*分钟`, "g"), "短时完成")
+          .replace(/(?:每日|每天|每次)\s*二十\s*[-—–~至]\s*三十\s*分钟/g, "短时完成");
+      }
       const cleanString = (value, max = 4000) =>
-        text(value)
+        sanitizeGeneratedSafetyText(value)
           .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, "")
           .slice(0, max);
       const cleanObject = (value) =>
@@ -2215,18 +2227,18 @@
         const task3Label = task3StageLabel(record);
         return `<div class="teacher-flow-strip">
           <div class="teacher-flow-step ${stageClass(evidenceLabel)}"><b>1. 学练表现</b>${esc(evidenceLabel)}</div>
-          <div class="teacher-flow-step ${stageClass(task2Label)}"><b>2. 个性化练习</b>${esc(task2Label)}</div>
-          <div class="teacher-flow-step ${stageClass(task3Label)}"><b>3. 课后作业</b>${esc(task3Label)}</div>
+          <div class="teacher-flow-step ${stageClass(task2Label)}"><b>2. AI分层练习</b>${esc(task2Label)}</div>
+          <div class="teacher-flow-step ${stageClass(task3Label)}"><b>3. 课后巩固</b>${esc(task3Label)}</div>
         </div>`;
       }
 
       function recordSummaryLabel(record = {}) {
-        if (record.task3?.reviewStatus === "approved") return "课后已发布";
-        if (record.task3?.generationStatus === "failed") return "课后生成失败";
+        if (record.task3?.reviewStatus === "approved") return "课后巩固已发布";
+        if (record.task3?.generationStatus === "failed") return "课后巩固生成失败";
         if (record.task2Completion) return "变化已记录";
-        if (record.task2?.reviewStatus === "approved") return "个性化练习已审核";
-        if (record.task2?.generationStatus === "failed") return "个性化练习生成失败";
-        if (record.task2?.reviewStatus === "pending" || record.task2?.draft) return "个性化练习待审核";
+        if (record.task2?.reviewStatus === "approved") return "AI分层练习已审核";
+        if (record.task2?.generationStatus === "failed") return "AI分层练习生成失败";
+        if (record.task2?.reviewStatus === "pending" || record.task2?.draft) return "AI分层练习待审核";
         if (record.task1Evidence) return "学练表现已保存";
         return "未开始";
       }
@@ -2252,9 +2264,9 @@
         target.innerHTML = `<b>本课处理进度</b>
           <div class="lesson-progress-grid">
             <div class="lesson-progress-item"><b>${stats.evidence}</b>已记录表现</div>
-            <div class="lesson-progress-item"><b>${stats.pending}</b>个性化练习待审</div>
-            <div class="lesson-progress-item"><b>${stats.approved}</b>个性化练习已审</div>
-            <div class="lesson-progress-item"><b>${stats.homework}</b>课后已发布</div>
+            <div class="lesson-progress-item"><b>${stats.pending}</b>AI分层练习待审</div>
+            <div class="lesson-progress-item"><b>${stats.approved}</b>AI分层练习已审</div>
+            <div class="lesson-progress-item"><b>${stats.homework}</b>课后巩固已发布</div>
           </div>
           ${records.length ? `<div class="small muted" style="margin-top:9px">最近学生</div><div class="student-shortcuts">${records.slice(0, 6).map((record) => `<button class="student-shortcut" data-workflow-page="${pageKey}" data-workflow-student="${esc(record.studentId)}" title="${esc(recordSummaryLabel(record))}">${esc(record.studentId)} · ${esc(recordSummaryLabel(record))}</button>`).join("")}</div>` : '<div class="small muted" style="margin-top:9px">尚无学生记录。</div>'}`;
         qsa('[data-workflow-student]', target).forEach((button) => {
@@ -2805,9 +2817,9 @@
         class_warmup_design: "生成统一热身",
         class_fitness_design: "生成统一体能课课练",
         task2_route: "判断个性化练习安全路线",
-        task2_generate: "生成个性化练习",
+        task2_generate: "生成AI分层个性化练习",
         task3_route: "判断课后安全路线",
-        task3_generate: "生成个性化课后作业",
+        task3_generate: "生成AI课后巩固作业",
         local_stage1_check: "本地分层检查",
         teacher_confirm_understanding: "教师确认理解摘要",
         teacher_publish: "教师审核发布",
@@ -3541,7 +3553,7 @@ ${JSON.stringify(schemaExample, null, 2)}`;
       // 生成式AI角色与JSON结构
       // =========================
       const BASE_SYSTEM =
-        "你是一名熟悉义务教育体育与健康课程、体育课堂组织、运动安全、过程性评价、教材动作体系分析、课堂实施负担控制与差异化教学的教研员。生成内容要像体育教师能直接用于课堂组织的学练提示，优先使用“学习活动、练习活动、游戏或比赛、评价反馈、学练任务”等体育教学常用表达；禁止使用不必要的自造术语。你为不同运动项目动态设计课堂作业，不套用固定项目模板。必须严格区分五类信息：教师本课事实、长期教学设置、AI专业推断、教师确认后的教学决定、学生真实证据。空字符串或未提供字段只能视为未知，禁止补写成教师事实；可以提出有依据的推断，但必须标注来源、置信度、影响和是否需教师核对。优先级始终为：健康与安全信号 > 教师明确事实和教师确认后的本课契约 > 当前阶段前置条件 > 学生真实动作表现 > AI建议 > 表达优化。课前阶段根据教师意图生成统一热身、4个递进学练任务（第4个为游戏或比赛应用）和1个教师统一组织的8—10分钟体能课课练；统一热身必须明确分段热身方式、每段时间、组织方式和安全提示，不能只写“约几分钟”或只写总练习量；不得为了凑数量拆分重复练习，也不得把体能课课练留到学生个体阶段才生成。生成体能课课练前，必须先把本课技术重点、难点和学练任务抽象为通用身体能力需求，只选择1个主能力和最多1个辅助能力，并明确看似相关但本课不优先发展的能力。体能课课练只能服务本课已确认的技术点、学练任务和身体能力需求，禁止因为运动项目名称相同就引入本课未涉及的专项情境、比赛任务或技术动作。小学课堂体能课课练动作种类默认2—3个，队形尽量不变，默认不新增器材、不依赖同伴配合；未明确室内、垫子、软质地面等条件时，默认只使用站立、原地或低风险移动动作，禁止俯撑、仰卧、俯卧、趴地、跪地、跪撑、跪姿支撑、平板支撑、仰卧起坐、俯卧撑等地面支撑动作；降低负荷方案也不得改成跪姿或地面支撑。体能课课练必须给出真实8—10分钟时间结构：组织说明、有效练习、间歇调整和整理反馈，不能只靠“预计8分钟”凑数。个性化练习只针对一个优先问题，最多兼顾一个辅助问题。正常路线只生成短时个性化练习；最后体能课课练由教师统一组织，AI不得为每个学生生成不同体能动作，只能根据本地安全路线给出“常规参与、降低负荷、暂停观察”的参与档位；轻微不适路线必须降低个性化练习负荷并将体能参与档位标为降低负荷；紧张或害怕路线只生成观察复盘并暂停体能参与；明显不适或疼痛由本地状态机转入教师处理，AI不得生成普通练习。课后阶段同样由本地状态机先确定路线，AI不得改变路线。动作表现、任务完成、体能课课练负荷、健康信号和教师决定必须分开使用。不得把未知的实际器材数量、场地状态、学生基础或课次属性说成已知事实；应采用可伸缩组织、条件分支和无新增器材替代方案。长期教学设置只是上下文，不等于已检索或逐字核验教材原文。表现记录必须低负担、课堂可操作，且必须语义选项化：不仅 inputType 不能是 number，字段名称、定义、帮助说明、解释规则和选项中也不得保留成功率、次数、米数、百分比、几次中成功几次、计数、正字等统计口径。课堂内容不得出现字段ID、schema、fieldId、f1至f6等系统痕迹。不得依赖代码中写死的具体运动项目、动作技术、器材或场地分支；所有专项判断必须来自当前输入和运行时动态分析。安全路线由本地状态机确定，AI只在允许范围内生成内容。";
+        "你是一名熟悉义务教育体育与健康课程、体育课堂组织、运动安全、过程性评价、教材动作体系分析、课堂实施负担控制与差异化教学的教研员。生成内容要像体育教师能直接用于课堂组织的学练提示，优先使用“学习活动、练习活动、游戏或比赛、评价反馈、学练任务”等体育教学常用表达；禁止使用不必要的自造术语。你为不同运动项目动态设计课堂作业，不套用固定项目模板。必须严格区分五类信息：教师本课事实、长期教学设置、AI专业推断、教师确认后的教学决定、学生真实证据。空字符串或未提供字段只能视为未知，禁止补写成教师事实；可以提出有依据的推断，但必须标注来源、置信度、影响和是否需教师核对。优先级始终为：健康与安全信号 > 教师明确事实和教师确认后的本课契约 > 当前阶段前置条件 > 学生真实动作表现 > AI建议 > 表达优化。课前阶段根据教师意图生成统一热身、4个递进学练任务（第4个为游戏或比赛应用）和1个教师统一组织的8—10分钟体能课课练；统一热身必须明确分段热身方式、每段时间、组织方式和安全提示，不能只写“约几分钟”或只写总练习量；不得为了凑数量拆分重复练习，也不得把体能课课练留到学生个体阶段才生成。生成体能课课练前，必须先把本课技术重点、难点和学练任务抽象为通用身体能力需求，只选择1个主能力和最多1个辅助能力，并明确看似相关但本课不优先发展的能力。体能课课练只能服务本课已确认的技术点、学练任务和身体能力需求，禁止因为运动项目名称相同就引入本课未涉及的专项情境、比赛任务或技术动作。小学课堂体能课课练动作种类默认2—3个，队形尽量不变，默认不新增器材；若教师明确具备双人、小组或合作组织条件，可在统一体能课课练中采用同伴同步练习、观察和提醒，但不得依赖同伴拉拽、阻挡、抢断、身体辅助、喊个人专属信号或制造危险，并需提供降低负荷或独立替代方式；未明确室内、垫子、软质地面等条件时，默认只使用站立、原地或低风险移动动作，禁止俯撑、仰卧、俯卧、趴地、跪地、跪撑、跪姿支撑、平板支撑、仰卧起坐、俯卧撑等地面支撑动作；降低负荷方案也不得改成跪姿或地面支撑。体能课课练必须给出真实8—10分钟时间结构：组织说明、有效练习、间歇调整和整理反馈，不能只靠“预计8分钟”凑数。个性化练习只针对一个优先问题，最多兼顾一个辅助问题。正常路线只生成短时个性化练习；最后体能课课练由教师统一组织，AI不得为每个学生生成不同体能动作，只能根据本地安全路线给出“常规参与、降低负荷、暂停观察”的参与档位；轻微不适路线必须降低个性化练习负荷并将体能参与档位标为降低负荷；紧张或害怕路线只生成观察复盘并暂停体能参与；明显不适或疼痛由本地状态机转入教师处理，AI不得生成普通练习。课后阶段同样由本地状态机先确定路线，AI不得改变路线。动作表现、任务完成、体能课课练负荷、健康信号和教师决定必须分开使用。不得把未知的实际器材数量、场地状态、学生基础或课次属性说成已知事实；应采用可伸缩组织、条件分支和无新增器材替代方案。长期教学设置只是上下文，不等于已检索或逐字核验教材原文。表现记录必须低负担、课堂可操作，且必须语义选项化：不仅 inputType 不能是 number，字段名称、定义、帮助说明、解释规则和选项中也不得保留成功率、次数、米数、百分比、几次中成功几次、计数、正字等统计口径。课堂内容不得出现字段ID、schema、fieldId、f1至f6等系统痕迹。不得依赖代码中写死的具体运动项目、动作技术、器材或场地分支；所有专项判断必须来自当前输入和运行时动态分析。安全路线由本地状态机确定，AI只在允许范围内生成内容。不得输出本工具不具备的视频或姿态自动分析能力表述；课后任务必须短时、安全、适量，不得生成过重训练安排。";
 
       const EXAMPLE_CONTENT_ANALYSIS = {
         literalContent: "教师填写的授课内容原文",
@@ -3680,12 +3692,12 @@ ${JSON.stringify(schemaExample, null, 2)}`;
         commonStudentProblems: ["常见问题1", "常见问题2", "常见问题3"],
         learningChainRationale: "说明如何依据关键技术点、重难点和课堂组织经验，组合成4个递进学练阶段",
         progressiveTaskChain:
-          "统一学练由4个递进学练任务组成；根据全部递进学练任务的表现生成个性化练习；根据统一学练、个性化练习及完成情况生成课后作业",
-        evidencePrinciples: "全部递进学练任务的表现如何低负担、可观察、可用于生成个性化练习",
+          "统一学练由4个递进学练任务组成；根据全部递进学练任务的表现生成AI分层个性化练习；根据统一学练、个性化练习及完成情况生成AI课后巩固作业",
+        evidencePrinciples: "全部递进学练任务的表现如何低负担、可观察、可用于生成AI分层个性化练习",
         task2GenerationLogic: "个性化练习如何根据学生在全部递进学练中的主要问题生成个性化补充练习",
-        afterClassGenerationLogic: "课后作业如何根据统一学练、个性化练习和变化记录生成",
+        afterClassGenerationLogic: "AI课后巩固作业如何根据统一学练、个性化练习和变化记录生成",
         safetyBoundary: "本课安全边界",
-        negativeConstraints: ["不得生成的内容或错误方向1", "不得提前生成个性化练习和课后作业"],
+        negativeConstraints: ["不得生成的内容或错误方向1", "不得提前生成AI分层个性化练习和AI课后巩固作业"],
         contentTags: ["内容标签"],
         abilityTags: ["能力标签"],
       };
@@ -3843,7 +3855,7 @@ ${JSON.stringify(schemaExample, null, 2)}`;
         instructions: ["教师统一说明队形和安全要求", "全班按统一口令完成2—3个动作模块", "按常规、降低负荷、暂停观察三档参与"],
         dose: "全班统一练习量，8—10分钟内完成",
         estimatedMinutes: 8,
-        organization: "教师统一组织，队形尽量不变；默认无新增器材，不依赖同伴帮助",
+        organization: "教师统一组织，队形尽量不变；默认无新增器材。合作形式仅限教师统一组织下的同步练习、观察和提醒",
         intensity: "低 / 中低 / 中",
         standardTier: "常规参与要求",
         reducedTier: "降低负荷参与方式，如降低幅度、降低速度、缩短时间或减少轮次",
@@ -3932,7 +3944,7 @@ ${JSON.stringify(schemaExample, null, 2)}`;
         },
         task2: {
           taskId: "task2_x",
-          title: "我的个性化练习标题",
+          title: "我的AI分层个性化练习标题",
           goal: "本轮单一、可达成目标",
           instructions: ["本人在个人练习区独立完成步骤1", "完成后按任务卡自我检查步骤2"],
           dose: "约5分钟内完成，动作质量优先，不追求速度和数量",
@@ -3947,7 +3959,7 @@ ${JSON.stringify(schemaExample, null, 2)}`;
           isClassWide: true,
           title: "本课统一体能课课练参与建议",
           goal: "教师统一组织体能课课练，系统只提示该学生参与档位",
-          relationToTask2: "不是个性化练习个性化生成内容；仅用于记录本学生能否按统一体能环节参与",
+          relationToTask2: "不是个人专属体能动作；仅用于记录本学生能否按统一体能环节参与",
           instructions: ["按教师统一体能课课练参与", "根据身体状态采用常规、降低负荷或暂停观察"],
           dose: "常规组按教师统一要求；降低负荷组由教师减量；暂停观察组不参加",
           estimatedMinutes: 0,
@@ -4003,7 +4015,7 @@ ${JSON.stringify(schemaExample, null, 2)}`;
         remainingNeed: "课后仍需巩固或处理的一个重点",
         task3: {
           taskId: "task3_x",
-          title: "我的课后作业标题",
+          title: "我的AI课后巩固作业标题",
           goal: "课后单一目标",
           primaryTask: "有条件时完成的主要安排",
           alternativeTask: "条件不足时的替代安排",
@@ -4014,7 +4026,7 @@ ${JSON.stringify(schemaExample, null, 2)}`;
           nextLessonFeedback: "下节课需要反馈的内容",
           safetyNote: "课后安全要求"
         },
-        teacherRationale: "教师审核课后作业时需要看到的连续依据"
+        teacherRationale: "教师审核AI课后巩固作业时需要看到的连续依据"
       };
 
       // =========================
@@ -4122,6 +4134,9 @@ ${JSON.stringify(schemaExample, null, 2)}`;
         if (data.classSize !== null && (data.classSize < 1 || data.classSize > 100)) {
           throw new Error("班级人数应为1—100之间的数字，或留空使用设置中的常用规模。");
         }
+        if (data.afterClassMinutes !== null && (data.afterClassMinutes < 1 || data.afterClassMinutes > 12)) {
+          throw new Error("课后巩固上限应为1—12分钟，保持短时、安全、适量。");
+        }
         return cleanObject(data);
       }
 
@@ -4142,7 +4157,7 @@ ${JSON.stringify(schemaExample, null, 2)}`;
           commonTaskMinutes: "教师指定的4个学练任务时间",
           inClassMinutes: "教师指定的个性化练习时间",
           classFitnessMinutes: "教师指定的体能课课练时间",
-          afterClassMinutes: "教师指定的课后作业时长上限",
+          afterClassMinutes: "教师指定的AI课后巩固作业时长上限",
           afterClassConditions: "课后可用条件",
         };
         const facts = [];
@@ -4457,7 +4472,7 @@ ${JSON.stringify(schemaExample, null, 2)}`;
             targetMinutes: MIN_CLASS_TOTAL_MINUTES,
             finalClassTotal: timing.classTotal,
             repairs,
-            note: "放松练习、结束整理和课后作业说明不计入本项40分钟有效课堂作业链校验；系统已在热身、4个学练、个性化练习预留或体能课课练中自动补足。",
+            note: "放松练习和结束整理由教师按课堂常规处理，不进入本工具生成链路，也不计入本项40分钟有效课堂作业链校验；系统已在热身、4个学练、AI分层个性化练习预留或体能课课练中自动补足。",
             repairedAt: nowISO(),
           };
         }
@@ -4502,7 +4517,7 @@ ${JSON.stringify(schemaExample, null, 2)}`;
         inClass = repaired.inClass;
         fitness = repaired.fitness;
 
-        if (teacherAfter !== null) afterClass = teacherAfter;
+        if (teacherAfter !== null) afterClass = clamp(teacherAfter, 1, 12);
         else afterClass = clamp(Number.isFinite(afterClass) && afterClass ? afterClass : 8, 5, 12);
         return {
           warmupMinutes: Math.round(warmup),
@@ -4520,7 +4535,7 @@ ${JSON.stringify(schemaExample, null, 2)}`;
         const duration = text(input.duration) || getTeachingProfile().defaultDuration || MIN_CLASS_TOTAL_MINUTES;
         const classTotal = Number(normalized.warmupMinutes || 0) + Number(normalized.commonTaskMinutes || 0) + Number(normalized.inClassMinutes || 0) + Number(normalized.classFitnessMinutes || 0);
         const base = cleanString(raw.rationale, 240).replace(/[；;。\.]+$/g, "");
-        const note = `这是完整课堂主流程时间建议：热身约${normalized.warmupMinutes}分钟，4个学练约${normalized.commonTaskMinutes}分钟，个性化练习约${normalized.inClassMinutes}分钟，体能课课练约${normalized.classFitnessMinutes}分钟，合计约${classTotal}分钟；课后作业不超过${normalized.afterClassMinutes}分钟。课堂总时长按不低于${MIN_CLASS_TOTAL_MINUTES}分钟控制，当前本课课时为${duration}分钟。`;
+        const note = `这是完整课堂主流程时间建议：热身约${normalized.warmupMinutes}分钟，4个学练约${normalized.commonTaskMinutes}分钟，个性化练习约${normalized.inClassMinutes}分钟，体能课课练约${normalized.classFitnessMinutes}分钟，合计约${classTotal}分钟；AI课后巩固作业不超过${normalized.afterClassMinutes}分钟。课堂总时长按不低于${MIN_CLASS_TOTAL_MINUTES}分钟控制，当前本课课时为${duration}分钟。`;
         const prefix = base ? `${base}。` : "";
         if (explicitTimeCount) return `${prefix}${note}教师明确填写的时间已优先保留，若合计不适配课堂时系统会提示。`;
         return `${prefix}${note}`;
@@ -5173,9 +5188,33 @@ ${guidance.length ? `\n【本次调整要求】\n${guidance.join("\n")}` : ""}`,
         return issues;
       }
 
+      function unsupportedAiOrLoadIssues(outputText, section = "system") {
+        const issues = [];
+        const unsupportedCapabilityHit = UNSUPPORTED_AI_CAPABILITY_TERMS.some((term) => outputText.includes(term) || outputText.includes(`AI${term}`));
+        if (unsupportedCapabilityHit) {
+          issues.push(makeIssue({
+            section, level: "blocker", category: "truthfulness", title: "不实AI能力表述",
+            message: "生成内容出现本工具不具备的视频或姿态自动分析能力表述。",
+            basis: "本工具只依据课堂表现记录、原因补充文本和身体状态进行归因诊断。",
+            suggestedFix: "改为“课堂表现记录与原因补充支持AI归因诊断”。",
+          }));
+        }
+        const heavyLoadPattern = new RegExp(`(?:每日|每天|每次|时长规划[:：]?\s*)?\s*${"2" + "0"}\s*[-—–~至]\s*${"3" + "0"}\s*分钟|(?:每日|每天|每次)\s*二十\s*[-—–~至]\s*三十\s*分钟`);
+        if (heavyLoadPattern.test(outputText)) {
+          issues.push(makeIssue({
+            section, level: "blocker", category: "homework-load", title: "课后负担过重",
+            message: "生成内容出现过重课后训练安排。",
+            basis: "课后巩固应短时、安全、适量，且不得超过教师设定上限。",
+            suggestedFix: "改为不超过教师设定上限的短时巩固任务，并提供低负荷或替代方案。",
+          }));
+        }
+        return issues;
+      }
+
       function analyzeGeneratedContract(label, generated, input = {}, understanding = {}, section = "task1") {
         const outputText = flattenForCheck(generated);
         return dedupeIssues([
+          ...unsupportedAiOrLoadIssues(outputText, section),
           ...resourceConditionIssues(outputText, input, section),
           ...explicitConstraintIssues(outputText, input, understanding, section),
           ...explicitSafetyIssues(outputText, section),
@@ -5235,7 +5274,7 @@ ${guidance.length ? `\n【本次调整要求】\n${guidance.join("\n")}` : ""}`,
         const count = Number(object.learningTaskCountDecision?.count || 0);
         if (count !== 4) errors.push("按学练赛一体要求，递进学练数量必须为4个，且第4个为游戏或比赛应用");
         const timeDecision = object.timeAllocationDecision || {};
-        [["warmupMinutes", 4, 8, "热身时间"], ["commonTaskMinutes", 18, 25, "4个学练任务时间"], ["inClassMinutes", 4, 8, "个性化练习时间"], ["classFitnessMinutes", MIN_CLASS_FITNESS_MINUTES, MAX_CLASS_FITNESS_MINUTES, "体能课课练时间"], ["afterClassMinutes", 1, 30, "课后作业时长"]].forEach(([key, min, max, label]) => {
+        [["warmupMinutes", 4, 8, "热身时间"], ["commonTaskMinutes", 18, 25, "4个学练任务时间"], ["inClassMinutes", 4, 8, "个性化练习时间"], ["classFitnessMinutes", MIN_CLASS_FITNESS_MINUTES, MAX_CLASS_FITNESS_MINUTES, "体能课课练时间"], ["afterClassMinutes", 1, 12, "AI课后巩固作业时长"]].forEach(([key, min, max, label]) => {
           const value = numberOrNull(timeDecision[key]);
           if (value === null || !Number.isInteger(value) || value < min || value > max) errors.push(`${label}缺失或超出范围`);
           const teacherValue = numberOrNull(input[key]);
@@ -5276,7 +5315,7 @@ ${guidance.length ? `\n【本次调整要求】\n${guidance.join("\n")}` : ""}`,
 10. 必须把动作体系拆成关键技术点和覆盖矩阵，明确哪些是本课核心、体验、后续或需教师核对。
 11. 全部递进学练后续必须围绕已确认的核心内容和重难点组合；多个核心动作形态需要独立体验、对比或单项学练，不能只在最终综合任务中顺带出现。
 12. 学习目标、重点难点和常见问题必须是AI对教师意图的规范化和专业校准，不能照抄空泛模板。
-13. 明确渐进作业链：课前只生成统一学练；个性化练习和课后作业只能在获得真实学生证据后逐步生成。
+13. 明确渐进作业链：课前只生成统一学练；个性化练习和AI课后巩固作业只能在获得真实学生证据后逐步生成。
 14. 不得提前生成后续作业具体内容，不得把统一学练简化为一次检测挑战。
 
 【长期教学设置】
@@ -5488,12 +5527,12 @@ ${guidance.length ? `\n【本次调整要求】\n${guidance.join("\n")}` : ""}
           likelyDifferences: cleanString(plan.likelyDifferences, 500) || "学生在动作稳定性、理解速度和练习信心上可能存在差异，任务应允许分层完成。",
           commonStudentProblems: normalizeTextList(plan.commonStudentProblems, 200, 6),
           learningChainRationale: cleanString(plan.learningChainRationale, 700) || "先理解和体验核心内容，再稳定练习，最后在简单情境中运用。",
-          progressiveTaskChain: "课前生成统一热身、统一学练的4个学练任务和8—10分钟统一体能课课练；依据学生统一学练的真实表现生成个性化练习；再依据个性化练习变化和统一体能课课练参与情况生成课后作业。",
+          progressiveTaskChain: "课前生成统一热身、统一学练的4个学练任务和8—10分钟统一体能课课练；依据学生统一学练的真实表现生成AI分层个性化练习；再依据个性化练习变化和统一体能课课练参与情况生成AI课后巩固作业。",
           evidencePrinciples: cleanString(plan.evidencePrinciples, 650) || "只记录少量、可观察、能支持后续个性化判断的课堂表现。",
           task2GenerationLogic: "个性化练习只针对学生当前最优先的一个问题生成，并由教师审核。",
-          afterClassGenerationLogic: "课后作业依据统一学练、个性化练习及完成变化生成，并由教师审核。",
+          afterClassGenerationLogic: "AI课后巩固作业依据统一学练、个性化练习及完成变化生成，并由教师审核。",
           safetyBoundary: cleanString(plan.safetyBoundary, 650) || "教师结合本班、场地和器材实际完成最终安全审核。",
-          negativeConstraints: mergeUniqueTextList(normalizeTextList(plan.notRecommended, 180, 6), ["不得偏离教师填写的授课内容、重点和目标", "不得提前生成个性化练习和课后作业具体内容"], 8),
+          negativeConstraints: mergeUniqueTextList(normalizeTextList(plan.notRecommended, 180, 6), ["不得偏离教师填写的授课内容、重点和目标", "不得提前生成AI分层个性化练习和AI课后巩固作业具体内容"], 8),
           contentTags: normalizeTextList(plan.contentTags, 50, 8).length ? normalizeTextList(plan.contentTags, 50, 8) : [input.lessonContent],
           abilityTags: normalizeTextList(plan.abilityTags, 50, 8).length ? normalizeTextList(plan.abilityTags, 50, 8) : [input.keyFocus],
         };
@@ -5524,7 +5563,7 @@ ${guidance.length ? `\n【本次调整要求】\n${guidance.join("\n")}` : ""}
         const count = Number(understanding.learningTaskCountDecision?.count || 0);
         if (count !== 4) errors.push("按学练赛一体要求，递进学练数量必须为4个，且第4个为游戏或比赛应用");
         const decision = understanding.timeAllocationDecision || {};
-        [["warmupMinutes", 4, 8, "热身时间"], ["commonTaskMinutes", 18, 25, "4个学练任务时间"], ["inClassMinutes", 4, 8, "个性化练习时间"], ["classFitnessMinutes", MIN_CLASS_FITNESS_MINUTES, MAX_CLASS_FITNESS_MINUTES, "体能课课练时间"], ["afterClassMinutes", 1, 30, "课后作业时长"]].forEach(([key, min, max, label]) => {
+        [["warmupMinutes", 4, 8, "热身时间"], ["commonTaskMinutes", 18, 25, "4个学练任务时间"], ["inClassMinutes", 4, 8, "个性化练习时间"], ["classFitnessMinutes", MIN_CLASS_FITNESS_MINUTES, MAX_CLASS_FITNESS_MINUTES, "体能课课练时间"], ["afterClassMinutes", 1, 12, "AI课后巩固作业时长"]].forEach(([key, min, max, label]) => {
           const value = numberOrNull(decision[key]);
           if (value === null || !Number.isInteger(value) || value < min || value > max) errors.push(`${label}需要给出${min}—${max}分钟内的整数`);
           const teacherValue = numberOrNull(input[key]);
@@ -5935,7 +5974,7 @@ ${JSON.stringify(contract, null, 2)}`;
         else if (sumMinutes > available) warnings.push(`4个学练总时长比建议时间多${sumMinutes - available}分钟，教师可现场压缩轮次`);
         if (Math.abs(Number(task.totalEstimatedMinutes || 0) - sumMinutes) > 1) warnings.push("统一学练总时间与各学练时间之和不一致");
         const combined = `${task.title}${task.overallGoal}${task.progressionLogic}${task.learningTasks.map((item) => `${item.title}${item.goal}${arr(item.technicalPoints).join("")}${item.difficultyFocus}${item.designRationale}${arr(item.instructions).join("")}`).join("")}`;
-        if (/个性化练习|课后作业/.test(combined)) errors.push("统一学练提前生成了后续作业内容");
+        if (/个性化练习|AI课后巩固作业/.test(combined)) errors.push("统一学练提前生成了后续作业内容");
         errors.push(...contractBlockingMessages("统一学练", task, input, understanding, "task1"));
         return validation(errors.length === 0, errors, warnings);
       }
@@ -6554,7 +6593,7 @@ ${JSON.stringify(contract, null, 2)}`;
           instructions: ["教师统一说明队形、口令和安全要求", "全班完成2个站立动作模块，队形尽量不变", "学生按常规、降低负荷或暂停观察三档参与"],
           dose: `约${estimated}分钟，含组织说明、2轮有效练习、短间歇和整理反馈。`,
           estimatedMinutes: estimated,
-          organization: "全班统一组织，按教师指定区域完成；默认不新增器材，不依赖同伴配合。",
+          organization: "全班统一组织，按教师指定区域完成；默认不新增器材。合作形式仅限教师统一组织下的同步练习、观察和提醒。",
           intensity: "中低或中等，教师按课堂负荷现场控制。",
           standardTier: "按教师统一口令完成，动作质量优先于速度和数量。",
           reducedTier: "降低动作幅度、放慢节奏、缩短时间或减少轮次，随时可停止。",
@@ -6580,7 +6619,7 @@ ${JSON.stringify(contract, null, 2)}`;
             "身体状态异常者降低负荷或暂停观察"
           ],
           dose: fallback.dose,
-          organization: "全班统一站立组织，按教师指定区域完成；默认不新增器材，不依赖同伴配合。",
+          organization: "全班统一站立组织，按教师指定区域完成；默认不新增器材。合作形式仅限教师统一组织下的同步练习、观察和提醒。",
           standardTier: "按教师统一口令完成站立练习，动作质量优先于速度和数量。",
           reducedTier: "降低动作幅度、放慢节奏、缩短时间或减少轮次，随时可停止。",
           omittedTier: "在安全区休息观察，不参与运动；必要时向教师反馈身体状态。",
@@ -6629,7 +6668,13 @@ ${JSON.stringify(contract, null, 2)}`;
         if (arr(need.excludedNeeds).length < 1) errors.push("统一体能课课练必须说明至少1项看似相关但本课不优先发展的能力或情境，避免项目联想拼盘");
         if (arr(need.linkedTechnicalPoints).length < 1 && arr(understanding?.technicalKeyPoints).length) warnings.push("体能需求分析未明确关联本课技术重点或难点");
         const blocks = arr(classFitness.exerciseBlocks);
-        if (blocks.length < 2 || blocks.length > 3) errors.push("小学体能课课练动作模块应控制为2—3个，避免动作拼盘或组织过复杂");
+        const textValue = flattenForCheck(classFitness);
+        const cooperativeFitness = /(双人|两人|小组|同伴|搭档|互相|合作|结对)/.test(textValue);
+        const maxBlocks = cooperativeFitness ? 4 : 3;
+        if (blocks.length < 2 || blocks.length > maxBlocks) errors.push(cooperativeFitness ? "教师统一组织下的合作型体能课课练动作模块应控制为2—4个，避免动作拼盘或组织过复杂" : "小学体能课课练动作模块应控制为2—3个，避免动作拼盘或组织过复杂");
+        if (cooperativeFitness && !/(教师|统一|全班)/.test(textValue)) errors.push("合作型体能课课练必须明确由教师统一组织，不能变成学生自行结伴任务");
+        if (cooperativeFitness && !/(间距|安全距离|降低负荷|暂停观察|减量)/.test(textValue)) warnings.push("合作型体能课课练建议明确安全间距、降低负荷和暂停观察方式");
+        if (cooperativeFitness && containsAffirmedPattern(textValue, /拉拽|阻挡|抢断|推搡|身体冲撞|强行辅助|按压颈部|颈部按压|辅助拉伸|制造障碍/)) errors.push("合作型体能课课练不得依赖拉拽、阻挡、抢断、推搡、身体冲撞、强辅助拉伸或人为制造危险");
         const validLearningTaskIds = new Set(arr(task1?.learningTasks).map((item) => item.learningTaskId));
         blocks.forEach((block, index) => {
           const name = `体能动作模块${index + 1}`;
@@ -6648,7 +6693,6 @@ ${JSON.stringify(contract, null, 2)}`;
         if (!classFitness.standardTier || !classFitness.reducedTier || !classFitness.omittedTier) errors.push("统一体能课课练必须包含常规、降低负荷和暂停观察三档参与方式");
         if (!classFitness.safetyNote) errors.push("统一体能课课练缺少安全提醒");
         if (!classFitness.noEquipmentAlternative) warnings.push("统一体能课课练未提供无新增器材替代方式");
-        const textValue = flattenForCheck(classFitness);
         if (!/(统一|全班|教师)/.test(textValue)) errors.push("体能课课练必须明确由教师统一组织，不是学生个人专属生成");
         if (/该学生|本学生|个人专属体能|每人不同体能|根据学生表现生成不同体能/.test(textValue)) errors.push("体能课课练不得写成学生个人专属体能动作");
         if (/高强度|极限|力竭|全速冲刺/.test(textValue)) warnings.push("统一体能课课练强度可能偏高，教师需结合课堂负荷确认");
@@ -7027,14 +7071,14 @@ ${JSON.stringify(contract, null, 2)}`;
         return (await generateJsonReliable({
           stage: "task1_design",
           system: BASE_SYSTEM,
-          userPrompt: `${genericPromptContext(input, understanding)}\n\n请一次生成“统一热身 + 统一学练：4个学练任务 + 对应课堂表现记录 + 统一体能课课练”，不要生成个性化练习或课后作业。\n\n要求：\n1. 必须生成4个递进学练，体现学练赛一体：学练一用于学习体验或动作感知，学练二用于巩固练习，学练三用于组合练习或规则准备，学练四必须是简化比赛、游戏应用或展示赛；不得把学练四写成普通重复练习。\n2. 每个本课核心教材内容或动作分型必须先有独立体验、对比或单项学练，不能只在最后任务中顺带出现。\n3. 每个学练至少明确学什么、怎么练和练多少；动作提示、观察重点和特殊安全要求尽量简短。用coveredActionFormIds、coveredPointIds标出核心覆盖关系。整体完成标准和共同安全提醒可从各任务中提炼，不要为了凑固定条数重复表述。\n4. 全部4个学练总时间控制在${timeBudget.commonTaskMinutes}分钟左右。不得把教师未提供的学生基础、实际器材数量或场地状态写成已知事实；需要说明基础时用“按常规起点设计/如本班基础不足则先复习”，需要辅助条件时给出可伸缩或无新增器材替代。\n5. 同一JSON中生成3—5项低负担课堂表现记录。每项必须关联一个或多个学练任务；全部学练均有证据覆盖。所有记录必须是三档或四档选择项，便于学生自评、同伴观察或教师抽查；不仅 inputType 不能是 number，字段名称、定义、帮助说明、解释规则和选项中也不得出现成功率、次数、米数、百分比、计数、正字、连续几次或几米等统计口径。总填写时间不超过90秒。\n6. 动作技术术语必须直接继承本课理解中的动作分型和技术点，同一动作在各任务中不得改用相互矛盾的触球部位、反弹高度、重心或落点表述；教材细节未核实时使用相对、可核对的课堂语言，不自行新增精确阈值。
+          userPrompt: `${genericPromptContext(input, understanding)}\n\n请一次生成“统一热身 + 统一学练：4个学练任务 + 对应课堂表现记录 + 统一体能课课练”，不要生成AI分层个性化练习或AI课后巩固作业。\n\n要求：\n1. 必须生成4个递进学练，体现学练赛一体：学练一用于学习体验或动作感知，学练二用于巩固练习，学练三用于组合练习或规则准备，学练四必须是简化比赛、游戏应用或展示赛；不得把学练四写成普通重复练习。\n2. 每个本课核心教材内容或动作分型必须先有独立体验、对比或单项学练，不能只在最后任务中顺带出现。\n3. 每个学练至少明确学什么、怎么练和练多少；动作提示、观察重点和特殊安全要求尽量简短。用coveredActionFormIds、coveredPointIds标出核心覆盖关系。整体完成标准和共同安全提醒可从各任务中提炼，不要为了凑固定条数重复表述。\n4. 全部4个学练总时间控制在${timeBudget.commonTaskMinutes}分钟左右。不得把教师未提供的学生基础、实际器材数量或场地状态写成已知事实；需要说明基础时用“按常规起点设计/如本班基础不足则先复习”，需要辅助条件时给出可伸缩或无新增器材替代。\n5. 同一JSON中生成3—5项低负担课堂表现记录。每项必须关联一个或多个学练任务；全部学练均有证据覆盖。所有记录必须是三档或四档选择项，便于学生自评、同伴观察或教师抽查；不仅 inputType 不能是 number，字段名称、定义、帮助说明、解释规则和选项中也不得出现成功率、次数、米数、百分比、计数、正字、连续几次或几米等统计口径。总填写时间不超过90秒。\n6. 动作技术术语必须直接继承本课理解中的动作分型和技术点，同一动作在各任务中不得改用相互矛盾的触球部位、反弹高度、重心或落点表述；教材细节未核实时使用相对、可核对的课堂语言，不自行新增精确阈值。
 7. 完成标准应适合真实课堂观察，避免“全程、每次、1秒内、零失误”等过严绝对表述，除非教师明确要求。
 8. 同一JSON还必须生成1个统一热身classWarmup和1个统一体能课课练classFitness。热身在课前固定，全班统一完成，建议${timeBudget.warmupMinutes || DEFAULT_WARMUP_MINUTES}分钟；classWarmup必须包含segments和timeStructure，至少3段：一般活动与身体唤醒、关节活动与动态拉伸、专项准备；每段写清热身方式、具体怎么做、durationMinutes、组织方式和动作提示，不能只写总练习量。体能课课练在课前确定，由教师统一组织，全班同一套内容，必须为${timeBudget.classFitnessMinutes || MIN_CLASS_FITNESS_MINUTES}分钟左右且在8—10分钟内；体能必须包含常规参与、降低负荷、暂停观察三档，不得成为每个学生单独生成的体能动作。
 9. classFitness必须先输出fitnessNeedAnalysis：只选1个主身体能力、最多1个辅助身体能力，列出linkedTechnicalPoints或linkedLearningTaskIds，并写出excludedNeeds，说明本课不采用哪些看似相关但不服务本课的体能方向。不得因运动项目相同引入本课未涉及的专项情境、技术动作或比赛任务。
-10. classFitness必须包含exerciseBlocks，动作块数量控制在2—3个，每个动作块都要说明serviceTarget、linkedLearningTaskIds或linkedTechnicalPoints、reason、instructions和durationPlan。默认不新增器材，不依赖固定同伴，不要求同伴、家长或其他学生配合、喊信号、设障碍或观察。未明确室内、垫子、柔软地面或地面安全条件时，不生成俯撑、平板支撑、仰卧、俯卧、跪地、跪撑、跪姿支撑、趴地、仰卧起坐、俯卧撑等地面支撑类动作；降低负荷版本也不得使用跪姿支撑或地面支撑。
+10. classFitness必须包含exerciseBlocks，动作块数量默认控制在2—3个，每个动作块都要说明serviceTarget、linkedLearningTaskIds或linkedTechnicalPoints、reason、instructions和durationPlan。默认不新增器材；若教师输入或本课统一组织条件明确支持双人、小组或合作形式，可采用同伴同步练习、观察和提醒，但不得要求同伴、家长或其他学生帮助设个人障碍、喊个人专属信号、拉拽、阻挡、抢断、身体辅助或制造危险。未明确室内、垫子、柔软地面或地面安全条件时，不生成俯撑、平板支撑、仰卧、俯卧、跪地、跪撑、跪姿支撑、趴地、仰卧起坐、俯卧撑等地面支撑类动作；降低负荷版本也不得使用跪姿支撑或地面支撑。
 11. classFitness必须包含timeStructure，区分organizationMinutes、effectivePracticeMinutes、restOrTransitionMinutes、feedbackMinutes和totalMinutes。totalMinutes为8—10分钟，effectivePracticeMinutes不少于totalMinutes的一半。统一热身要服务本课动作准备和安全进入课堂，统一体能课课练要服务本课身体能力需求，不能把4个学练任务简单重复一遍；二者都要像真实小学体育课环节，并提供无新增器材替代。
 12. 热身 + 4个学练 + 个性化练习 + 体能课课练的课堂主流程合计不得低于40分钟；个性化练习时间按本课理解中的${timeBudget.inClassMinutes}分钟预留。
-13. 不得生成个性化练习、课后作业、长篇资源库。`,
+13. 不得生成AI分层个性化练习、AI课后巩固作业、长篇资源库。`,
           schemaExample: EXAMPLE_TASK1_BUNDLE,
           normalize: (value) => completeTask1BundleForClassroom(normalizeTask1Bundle(value), input, understanding),
           validate: (value) => validateTask1Bundle(value, input, understanding),
@@ -7052,7 +7096,7 @@ ${JSON.stringify(contract, null, 2)}`;
           await generateJsonReliable({
             stage: "task1_design",
             system: BASE_SYSTEM,
-            userPrompt: `${genericPromptContext(input, understanding)}\n\n请只生成本课“统一学练”。统一学练必须生成4个递进学练任务，形成一节体育课中完整、足量且真实可实施的全班学练。生成时按“学习体验 → 巩固练习 → 组合练习或规则准备 → 游戏或比赛应用”组织，学练四必须是简化比赛、游戏应用或展示赛，而不是普通重复练习。每个mustCover动作形态必须有独立体验、对比或单项学练，不能只在最后综合任务中顺带出现；每个learningTask必须用coveredActionFormIds和coveredPointIds明确标注覆盖关系，不能只靠模糊文字。各学练任务必须可转写成教师课堂执行卡：每个任务都要明确“学什么、怎么练、看什么、怎么记”，语言短、步骤少、组织清楚。总时长控制在本课已确认的${timeBudget.commonTaskMinutes}分钟左右；该时间可能来自教师明确设置，也可能来自AI在理解阶段提出并经教师确认的分配。此时不得生成、预设或列举个性化练习、课后作业，也不得生成任何后续作业资源库。不得默认使用教师未提供的器材或场地条件；确需建议辅助器材时必须标注为可选并提供无新增器材替代方案。学练步骤不得与教材动作依据、课时适配和安全边界相矛盾。`,
+            userPrompt: `${genericPromptContext(input, understanding)}\n\n请只生成本课“统一学练”。统一学练必须生成4个递进学练任务，形成一节体育课中完整、足量且真实可实施的全班学练。生成时按“学习体验 → 巩固练习 → 组合练习或规则准备 → 游戏或比赛应用”组织，学练四必须是简化比赛、游戏应用或展示赛，而不是普通重复练习。每个mustCover动作形态必须有独立体验、对比或单项学练，不能只在最后综合任务中顺带出现；每个learningTask必须用coveredActionFormIds和coveredPointIds明确标注覆盖关系，不能只靠模糊文字。各学练任务必须可转写成教师课堂执行卡：每个任务都要明确“学什么、怎么练、看什么、怎么记”，语言短、步骤少、组织清楚。总时长控制在本课已确认的${timeBudget.commonTaskMinutes}分钟左右；该时间可能来自教师明确设置，也可能来自AI在理解阶段提出并经教师确认的分配。此时不得生成、预设或列举个性化练习、AI课后巩固作业，也不得生成任何后续作业资源库。不得默认使用教师未提供的器材或场地条件；确需建议辅助器材时必须标注为可选并提供无新增器材替代方案。学练步骤不得与教材动作依据、课时适配和安全边界相矛盾。`,
             schemaExample: EXAMPLE_TASK1,
             normalize: (value) => completeTask1BundleForClassroom({ task1: normalizeTask1(value), evidenceModel: { fields: [] }, classWarmup: defaultClassWarmup(input, understanding), classFitness: defaultClassFitness(input, understanding) }, input, understanding).task1,
             validate: (value) => validateTask1(value, input, understanding),
@@ -7074,7 +7118,7 @@ ${JSON.stringify(contract, null, 2)}`;
           await generateJsonReliable({
             stage: "task1_evidence",
             system: BASE_SYSTEM,
-            userPrompt: `${genericPromptContext(input, understanding)}\n\n【已确认的统一学练】\n${JSON.stringify(task1, null, 2)}\n\n请只设计学生完成统一学练的4个递进学练任务后需要提交的表现记录字段。每个字段必须通过linkedLearningTaskIds明确关联一个或多个学练任务；全部递进学练任务都必须至少有一项对应证据。字段应能真实反映学生从认识体验、巩固练习到综合应用的表现差异，并足以支持AI生成我的个性化练习。不得预设个性化练习内容，不得生成个性化练习变化字段。表现记录必须低负担且语义选项化：只能使用三档或四档选择项，如“能稳定做到/基本能做到/暂不能做到”“明显改善/有所改善/暂未改善”“合适/偏高/偏低”“连贯/基本连贯/暂不连贯”；不得使用数字输入、次数、米数、百分比、计算结果或长文本；字段名称、定义、帮助说明、解释规则和选项中也不得出现“成功率、几次中成功几次、掉球次数、完成次数、连续距离、计数、正字”等统计痕迹；总填写时间适合体育课堂。`,
+            userPrompt: `${genericPromptContext(input, understanding)}\n\n【已确认的统一学练】\n${JSON.stringify(task1, null, 2)}\n\n请只设计学生完成统一学练的4个递进学练任务后需要提交的表现记录字段。每个字段必须通过linkedLearningTaskIds明确关联一个或多个学练任务；全部递进学练任务都必须至少有一项对应证据。字段应能真实反映学生从认识体验、巩固练习到综合应用的表现差异，并足以支持AI生成我的AI分层个性化练习。不得预设个性化练习内容，不得生成AI分层个性化练习变化字段。表现记录必须低负担且语义选项化：只能使用三档或四档选择项，如“能稳定做到/基本能做到/暂不能做到”“明显改善/有所改善/暂未改善”“合适/偏高/偏低”“连贯/基本连贯/暂不连贯”；不得使用数字输入、次数、米数、百分比、计算结果或长文本；字段名称、定义、帮助说明、解释规则和选项中也不得出现“成功率、几次中成功几次、掉球次数、完成次数、连续距离、计数、正字”等统计痕迹；总填写时间适合体育课堂。`,
             schemaExample: EXAMPLE_TASK1_EVIDENCE,
             normalize: (value) => completeTask1BundleForClassroom({ task1, evidenceModel: normalizeTask1Evidence(value), classWarmup: defaultClassWarmup(input, understanding), classFitness: defaultClassFitness(input, understanding) }, input, understanding).evidenceModel,
             validate: (value) => validateTask1Evidence(value, task1, understanding, input),
@@ -7110,7 +7154,7 @@ ${JSON.stringify(contract, null, 2)}`;
           await generateJsonReliable({
             stage: "class_fitness_design",
             system: BASE_SYSTEM,
-            userPrompt: `${genericPromptContext(input, understanding)}\n\n【已生成的4个学练任务】\n${JSON.stringify(task1, null, 2)}\n\n请只生成本课统一体能课课练classFitness。要求：1. 这是课前确定、课堂最后由教师统一组织的8—10分钟体能课课练，建议约${timeBudget.classFitnessMinutes || MIN_CLASS_FITNESS_MINUTES}分钟，不是学生个人专属体能。2. 必须先完成fitnessNeedAnalysis：只选1个主身体能力、最多1个辅助能力，关联本课技术点或学练任务，列出excludedNeeds，防止按运动项目关键词做体能拼盘。3. exerciseBlocks控制为2—3个，每个模块说明服务本课哪里；默认不新增器材，不依赖同伴配合。4. 未提供室内、垫子、软质地面等条件时，只能使用站立、原地或低风险移动动作，禁止俯撑、平板支撑、仰卧、俯卧、跪地、跪撑、跪姿支撑、趴地、仰卧起坐、俯卧撑等地面支撑动作；降低负荷方案也不得使用跪姿或地面支撑。5. timeStructure必须真实可执行，有效练习时间不少于总时长一半。`,
+            userPrompt: `${genericPromptContext(input, understanding)}\n\n【已生成的4个学练任务】\n${JSON.stringify(task1, null, 2)}\n\n请只生成本课统一体能课课练classFitness。要求：1. 这是课前确定、课堂最后由教师统一组织的8—10分钟体能课课练，建议约${timeBudget.classFitnessMinutes || MIN_CLASS_FITNESS_MINUTES}分钟，不是学生个人专属体能。2. 必须先完成fitnessNeedAnalysis：只选1个主身体能力、最多1个辅助能力，关联本课技术点或学练任务，列出excludedNeeds，防止按运动项目关键词做体能拼盘。3. exerciseBlocks默认控制为2—3个，每个模块说明服务本课哪里；默认不新增器材。若教师明确采用双人、小组或合作统一组织，可采用同伴同步练习、观察和提醒，但不得依赖同伴危险配合。4. 未提供室内、垫子、软质地面等条件时，只能使用站立、原地或低风险移动动作，禁止俯撑、平板支撑、仰卧、俯卧、跪地、跪撑、跪姿支撑、趴地、仰卧起坐、俯卧撑等地面支撑动作；降低负荷方案也不得使用跪姿或地面支撑。5. timeStructure必须真实可执行，有效练习时间不少于总时长一半。`,
             schemaExample: EXAMPLE_CLASS_FITNESS,
             normalize: (value) => completeClassFitnessForClassroom(normalizeClassFitness(value), input, understanding),
             validate: (value) => validateClassFitness(value, input, understanding, task1),
@@ -7187,7 +7231,7 @@ ${JSON.stringify(contract, null, 2)}`;
           },
           contentTags: understanding.contentTags,
           abilityTags: understanding.abilityTags,
-          promptVersion: "v3.0-time-budget-fallback",
+          promptVersion: "v3.1-aligned-terms-and-boundaries",
           generationTrace: clone(runtime.processTrace),
         };
       }
@@ -7242,7 +7286,7 @@ ${JSON.stringify(contract, null, 2)}`;
         const warmupReport = validateClassWarmup(task1Package.classWarmup || defaultClassWarmup(packageData.teacherInput, packageData.understanding), packageData.teacherInput, packageData.understanding);
         const fitnessReport = validateClassFitness(task1Package.classFitness || defaultClassFitness(packageData.teacherInput, packageData.understanding), packageData.teacherInput, packageData.understanding, task1Package.task1);
         const timing = fullClassTiming(packageData.teacherInput, packageData.understanding, task1Package.task1, task1Package.classWarmup || defaultClassWarmup(packageData.teacherInput, packageData.understanding), task1Package.classFitness || defaultClassFitness(packageData.teacherInput, packageData.understanding));
-        if (timing.classTotal < MIN_CLASS_TOTAL_MINUTES) issues.push(makeIssue({ section: "system", level: "blocker", category: "time-budget", title: "课堂主流程时间不足", message: `系统已尝试自动补足时间，但热身、4个学练、个性化练习和体能课课练合计仍为${timing.classTotal}分钟，低于${MIN_CLASS_TOTAL_MINUTES}分钟要求。`, basis: "课堂主流程必须覆盖完整一课时；放松练习、结束整理和课后作业说明不计入该40分钟口径。", suggestedFix: "请增加热身、学练、个性化练习预留或体能课课练时间。" }));
+        if (timing.classTotal < MIN_CLASS_TOTAL_MINUTES) issues.push(makeIssue({ section: "system", level: "blocker", category: "time-budget", title: "课堂主流程时间不足", message: `系统已尝试自动补足时间，但热身、4个学练、个性化练习和体能课课练合计仍为${timing.classTotal}分钟，低于${MIN_CLASS_TOTAL_MINUTES}分钟要求。`, basis: "课堂主流程必须覆盖完整一课时；放松练习和结束整理由教师按课堂常规处理，不进入本工具生成链路，也不计入该40分钟口径。", suggestedFix: "请增加热身、学练、个性化练习预留或体能课课练时间。" }));
         arr(taskReport.errors).forEach((message) => issues.push(classifyCoreIssue(message)));
         arr(evidenceReport.errors).forEach((message) => issues.push(classifyCoreIssue(message)));
         arr(warmupReport.errors).forEach((message) => issues.push(makeIssue({ section: "classWarmup", level: "blocker", category: "warmup", title: "统一热身需要修复", message, basis: "热身属于课堂固定结构，必须统一、安全、可执行。", suggestedFix: "重新生成或调整统一热身。" })));
@@ -7723,7 +7767,7 @@ ${JSON.stringify(contract, null, 2)}`;
             <div class="status-tile"><b>教师状态</b>${esc(isPublished ? "已发布" : auditLabel)}</div>
             <div class="status-tile"><b>后续生成</b>取得真实表现后再进行</div>
           </div>
-          ${task1Package.timeAutoRepair ? `<div class="notice ok" style="margin-top:12px"><b>时间已自动补足：</b>${esc(arr(task1Package.timeAutoRepair.repairs).join("；"))}。放松练习、结束整理和课后作业说明不计入40分钟有效课堂作业链校验。</div>` : ""}
+          ${task1Package.timeAutoRepair ? `<div class="notice ok" style="margin-top:12px"><b>时间已自动补足：</b>${esc(arr(task1Package.timeAutoRepair.repairs).join("；"))}。放松练习和结束整理由教师按课堂常规处理，不进入本工具生成链路，也不计入40分钟有效课堂作业链校验。</div>` : ""}
           ${auditPanel}
           <div class="block"><div class="block-title"><h3>教师上课执行卡</h3><div class="actions" style="margin-top:0"><button class="btn btn-small btn-light" id="copyTask1Btn">复制上课执行卡</button></div></div>${renderClassroomExecutionCard(task1, evidence, classWarmup, classFitness, packageData.teacherInput, packageData.understanding)}</div>
           <div class="block"><div class="block-title"><h3>课堂表现记录</h3></div><p class="small muted">${esc(evidence.collectionMethod)}；预计填写${esc(evidence.estimatedInputSeconds)}秒。</p>${renderQuickEvidenceTable(evidence)}</div>
@@ -7817,7 +7861,7 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
           renderDraftList();
           renderCurrentDraftNotice();
           renderStage1Package(toSave);
-          toast("本课统一热身、统一学练和8—10分钟统一体能课课练已发布。学生完成4个学练任务并记录表现后可进入第二页生成个性化练习。", "ok");
+          toast("本课统一热身、统一学练和8—10分钟统一体能课课练已发布。学生完成4个学练任务并记录表现后可进入第二页生成AI分层个性化练习。", "ok");
         } catch (error) {
           toastError(error, error.message || "当前操作未完成。", "warn", "页面操作");
         }
@@ -8157,7 +8201,7 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
           value.task2.generationStatus = "failed";
           value.task2.generationError = value.task2.generationError || {
             stage: "task2_generate",
-            message: "页面刷新或会话中断，个性化练习未继续生成；学练表现记录已保留。",
+            message: "页面刷新或会话中断，AI分层个性化练习未继续生成；学练表现记录已保留。",
             details: [],
             at: nowISO(),
           };
@@ -8167,7 +8211,7 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
           value.task3.generationStatus = "failed";
           value.task3.generationError = value.task3.generationError || {
             stage: "task3_generate",
-            message: "页面刷新或会话中断，课后作业未继续生成；完成记录已保留。",
+            message: "页面刷新或会话中断，AI课后巩固作业未继续生成；完成记录已保留。",
             details: [],
             at: nowISO(),
           };
@@ -8268,7 +8312,7 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
         const type = route.riskLevel === "stop" ? "danger" : route.riskLevel === "caution" ? "warn" : "ok";
         const action = stage === "task2"
           ? route.mode === "teacher_decision" ? "本次不生成普通练习，先由教师处理。" : `将生成“${routeLabel(route)}”类型的个性化练习。`
-          : route.mode === "teacher_decision" ? "本次不生成运动型课后练习，先由教师处理。" : `将生成“${routeLabel(route)}”类型的课后作业。`;
+          : route.mode === "teacher_decision" ? "本次不生成运动型课后练习，先由教师处理。" : `将生成“${routeLabel(route)}”类型的AI课后巩固作业。`;
         return `<div class="notice ${type}"><b>系统分流：${esc(routeLabel(route))}</b><br>${esc(route.reason || "")} ${esc(action)}</div>`;
       }
 
@@ -8698,7 +8742,7 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
       }
 
       // =========================
-      // 第二阶段：统一学练表现 -> 安全分流 -> 我的个性化练习 + 统一体能课课练
+      // 第二阶段：统一学练表现 -> 安全分流 -> 我的AI分层个性化练习 + 统一体能课课练
       // =========================
       function normalizeTask2EvidenceField(field, index) {
         const normalized = normalizeEvidenceField(field, index, "t2");
@@ -9085,7 +9129,7 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
         const result = await generateJsonReliable({
           stage: "task2_generate",
           system: BASE_SYSTEM,
-          userPrompt: `【本课已发布统一学练】\n${JSON.stringify(lessonTask1Context(lesson), null, 2)}\n\n【本地已确定的生成路线】\n${JSON.stringify(plan, null, 2)}\n\n【学生标识】\n学生ID：${record.studentId}\n课次ID：${lesson.lessonId}\n\n【统一学练动作表现证据】\n${JSON.stringify(task1PerformanceFields(record), null, 2)}\n\n【健康与安全信号】\n${JSON.stringify(task1HealthSignal(record), null, 2)}\n\n【教师/学生补充的问题原因；可为空，不是成绩】\n${problemReasonNote || "未填写"}\n\n【系统建议难度层】\n${JSON.stringify(suggestedDifficultyTier, null, 2)}\n\n【相关历史摘要，仅作次要参考】\n${JSON.stringify(history, null, 2)}\n\n现在生成该学生的个性化练习。本阶段个性化练习用时不得超过${timeBudget.inClassMinutes}分钟；正常练习和低负荷练习均要保证约4—6分钟的独立练习与自我检查时间，若本阶段预算为5分钟应优先按5分钟设计，不得生成3分钟以内的草率练习。统一体能课课练由教师在课堂最后统一组织，不计入个性化练习个性化生成预算，AI不得为该学生另创一套个人体能动作。先逐项概括已发布学练表现，再结合“问题原因补充”判断同样表现背后的原因，只确定一个优先问题，最多兼顾一个辅助问题。必须输出difficultyTier，tier只能是base_repair、application_reinforce、extension_challenge之一，并给出中文label与reason：基础修复=核心动作还不稳定，先降低复杂度修正；应用强化=基本能完成，在接近课堂应用的情境中稳定；拓展挑战=表现较稳定，在不新增高风险内容和新技术的前提下提高观察、节奏或情境要求。低负荷、观察或教师处理路线只能选择基础修复。${modeInstruction} 个性化练习必须以学生本人在个人练习区独立完成为主，可写教师巡视提示，但不得要求同伴、家长、其他学生帮助设障碍、喊信号、观察或配合。fitnessModule字段只允许表达“统一体能课课练参与档位”，必须写明它由教师统一组织、个人只记录参与情况和负荷感受；不得写成个人专属体能训练方案。只设计个性化练习自身的1—2项低负担变化记录，所有记录字段必须是select或scale选项，选项应便于学生自评或教师观察，如“明显改善/有所改善/暂未改善”，不得使用数字、米数、次数、百分比或长文本；统一体能课课练参与情况和身体反应由系统固定字段单独采集，不得混入AI证据字段。usedEvidence中的fieldId必须来自真实记录，label和value由系统按fieldId回填，不要改写、追加单位或重新计算；如果证据值显示为“非标准输入”，只能作为待教师核对的背景，不能强行解释为某个标准等级。不得改变本地已确定的路线。${teacherInstruction ? `\n\n教师补充要求：${teacherInstruction}` : ""}`,
+          userPrompt: `【本课已发布统一学练】\n${JSON.stringify(lessonTask1Context(lesson), null, 2)}\n\n【本地已确定的生成路线】\n${JSON.stringify(plan, null, 2)}\n\n【学生标识】\n学生ID：${record.studentId}\n课次ID：${lesson.lessonId}\n\n【统一学练动作表现证据】\n${JSON.stringify(task1PerformanceFields(record), null, 2)}\n\n【健康与安全信号】\n${JSON.stringify(task1HealthSignal(record), null, 2)}\n\n【教师/学生补充的问题原因；可为空，不是成绩】\n${problemReasonNote || "未填写"}\n\n【系统建议难度层】\n${JSON.stringify(suggestedDifficultyTier, null, 2)}\n\n【相关历史摘要，仅作次要参考】\n${JSON.stringify(history, null, 2)}\n\n现在生成该学生的AI分层个性化练习。本阶段个性化练习用时不得超过${timeBudget.inClassMinutes}分钟；正常练习和低负荷练习均要保证约4—6分钟的独立练习与自我检查时间，若本阶段预算为5分钟应优先按5分钟设计，不得生成3分钟以内的草率练习。统一体能课课练由教师在课堂最后统一组织，不计入AI分层个性化练习生成预算，AI不得为该学生另创一套个人体能动作。先逐项概括已发布学练表现，再结合“问题原因补充”判断同样表现背后的原因，只确定一个优先问题，最多兼顾一个辅助问题。必须输出difficultyTier，tier只能是base_repair、application_reinforce、extension_challenge之一，并给出中文label与reason：基础修复=核心动作还不稳定，先降低复杂度修正；应用强化=基本能完成，在接近课堂应用的情境中稳定；拓展挑战=表现较稳定，在不新增高风险内容和新技术的前提下提高观察、节奏或情境要求。低负荷、观察或教师处理路线只能选择基础修复。${modeInstruction} 个性化练习必须以学生本人在个人练习区独立完成为主，可写教师巡视提示，但不得要求同伴、家长、其他学生帮助设障碍、喊信号、观察或配合。fitnessModule字段只允许表达“统一体能课课练参与档位”，必须写明它由教师统一组织、个人只记录参与情况和负荷感受；不得写成个人专属体能训练方案。只设计个性化练习自身的1—2项低负担变化记录，所有记录字段必须是select或scale选项，选项应便于学生自评或教师观察，如“明显改善/有所改善/暂未改善”，不得使用数字、米数、次数、百分比或长文本；统一体能课课练参与情况和身体反应由系统固定字段单独采集，不得混入AI证据字段。usedEvidence中的fieldId必须来自真实记录，label和value由系统按fieldId回填，不要改写、追加单位或重新计算；如果证据值显示为“非标准输入”，只能作为待教师核对的背景，不能强行解释为某个标准等级。不得改变本地已确定的路线。${teacherInstruction ? `\n\n教师补充要求：${teacherInstruction}` : ""}`,
           schemaExample,
           normalize: (value) => bindTask2SystemEvidence(applyTask2Plan(normalizeTask2(value), plan, lesson), lesson, record),
           validate: (value) => validateTask2(value, lesson, record, plan),
@@ -9159,7 +9203,7 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
         if (element) element.innerHTML = routeNoticeHtml(plan, "task2");
         if (button) {
           button.disabled = !requiredFormFieldsComplete(root);
-          button.textContent = button.disabled ? "请先完成必填记录" : plan.mode === "teacher_decision" ? "提交记录并请求教师处理" : plan.mode === "observe" ? "提交记录并生成观察复盘任务" : plan.mode === "low_load" ? "提交记录并生成低负荷任务" : "保存表现并生成个性化练习";
+          button.textContent = button.disabled ? "请先完成必填记录" : plan.mode === "teacher_decision" ? "提交记录并请求教师处理" : plan.mode === "observe" ? "提交记录并生成观察复盘任务" : plan.mode === "low_load" ? "提交记录并生成低负荷任务" : "保存表现并生成AI分层个性化练习";
         }
       }
 
@@ -9170,7 +9214,7 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
         $("baselineCard").innerHTML = `
           <div class="section-head"><h2>记录统一学练表现</h2><span class="tag">先保存，再生成</span></div>
           ${renderStudentStageStrip(record)}
-          <div class="notice purple">只记录支持后续判断的少量表现。提交后先保存真实记录，再确定安全路线并生成个性化练习。</div>
+          <div class="notice purple">只记录支持后续判断的少量表现。提交后先保存真实记录，再确定安全路线并生成AI分层个性化练习。</div>
           <div id="task1SaveStatus" class="notice hidden" style="margin-top:12px"></div>
           ${hasHistory ? `<div class="notice" style="margin-top:12px"><b>发现该编号的上次记录。</b> 本次表单默认保持空白，避免历史数据被误当作新记录。<div class="actions"><button class="btn btn-small btn-secondary" id="loadPreviousTask1EvidenceBtn" type="button">载入上次记录</button><button class="btn btn-small btn-light" id="clearTask1EvidenceFormBtn" type="button">从空白开始</button></div></div>` : ""}
           <details class="collapsible-block" style="margin-top:14px"><summary><h3>查看本课统一学练</h3></summary>${renderStudentLearningOverview(task, lesson.task1Package.classWarmup || defaultClassWarmup(lesson.teacherInput, lesson.understanding), lesson.task1Package.classFitness)}${renderTask1LearningChain(task, lesson.task1Package.classWarmup || defaultClassWarmup(lesson.teacherInput, lesson.understanding), lesson.task1Package.classFitness)}</details>
@@ -9179,7 +9223,7 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
             <div class="form-section">
               <label style="margin-top:0" for="task1ProblemReasonNote">问题原因补充（可选）</label>
               <textarea id="task1ProblemReasonNote" data-problem-reason-note maxlength="180" placeholder="用于区分同样表现背后的不同原因，如：低头看球、按拍力量小、没听清信号、不敢加速、重心降不下去。不确定可留空。"></textarea>
-              <div class="field-help">这不是成绩，只作为AI生成个性化练习时的辅助判断；建议短句填写，最多180字。</div>
+              <div class="field-help">这不是成绩，只作为AI生成AI分层个性化练习时的辅助判断；建议短句填写，最多180字。</div>
             </div>
             ${healthStatusHtml("task1", "task2RoutePreview")}
             <div class="actions"><button class="btn btn-primary full" type="submit" id="submitTask1EvidenceBtn" disabled>请先完成必填记录</button></div>
@@ -9263,7 +9307,7 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
           record.updatedAt = nowISO();
           saveDB();
           clearPageIssue("inclass");
-          showNotice("task1SaveStatus", "学练表现和身体状态已保存。正在生成个性化练习；即使生成失败，也不需要重新填写。", "ok");
+          showNotice("task1SaveStatus", "学练表现和身体状态已保存。正在生成AI分层个性化练习；即使生成失败，也不需要重新填写。", "ok");
           renderTask2(record, lesson);
           renderLessonProgress("inclass", lesson.lessonId, record.studentId);
 
@@ -9291,9 +9335,9 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
           clearPageIssue("inclass");
           renderTask2(record, lesson);
           $("inGuidanceCard")?.scrollIntoView({ behavior: "smooth", block: "start" });
-          toast(plan.generatedBy === "local" ? "系统已转入教师处理模式。" : "个性化练习已生成，等待教师审核。", plan.teacherAttentionRequired ? "warn" : "ok");
+          toast(plan.generatedBy === "local" ? "系统已转入教师处理模式。" : "AI分层个性化练习已生成，等待教师审核。", plan.teacherAttentionRequired ? "warn" : "ok");
         } catch (error) {
-          const issue = generationErrorPayload(error, "task2_generate", "个性化练习生成未完成。");
+          const issue = generationErrorPayload(error, "task2_generate", "AI分层个性化练习生成未完成。");
           if (record) {
             record.task2 = {
               ...(record.task2 || {}),
@@ -9307,7 +9351,7 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
             renderTask2(record, lesson);
           }
           setPageIssue("inclass", issue);
-          toast("学练表现已保存；个性化练习未生成，可直接点击重新生成。", "warn");
+          toast("学练表现已保存；AI分层个性化练习未生成，可直接点击重新生成。", "warn");
         } finally {
           setLoading("task2Loading", false);
           setButtonBusy($("submitTask1EvidenceBtn"), false);
@@ -9402,7 +9446,7 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
         }
         return `<div class="form-section" style="margin-top:14px">
           <h3>教师处理结果<span class="required">*</span></h3>
-          <p class="small muted">当前安全路线不允许系统直接生成普通运动练习。教师需先决定本节课如何处理，这一决定会约束后续课后作业。</p>
+          <p class="small muted">当前安全路线不允许系统直接生成普通运动练习。教师需先决定本节课如何处理，这一决定会约束后续AI课后巩固作业。</p>
           <label for="task2TeacherDisposition">处理方式</label>
           <select id="task2TeacherDisposition" required>
             <option value="">请选择</option>
@@ -9448,7 +9492,7 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
         return `<div class="generation-state-card error">
           <div class="state-title">${esc(stageName)}未生成成功</div>
           <p class="small">${esc(error.message || "AI生成未完成。")}</p>
-          <p class="small"><b>已保存：</b>${stageName.includes("个性化") ? "学练表现和身体状态" : "个性化练习后的变化、完成情况和身体状态"}。</p>
+          <p class="small"><b>已保存：</b>${stageName.includes("个性化") ? "学练表现和身体状态" : "AI分层个性化练习后的变化、完成情况和身体状态"}。</p>
           ${arr(error.details).length ? `<details><summary>查看具体原因</summary><div class="small" style="margin-top:8px">${esc(arr(error.details).join("；"))}</div></details>` : ""}
           ${retryButtonId ? `<div class="actions"><button class="btn btn-primary" id="${retryButtonId}">重新生成</button></div>` : ""}
         </div>`;
@@ -9471,7 +9515,7 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
             if (retryButton) retryButton.onclick = () => regenerateTask2("");
             return;
           }
-          $("inGuidanceCard").innerHTML = `<div class="placeholder">${renderStudentStageStrip(record)}提交统一学练表现后，这里生成个性化练习（个性化练习）。</div>`;
+          $("inGuidanceCard").innerHTML = `<div class="placeholder">${renderStudentStageStrip(record)}提交统一学练表现和原因补充后，这里生成AI分层个性化练习。</div>`;
           return;
         }
         const draft = task2Record.reviewStatus === "approved" ? task2Record.approved : task2Record.draft;
@@ -9484,9 +9528,9 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
         const localBlocked = arr(task2Record.localReview?.issues).some((item) => item.level === "blocker");
 
         $("inGuidanceCard").innerHTML = `
-          <div class="section-head"><h2>我的个性化练习</h2><span class="tag ${approved ? "ok" : rejected ? "warn" : "purple"}">${approved ? "教师已审核" : rejected ? "教师未采用" : "待教师审核"}</span></div>
+          <div class="section-head"><h2>我的AI分层个性化练习</h2><span class="tag ${approved ? "ok" : rejected ? "warn" : "purple"}">${approved ? "教师已审核" : rejected ? "教师未采用" : "待教师审核"}</span></div>
           ${renderStudentStageStrip(record)}
-          ${task2Record.generationStatus === "failed" && task2Record.generationError ? renderStoredGenerationError("重新生成个性化练习", task2Record.generationError, "retryTask2GenerationBtn") : ""}
+          ${task2Record.generationStatus === "failed" && task2Record.generationError ? renderStoredGenerationError("重新生成AI分层个性化练习", task2Record.generationError, "retryTask2GenerationBtn") : ""}
           ${routeNoticeHtml(route, "task2")}
           <div class="notice ${route.teacherAttentionRequired ? "warn" : "ok"}">${route.teacherAttentionRequired ? "本路线需要教师重点确认；未审核前不要执行。" : approved ? "老师已确认，可以按卡片练习。" : "系统已生成建议，老师确认后再练。"}</div>
           <details class="collapsible-block" style="margin-top:14px"><summary><h3>查看生成依据</h3></summary>
@@ -9522,7 +9566,7 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
           </details>
           ${teacherDispositionControl(record, approved, route)}
           <div class="review-box"><h3>教师审核</h3><div class="actions">
-            ${approved ? `<button class="btn btn-primary" id="goAfterTask2Btn">进入课后作业流程</button>${route.generatedBy === "local" ? "" : '<button class="btn btn-secondary" id="task2RegenerateApprovedBtn">重新生成个性化练习</button>'}` : `<button class="btn btn-primary" id="task2ApproveBtn" ${localBlocked ? "disabled" : ""}>${route.mode === "teacher_decision" ? "确认教师处理结果" : "审核通过"}</button>${route.generatedBy === "local" ? "" : '<button class="btn btn-secondary" id="task2RegenerateDraftBtn">让系统调整</button>'}<button class="btn btn-danger" id="task2RejectBtn">${route.mode === "teacher_decision" ? "暂不确认" : "不采用"}</button>`}
+            ${approved ? `<button class="btn btn-primary" id="goAfterTask2Btn">进入AI课后巩固作业流程</button>${route.generatedBy === "local" ? "" : '<button class="btn btn-secondary" id="task2RegenerateApprovedBtn">重新生成AI分层个性化练习</button>'}` : `<button class="btn btn-primary" id="task2ApproveBtn" ${localBlocked ? "disabled" : ""}>${route.mode === "teacher_decision" ? "确认教师处理结果" : "审核通过"}</button>${route.generatedBy === "local" ? "" : '<button class="btn btn-secondary" id="task2RegenerateDraftBtn">让系统调整</button>'}<button class="btn btn-danger" id="task2RejectBtn">${route.mode === "teacher_decision" ? "暂不确认" : "不采用"}</button>`}
           </div></div>`;
 
         const retryButton = $("retryTask2GenerationBtn");
@@ -9591,7 +9635,7 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
         $("afterStudentId").value = record.studentId;
         renderTask2(record, lesson);
         renderLessonProgress("inclass", lesson.lessonId, record.studentId);
-        toast(route.mode === "teacher_decision" ? `教师处理结果已记录：${teacherDispositionLabel(disposition)}。` : "个性化练习已审核。完成后可进入第三页分别记录个性化练习、统一体能课课练参与情况和身体状态。", "ok");
+        toast(route.mode === "teacher_decision" ? `教师处理结果已记录：${teacherDispositionLabel(disposition)}。` : "AI分层练习已审核。完成后可进入第三页分别记录个性化练习、统一体能课课练参与情况和身体状态。", "ok");
       }
 
       function rejectTask2(record, lesson) {
@@ -9704,7 +9748,7 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
       }
 
       // =========================
-      // 第三阶段：分开记录个性化练习、体能与身体状态 -> 安全分流 -> 课后作业
+      // 第三阶段：分开记录个性化练习、体能与身体状态 -> 安全分流 -> AI课后巩固作业
       // =========================
       function normalizeTask3(object) {
         return {
@@ -9772,7 +9816,7 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
         const errors = [];
         if (task3Result.studentId !== record.studentId) errors.push("学生编号不一致");
         if (task3Result.lessonId !== lesson.lessonId) errors.push("课次ID不一致");
-        if (task3Result.route?.mode !== plan.mode) errors.push("课后作业模式与本地安全分流不一致");
+        if (task3Result.route?.mode !== plan.mode) errors.push("AI课后巩固作业模式与本地安全分流不一致");
         if (task3Result.task3?.activityMode !== plan.activityMode) errors.push("课后活动类型与本地安全分流不一致");
         for (const key of ["task1Summary", "task1Performance", "task2Summary", "task2Performance", "changeConclusion"]) {
           if (!task3Result.chainAnalysis[key]) errors.push(`缺少${key}`);
@@ -9786,14 +9830,14 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
         });
         if (!task3Result.remainingNeed) errors.push("缺少课后仍需发展的重点");
         const task = task3Result.task3;
-        if (!task.title || !task.goal || !task.primaryTask || task.instructions.length < 2 || !task.dose || !task.selfCheck || !task.nextLessonFeedback || !task.safetyNote) errors.push("课后作业内容不完整");
+        if (!task.title || !task.goal || !task.primaryTask || task.instructions.length < 2 || !task.dose || !task.selfCheck || !task.nextLessonFeedback || !task.safetyNote) errors.push("AI课后巩固作业内容不完整");
         const timeBudget = lesson.lessonContract?.timeBudget || resolvedTimeBudget(lesson.teacherInput || {}, lesson.understanding || {});
         const estimatedMinutes = numberOrNull(task.estimatedMinutes);
-        if (estimatedMinutes === null || !Number.isInteger(estimatedMinutes) || estimatedMinutes < 0) errors.push("课后作业缺少可校验的整数分钟数");
-        if (numberOrNull(timeBudget.afterClassMinutes) !== null && estimatedMinutes !== null && estimatedMinutes > Number(timeBudget.afterClassMinutes)) errors.push(`课后作业预计${estimatedMinutes}分钟，超过本课${timeBudget.afterClassMinutes}分钟上限`);
+        if (estimatedMinutes === null || !Number.isInteger(estimatedMinutes) || estimatedMinutes < 0) errors.push("AI课后巩固作业缺少可校验的整数分钟数");
+        if (numberOrNull(timeBudget.afterClassMinutes) !== null && estimatedMinutes !== null && estimatedMinutes > Number(timeBudget.afterClassMinutes)) errors.push(`AI课后巩固作业预计${estimatedMinutes}分钟，超过本课${timeBudget.afterClassMinutes}分钟上限`);
         const taskText = `${task.title}${task.goal}${task.primaryTask}${task.alternativeTask}${task.instructions.join("")}${task.dose}${task.selfCheck}${task.safetyNote}`;
         if (plan.mode === "practice") {
-          if (!task.alternativeTask) errors.push("练习型课后作业必须提供条件不足时的替代任务");
+          if (!task.alternativeTask) errors.push("练习型AI课后巩固作业必须提供条件不足时的替代任务");
         } else if (plan.mode === "low_load") {
           if (containsAffirmedPattern(taskText, /冲刺|高强度|极限|力竭|长时间/)) errors.push("低负荷模式不得包含高强度内容");
         } else if (plan.mode === "observe") {
@@ -9802,8 +9846,8 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
         } else if (plan.mode === "teacher_decision") {
           if (!/停止|休息|报告教师|等待教师|教师处理|不练习/.test(taskText)) errors.push("教师处理模式必须明确不继续运动并由教师决定");
         }
-        if (!task3Result.teacherRationale) errors.push("缺少课后作业教师审核依据");
-        errors.push(...contractBlockingMessages("课后作业", task3Result, lesson.teacherInput, lesson.understanding, "task3"));
+        if (!task3Result.teacherRationale) errors.push("缺少AI课后巩固作业教师审核依据");
+        errors.push(...contractBlockingMessages("AI课后巩固作业", task3Result, lesson.teacherInput, lesson.understanding, "task3"));
         return validation(errors.length === 0, errors);
       }
 
@@ -9841,17 +9885,17 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
         const plan = deriveTask3Plan(record);
         if (plan.generatedBy === "local") return makeLocalTask3Decision(lesson, record, plan);
         const timeBudget = lesson.lessonContract?.timeBudget || resolvedTimeBudget(lesson.teacherInput || {}, lesson.understanding || {});
-        if (numberOrNull(timeBudget.afterClassMinutes) === null) throw new PrerequisiteError("课后作业时间预算缺失。", "请回到课前草稿重新形成并发布本课时间分配。 ");
+        if (numberOrNull(timeBudget.afterClassMinutes) === null) throw new PrerequisiteError("AI课后巩固作业时间预算缺失。", "请回到课前草稿重新形成并发布本课时间分配。 ");
         const history = getRelatedHistory(record.studentId, lesson);
         const modeInstruction = plan.mode === "low_load"
-          ? "生成短时、低负荷、可随时停止的课后作业，不新增技术难度；必须提供更轻的替代任务。"
+          ? "生成短时、低负荷、可随时停止的AI课后巩固作业，不新增技术难度；必须提供更轻的替代任务。"
           : plan.mode === "observe"
             ? "生成非运动的观察复盘、动作回忆或低压力记录任务，不得安排跑跳、对抗或连续练习。"
-            : "生成短时练习型课后作业，只巩固一个仍需发展的重点。";
+            : "生成短时练习型AI课后巩固作业，只巩固一个仍需发展的重点。";
         const result = await generateJsonReliable({
           stage: "task3_generate",
           system: BASE_SYSTEM,
-          userPrompt: `【本课已发布统一学练】\n${JSON.stringify(lessonTask1Context(lesson), null, 2)}\n\n【本地已确定的课后路线】\n${JSON.stringify(plan, null, 2)}\n\n【学生标识】\n学生ID：${record.studentId}\n课次ID：${lesson.lessonId}\n\n【统一学练动作表现证据】\n${JSON.stringify(task1PerformanceFields(record), null, 2)}\n\n【教师审核后的个性化练习】\n${JSON.stringify(record.task2.approved, null, 2)}\n\n【个性化练习动作变化证据】\n${JSON.stringify(task2PerformanceFields(record), null, 2)}\n\n【个性化练习完成情况】\n${JSON.stringify(record.task2Completion.taskCompletion, null, 2)}\n\n【统一体能课课练参与与负荷感受】\n${JSON.stringify(record.task2Completion.fitnessEvidence, null, 2)}\n\n【健康与安全信号】\n${JSON.stringify(record.task2Completion.healthSignal, null, 2)}\n\n【相关历史摘要，仅作次要参考】\n${JSON.stringify(history, null, 2)}\n\n现在生成该学生的课后作业。${modeInstruction} 先说明三阶段变化，只确定一个仍需巩固的重点，时长不超过${timeBudget.afterClassMinutes}分钟，并在task3.estimatedMinutes中给出可校验的整数分钟。必须提供主要任务、条件不足时替代方案、简单自检、下节课反馈和安全要求。performanceEvidence只引用统一学练或个性化练习的动作表现字段；fieldId必须来自真实记录，label和value由系统按fieldId回填，不要改写、追加单位或重新计算。完成情况、统一体能课课练参与感受和身体状态已作为独立上下文，不得伪装成动作证据。不得改变本地已确定的路线。若教师补充要求包含“无球、无器材、家里不能运动”等条件，可作为本次课后生成的教师补充条件使用，并在teacherRationale中标注来源；若没有教师补充或afterClassConditions为空，禁止假设学生课后无器材或无场地。${teacherInstruction ? `\n\n教师本次补充/纠偏输入（可作为本次生成的教师条件）：${teacherInstruction}` : ""}`,
+          userPrompt: `【本课已发布统一学练】\n${JSON.stringify(lessonTask1Context(lesson), null, 2)}\n\n【本地已确定的课后路线】\n${JSON.stringify(plan, null, 2)}\n\n【学生标识】\n学生ID：${record.studentId}\n课次ID：${lesson.lessonId}\n\n【统一学练动作表现证据】\n${JSON.stringify(task1PerformanceFields(record), null, 2)}\n\n【教师审核后的个性化练习】\n${JSON.stringify(record.task2.approved, null, 2)}\n\n【个性化练习动作变化证据】\n${JSON.stringify(task2PerformanceFields(record), null, 2)}\n\n【个性化练习完成情况】\n${JSON.stringify(record.task2Completion.taskCompletion, null, 2)}\n\n【统一体能课课练参与与负荷感受】\n${JSON.stringify(record.task2Completion.fitnessEvidence, null, 2)}\n\n【健康与安全信号】\n${JSON.stringify(record.task2Completion.healthSignal, null, 2)}\n\n【相关历史摘要，仅作次要参考】\n${JSON.stringify(history, null, 2)}\n\n现在生成该学生的AI课后巩固作业。${modeInstruction} 先说明三阶段变化，只确定一个仍需巩固的重点，时长不超过${timeBudget.afterClassMinutes}分钟，并在task3.estimatedMinutes中给出可校验的整数分钟；不得生成过重训练安排。必须提供主要任务、条件不足时替代方案、简单自检、下节课反馈和安全要求。performanceEvidence只引用统一学练或个性化练习的动作表现字段；fieldId必须来自真实记录，label和value由系统按fieldId回填，不要改写、追加单位或重新计算。完成情况、统一体能课课练参与感受和身体状态已作为独立上下文，不得伪装成动作证据。不得改变本地已确定的路线。若教师补充要求包含“无球、无器材、家里不能运动”等条件，可作为本次课后生成的教师补充条件使用，并在teacherRationale中标注来源；若没有教师补充或afterClassConditions为空，禁止假设学生课后无器材或无场地。${teacherInstruction ? `\n\n教师本次补充/纠偏输入（可作为本次生成的教师条件）：${teacherInstruction}` : ""}`,
           schemaExample: EXAMPLE_TASK3,
           normalize: (value) => bindTask3SystemEvidence(applyTask3Plan(normalizeTask3(value), plan, lesson, record), lesson, record),
           validate: (value) => validateTask3(value, lesson, record, plan),
@@ -9880,7 +9924,7 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
           <div class="form-section">
             <label style="margin-top:0">${teacherProcess ? "处理状态" : "个性化练习完成情况"}<span class="required">*</span></label>
             ${taskCompletionControl}
-            <div class="field-help">记录这个个性化任务有没有完成，用于判断课后作业是否需要降负荷或继续巩固。</div>
+            <div class="field-help">记录这个AI分层个性化练习有没有完成，用于判断AI课后巩固作业是否需要降负荷或继续巩固。</div>
           </div>
           <div class="form-section">
             <h4>动作变化记录</h4>
@@ -9969,7 +10013,7 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
         if (element) element.innerHTML = routeNoticeHtml(plan, "task3");
         if (button) {
           button.disabled = !requiredFormFieldsComplete(root);
-          button.textContent = button.disabled ? "请先完成必填记录" : plan.mode === "teacher_decision" ? "提交记录并请求教师处理" : plan.mode === "observe" ? "提交记录并生成观察复盘安排" : plan.mode === "low_load" ? "提交记录并生成低负荷课后作业" : "保存记录并生成课后作业";
+          button.textContent = button.disabled ? "请先完成必填记录" : plan.mode === "teacher_decision" ? "提交记录并请求教师处理" : plan.mode === "observe" ? "提交记录并生成观察复盘安排" : plan.mode === "low_load" ? "提交记录并生成低负荷AI课后巩固作业" : "保存记录并生成AI课后巩固作业";
         }
       }
 
@@ -9984,7 +10028,7 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
         $("retestCard").innerHTML = `
           <div class="section-head"><h2>记录个性化练习完成与变化</h2><span class="tag">先保存，再生成</span></div>
           ${renderStudentStageStrip(record)}
-          <div class="notice purple">这里记录同一个个性化任务（个性化练习）的完成情况和练后变化；统一体能课课练负荷与身体状态仍单独记录。提交后先保存真实记录，再确定课后路线并生成巩固作业。</div>
+          <div class="notice purple">这里记录同一个AI分层个性化练习的完成情况和练后变化；统一体能课课练负荷与身体状态仍单独记录。提交后先保存真实记录，再确定课后路线并生成巩固作业。</div>
           <div id="task2CompletionSaveStatus" class="notice hidden" style="margin-top:12px"></div>
           ${hasHistory ? `<div class="notice" style="margin-top:12px"><b>发现上次完成记录。</b> 本次表单默认保持空白，避免旧值被误当作新证据。<div class="actions"><button class="btn btn-small btn-secondary" id="loadPreviousTask2CompletionBtn" type="button">载入上次记录</button><button class="btn btn-small btn-light" id="clearTask2CompletionFormBtn" type="button">从空白开始</button></div></div>` : ""}
           <details class="collapsible-block" style="margin-top:14px" open><summary><h3>已审核的个性化练习</h3></summary><div class="block"></div></details>
@@ -10068,7 +10112,7 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
           committed.updatedAt = nowISO();
           saveDB();
           clearPageIssue("afterclass");
-          showNotice("task2CompletionSaveStatus", "动作变化、完成情况、体能课课练负荷和身体状态已保存。正在生成课后作业；失败时可直接重试。", "ok");
+          showNotice("task2CompletionSaveStatus", "动作变化、完成情况、体能课课练负荷和身体状态已保存。正在生成AI课后巩固作业；失败时可直接重试。", "ok");
           renderTask3(committed, lesson);
           renderLessonProgress("afterclass", lesson.lessonId, committed.studentId);
 
@@ -10078,7 +10122,7 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
           const routeTraceId = beginProcessTrace("task3_route", "local", "根据任务完成、体能课课练负荷和身体状态确定课后路线");
           finishProcessTrace(routeTraceId, "done", `${routeLabel(plan)}：${plan.reason}`);
           const draft = await generateTask3(lesson, committed);
-          const localReview = validationFromIssues(analyzeGeneratedContract("课后作业", draft, lesson.teacherInput, lesson.understanding, "task3"));
+          const localReview = validationFromIssues(analyzeGeneratedContract("AI课后巩固作业", draft, lesson.teacherInput, lesson.understanding, "task3"));
           committed.task3 = {
             ...committed.task3,
             route: plan,
@@ -10096,9 +10140,9 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
           clearPageIssue("afterclass");
           renderTask3(committed, lesson);
           $("afterTaskCard")?.scrollIntoView({ behavior: "smooth", block: "start" });
-          toast(plan.generatedBy === "local" ? "系统已转入教师处理模式。" : "课后作业已生成，等待教师审核。", plan.teacherAttentionRequired ? "warn" : "ok");
+          toast(plan.generatedBy === "local" ? "系统已转入教师处理模式。" : "AI课后巩固作业已生成，等待教师审核。", plan.teacherAttentionRequired ? "warn" : "ok");
         } catch (error) {
-          const issue = generationErrorPayload(error, "task3_generate", "课后作业生成未完成。");
+          const issue = generationErrorPayload(error, "task3_generate", "AI课后巩固作业生成未完成。");
           if (committed?.task2Completion) {
             committed.task3 = {
               ...(committed.task3 || {}),
@@ -10112,7 +10156,7 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
             renderTask3(committed, lesson);
           }
           setPageIssue("afterclass", issue);
-          toast("完成记录已保存；课后作业未生成，可直接点击重新生成。", "warn");
+          toast("完成记录已保存；AI课后巩固作业未生成，可直接点击重新生成。", "warn");
         } finally {
           setLoading("task3Loading", false);
           setButtonBusy($("submitTask2CompletionBtn"), false);
@@ -10129,16 +10173,16 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
         const task3Record = record.task3;
         if (!task3Record?.draft && !task3Record?.approved) {
           if (task3Record?.generationStatus === "generating") {
-            $("afterTaskCard").innerHTML = `<div class="section-head"><h2>课后作业</h2><span class="tag purple">生成中</span></div>${renderStudentStageStrip(record)}${renderGeneratingState("课后作业", "个性化练习后的变化、完成情况和身体状态")}`;
+            $("afterTaskCard").innerHTML = `<div class="section-head"><h2>AI课后巩固作业</h2><span class="tag purple">生成中</span></div>${renderStudentStageStrip(record)}${renderGeneratingState("AI课后巩固作业", "AI分层个性化练习后的变化、完成情况和身体状态")}`;
             return;
           }
           if (task3Record?.generationStatus === "failed" || task3Record?.generationError) {
-            $("afterTaskCard").innerHTML = `<div class="section-head"><h2>课后作业</h2><span class="tag warn">生成失败</span></div>${renderStudentStageStrip(record)}${renderStoredGenerationError("课后作业", task3Record.generationError || {}, "retryTask3GenerationBtn")}`;
+            $("afterTaskCard").innerHTML = `<div class="section-head"><h2>AI课后巩固作业</h2><span class="tag warn">生成失败</span></div>${renderStudentStageStrip(record)}${renderStoredGenerationError("AI课后巩固作业", task3Record.generationError || {}, "retryTask3GenerationBtn")}`;
             const retryButton = $("retryTask3GenerationBtn");
             if (retryButton) retryButton.onclick = () => regenerateTask3("");
             return;
           }
-          $("afterTaskCard").innerHTML = `<div class="placeholder">${renderStudentStageStrip(record)}保存个性化练习后的变化和身体状态后，这里生成课后作业。</div>`;
+          $("afterTaskCard").innerHTML = `<div class="placeholder">${renderStudentStageStrip(record)}保存AI分层个性化练习后的变化和身体状态后，这里生成AI课后巩固作业。</div>`;
           return;
         }
         const draft = task3Record.reviewStatus === "approved" ? task3Record.approved : task3Record.draft;
@@ -10148,9 +10192,9 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
         const localBlocked = arr(task3Record.localReview?.issues).some((item) => item.level === "blocker");
 
         $("afterTaskCard").innerHTML = `
-          <div class="section-head"><h2>我的课后作业</h2><span class="tag ${approved ? "ok" : rejected ? "warn" : "purple"}">${approved ? "教师已审核" : rejected ? "教师未采用" : "待教师审核"}</span></div>
+          <div class="section-head"><h2>我的AI课后巩固作业</h2><span class="tag ${approved ? "ok" : rejected ? "warn" : "purple"}">${approved ? "教师已审核" : rejected ? "教师未采用" : "待教师审核"}</span></div>
           ${renderStudentStageStrip(record)}
-          ${task3Record.generationStatus === "failed" && task3Record.generationError ? renderStoredGenerationError("重新生成课后作业", task3Record.generationError, "retryTask3GenerationBtn") : ""}
+          ${task3Record.generationStatus === "failed" && task3Record.generationError ? renderStoredGenerationError("重新生成AI课后巩固作业", task3Record.generationError, "retryTask3GenerationBtn") : ""}
           ${routeNoticeHtml(route, "task3")}
           <div class="notice ${route.teacherAttentionRequired ? "warn" : "ok"}">${route.teacherAttentionRequired ? "本路线需要教师重点确认；未审核前不要执行。" : approved ? "老师已确认，按安全要求完成。" : "系统已生成建议，老师确认后再带回去。"}</div>
           <details class="collapsible-block" style="margin-top:14px"><summary><h3>查看生成依据</h3></summary>
@@ -10170,7 +10214,7 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
             <div class="task-line"><b>自己检查</b><span>${esc(draft.task3.selfCheck)}</span></div>
             <div class="task-line"><b>下节课反馈</b><span>${esc(draft.task3.nextLessonFeedback)}</span></div>
             <div class="task-line"><b>安全</b><span>${esc(draft.task3.safetyNote)}</span></div>
-            ${approved ? '<div class="copy-row"><button class="btn btn-small btn-secondary" id="copyTask3Btn">复制课后作业</button></div>' : ""}
+            ${approved ? '<div class="copy-row"><button class="btn btn-small btn-secondary" id="copyTask3Btn">复制课后巩固作业</button></div>' : ""}
           </div>
           <details class="collapsible-block"><summary><h3>教师查看：连续分析与本地检查</h3></summary>
             <p><b>统一学练：</b>${esc(draft.chainAnalysis.task1Summary)}</p>
@@ -10182,14 +10226,14 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
             ${renderLocalReview(task3Record.localReview)}
           </details>
           <div class="review-box"><h3>教师审核</h3><div class="actions">
-            ${approved ? (route.generatedBy === "local" ? "" : '<button class="btn btn-secondary" id="task3RegenerateApprovedBtn">重新生成课后作业</button>') : `<button class="btn btn-primary" id="task3ApproveBtn" ${localBlocked ? "disabled" : ""}>${route.mode === "teacher_decision" ? "确认教师处理安排" : "审核通过并发布"}</button>${route.generatedBy === "local" ? "" : '<button class="btn btn-secondary" id="task3RegenerateDraftBtn">让系统调整</button>'}<button class="btn btn-danger" id="task3RejectBtn">${route.mode === "teacher_decision" ? "暂不确认" : "不采用"}</button>`}
+            ${approved ? (route.generatedBy === "local" ? "" : '<button class="btn btn-secondary" id="task3RegenerateApprovedBtn">重新生成AI课后巩固作业</button>') : `<button class="btn btn-primary" id="task3ApproveBtn" ${localBlocked ? "disabled" : ""}>${route.mode === "teacher_decision" ? "确认教师处理安排" : "审核通过并发布"}</button>${route.generatedBy === "local" ? "" : '<button class="btn btn-secondary" id="task3RegenerateDraftBtn">让系统调整</button>'}<button class="btn btn-danger" id="task3RejectBtn">${route.mode === "teacher_decision" ? "暂不确认" : "不采用"}</button>`}
           </div></div>
           ${approved ? renderTask3Feedback(record) : ""}`;
 
         const retryButton = $("retryTask3GenerationBtn");
         if (retryButton) retryButton.onclick = () => regenerateTask3("");
         const copyButton = $("copyTask3Btn");
-        if (copyButton) copyButton.onclick = () => copyTextToClipboard(task3CopyText(draft), "课后作业已复制。");
+        if (copyButton) copyButton.onclick = () => copyTextToClipboard(task3CopyText(draft), "AI课后巩固作业已复制。");
         const approveButton = $("task3ApproveBtn");
         if (approveButton) approveButton.onclick = () => requireTeacherUnlock(() => approveTask3(record, lesson));
         const regenerateButton = $("task3RegenerateApprovedBtn") || $("task3RegenerateDraftBtn");
@@ -10202,11 +10246,11 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
       function approveTask3(record, lesson) {
         const blockers = arr(record.task3?.localReview?.issues).filter((item) => item.level === "blocker");
         if (blockers.length) {
-          toast("课后作业仍有必须修复项，不能审核通过。", "warn");
+          toast("AI课后巩固作业仍有必须修复项，不能审核通过。", "warn");
           return;
         }
-        const traceId = beginProcessTrace("teacher_approve_task3", "teacher", "教师审核课后作业");
-        finishProcessTrace(traceId, "done", `教师确认“${routeLabel(record.task3.draft.route)}”路线及课后作业。`);
+        const traceId = beginProcessTrace("teacher_approve_task3", "teacher", "教师审核AI课后巩固作业");
+        finishProcessTrace(traceId, "done", `教师确认“${routeLabel(record.task3.draft.route)}”路线及AI课后巩固作业。`);
         record.task3.trace = arr(record.task3.trace).concat(runtime.processTrace.slice(-1));
         record.task3.approved = clone(record.task3.draft);
         record.task3.reviewStatus = "approved";
@@ -10219,7 +10263,7 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
         clearPageIssue("afterclass");
         renderTask3(record, lesson);
         renderLessonProgress("afterclass", lesson.lessonId, record.studentId);
-        toast("课后作业已审核并发布。", "ok");
+        toast("AI课后巩固作业已审核并发布。", "ok");
       }
 
       function rejectTask3(record, lesson) {
@@ -10236,7 +10280,7 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
         const route = record.task3?.draft?.route || record.task3?.route || deriveTask3Plan(record);
         toast(route.generatedBy === "local"
           ? "当前教师处理安排未确认。请重新核对完成记录、身体状态或教师决定。"
-          : "该课后作业未采用，可按教师意见重新生成。", "warn");
+          : "该AI课后巩固作业未采用，可按教师意见重新生成。", "warn");
       }
 
       async function regenerateTask3(instruction) {
@@ -10266,9 +10310,9 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
           saveDB();
           clearPageIssue("afterclass");
           renderTask3(record, lesson);
-          const revisionInstruction = instruction || "请在保持当前安全路线和真实连续证据不变的前提下，重新独立生成一版有实质差异的课后作业。";
+          const revisionInstruction = instruction || "请在保持当前安全路线和真实连续证据不变的前提下，重新独立生成一版有实质差异的AI课后巩固作业。";
           const draft = await generateTask3(lesson, record, revisionInstruction);
-          const localReview = validationFromIssues(analyzeGeneratedContract("课后作业", draft, lesson.teacherInput, lesson.understanding, "task3"));
+          const localReview = validationFromIssues(analyzeGeneratedContract("AI课后巩固作业", draft, lesson.teacherInput, lesson.understanding, "task3"));
           const versions = arr(record.task3?.versions);
           if (record.task3?.draft) versions.push({ draft: clone(record.task3.draft), generatedAt: record.task3.generatedAt || nowISO(), archivedAt: nowISO(), route: clone(record.task3.route || record.task3.draft.route || {}) });
           record.task3 = {
@@ -10288,9 +10332,9 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
           saveDB();
           clearPageIssue("afterclass");
           renderTask3(record, lesson);
-          toast("课后作业已重新生成。", draft.route.teacherAttentionRequired ? "warn" : "ok");
+          toast("AI课后巩固作业已重新生成。", draft.route.teacherAttentionRequired ? "warn" : "ok");
         } catch (error) {
-          const issue = generationErrorPayload(error, "task3_generate", "课后作业重新生成未完成。");
+          const issue = generationErrorPayload(error, "task3_generate", "AI课后巩固作业重新生成未完成。");
           record.task3 = {
             ...(record.task3 || {}),
             reviewStatus: record.task3?.draft || record.task3?.approved ? previousReviewStatus : "failed",
@@ -10310,7 +10354,7 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
 
       function renderTask3Feedback(record) {
         const feedback = record.task3Feedback || {};
-        return `<div class="block"><h3>课后作业完成反馈</h3><p class="small muted">完成后可再次进入本页填写，作为后续相关课程的历史证据。</p>
+        return `<div class="block"><h3>AI课后巩固作业完成反馈</h3><p class="small muted">完成后可再次进入本页填写，作为后续相关课程的历史证据。</p>
           <div class="row"><div><label>完成情况</label><select id="feedbackCompletion"><option value="">请选择</option>${["全部完成", "部分完成", "未完成"].map((option) => `<option ${feedback.completion === option ? "selected" : ""}>${option}</option>`).join("")}</select></div>
           <div><label>完成后的自我感受</label><select id="feedbackFeeling"><option value="">请选择</option>${["更有把握", "有一些进步", "仍然困难", "身体不适"].map((option) => `<option ${feedback.feeling === option ? "selected" : ""}>${option}</option>`).join("")}</select></div></div>
           <label>记录或补充说明</label><textarea id="feedbackNote" placeholder="可记录完成次数、遇到的困难或想反馈给教师的问题">${esc(feedback.note || "")}</textarea>
@@ -10348,7 +10392,7 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
         $("inLessonSelect").value = lessonId;
         if (record?.task2?.reviewStatus !== "approved" || !record?.task2?.approved) {
           $("retestCard").innerHTML = `<div class="placeholder">${renderStudentStageStrip(record || {})}<p>该学习编号还没有教师审核通过的个性化练习。</p><div class="actions" style="justify-content:center"><button class="btn btn-primary" id="goBackInclassBtn">返回课中页面处理</button></div></div>`;
-          $("afterTaskCard").innerHTML = '<div class="placeholder">个性化练习审核通过后，再记录变化并生成课后作业。</div>';
+          $("afterTaskCard").innerHTML = '<div class="placeholder">个性化练习审核通过后，再记录变化并生成AI课后巩固作业。</div>';
           showNotice("afterPrereqNotice", "请先完成并审核个性化练习。", "warn");
           clearPageIssue("afterclass");
           const backButton = $("goBackInclassBtn");
@@ -10382,7 +10426,7 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
           task1: "可留空重新设计一版递进学练，也可说明需要怎样调整。",
           task1Evidence: "可留空重新设计一版表现记录，也可说明需要怎样调整。",
           task2: "可留空重新生成一版个性化练习；系统不会改变当前安全分流路线。",
-          task3: "可留空重新生成一版课后作业；系统不会改变当前安全分流路线。",
+          task3: "可留空重新生成一版AI课后巩固作业；系统不会改变当前安全分流路线。",
         };
         $("regenerateHint").textContent = hints[target] || "填写真实条件或教师意见。";
         openModal("regenerateModal");
@@ -10555,11 +10599,11 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
           $("afterClassMinutes").value = "";
         }
         $("understandingCard").innerHTML = '<div class="section-head"><h2>本课理解与核对</h2><span class="tag">第一步</span></div><div class="placeholder">填写左侧关键内容后，让AI先整理本课理解。教师确认方向无误，再生成统一学练。</div>';
-        $("packageCard").innerHTML = '<div class="section-head"><h2>课堂固定任务：热身、统一学练与统一体能</h2><span class="tag">第二步</span></div><div class="placeholder">确认本课理解后，AI一次生成统一热身、4个递进学练（第4个为游戏或比赛应用）、8—10分钟统一体能课课练和少量课堂表现记录；个性化练习和课后作业只在获得真实表现后生成。</div>';
+        $("packageCard").innerHTML = '<div class="section-head"><h2>课堂固定任务：热身、统一学练与统一体能</h2><span class="tag">第二步</span></div><div class="placeholder">确认本课理解后，AI一次生成统一热身、4个递进学练（第4个为游戏或比赛应用）、8—10分钟统一体能课课练和少量课堂表现记录；AI分层个性化练习和AI课后巩固作业只在获得真实表现后生成。</div>';
         $("baselineCard").innerHTML = '<div class="placeholder">请选择已发布课次并输入学习编号。</div>';
-        $("inGuidanceCard").innerHTML = '<div class="placeholder">提交统一学练表现后，这里生成个性化练习（个性化练习）。</div>';
+        $("inGuidanceCard").innerHTML = '<div class="placeholder">提交统一学练表现和原因补充后，这里生成AI分层个性化练习。</div>';
         $("retestCard").innerHTML = '<div class="placeholder">请选择已发布课次并输入同一学习编号。</div>';
-        $("afterTaskCard").innerHTML = '<div class="placeholder">提交个性化练习后的变化和身体状态后，这里生成课后作业。</div>';
+        $("afterTaskCard").innerHTML = '<div class="placeholder">提交AI分层个性化练习后的变化和身体状态后，这里生成AI课后巩固作业。</div>';
         hideNotice("inHistoryNotice");
         hideNotice("afterPrereqNotice");
         clearPageIssue("inclass");
