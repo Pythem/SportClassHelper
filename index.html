@@ -1870,7 +1870,9 @@
         "NO_PROJECT_KEYWORD_ASSOCIATION_FOR_FITNESS",
         "NO_GROUND_SUPPORT_WITHOUT_GROUND_CONDITION",
         "ELEMENTARY_EVIDENCE_SEMANTICS_NO_NUMERIC_TRACE",
-        "GROUND_SUPPORT_FORBIDDEN_WITHOUT_EXPLICIT_SAFE_SURFACE"
+        "GROUND_SUPPORT_FORBIDDEN_WITHOUT_EXPLICIT_SAFE_SURFACE",
+        "TASK1_CAUSE_NOTE_SUPPORTS_DIFFERENTIATED_DIAGNOSIS",
+        "TASK2_DIFFICULTY_TIER_REQUIRED"
       ]);
 
       /*
@@ -1883,7 +1885,7 @@
       // =========================
       // 基础配置与通用工具
       // =========================
-      const APP_VERSION = "2.8.0";
+      const APP_VERSION = "3.0.0";
       const SCHEMA_VERSION = 14;
       const DRAFT_FORMAT_VERSION = 4;
       const MIN_LEARNING_TASKS = 4;
@@ -3923,6 +3925,11 @@ ${JSON.stringify(schemaExample, null, 2)}`;
             { fieldId: "t1_metric_1", label: "证据名称", value: "基本能", interpretation: "该选项证据说明什么" }
           ]
         },
+        difficultyTier: {
+          tier: "base_repair / application_reinforce / extension_challenge",
+          label: "基础修复 / 应用强化 / 拓展挑战",
+          reason: "依据统一学练表现和问题原因补充选择难度层级"
+        },
         task2: {
           taskId: "task2_x",
           title: "我的个性化练习标题",
@@ -4287,6 +4294,182 @@ ${JSON.stringify(schemaExample, null, 2)}`;
         return mergeUniqueTextList(sentenceList(existing), sentenceList(addition), 4).join("；");
       }
 
+      function addMinutesWithinLimit(parts, key, limit, deficit) {
+        const value = Number(parts[key] || 0);
+        const room = Math.max(0, Number(limit || 0) - value);
+        const added = Math.min(Math.max(0, deficit), room);
+        if (added > 0) parts[key] = value + added;
+        return added;
+      }
+
+      function repairTimeBudgetToMinimum(parts = {}) {
+        const fixed = {
+          warmup: Number(parts.warmup || 0),
+          common: Number(parts.common || 0),
+          inClass: Number(parts.inClass || 0),
+          fitness: Number(parts.fitness || 0),
+        };
+        fixed.warmup = clamp(Math.round(fixed.warmup || DEFAULT_WARMUP_MINUTES), 4, 8);
+        fixed.common = clamp(Math.round(fixed.common || 18), 18, 25);
+        fixed.inClass = clamp(Math.round(fixed.inClass || 5), 4, 8);
+        fixed.fitness = clamp(Math.round(fixed.fitness || MIN_CLASS_FITNESS_MINUTES), MIN_CLASS_FITNESS_MINUTES, MAX_CLASS_FITNESS_MINUTES);
+        let deficit = MIN_CLASS_TOTAL_MINUTES - (fixed.warmup + fixed.common + fixed.inClass + fixed.fitness);
+        const repairs = [];
+        if (deficit > 0) {
+          const commonAdd = addMinutesWithinLimit(fixed, "common", 25, deficit);
+          if (commonAdd) repairs.push(`4个学练增加${commonAdd}分钟`);
+          deficit -= commonAdd;
+        }
+        if (deficit > 0) {
+          const warmupAdd = addMinutesWithinLimit(fixed, "warmup", 8, deficit);
+          if (warmupAdd) repairs.push(`热身增加${warmupAdd}分钟`);
+          deficit -= warmupAdd;
+        }
+        if (deficit > 0) {
+          const fitnessAdd = addMinutesWithinLimit(fixed, "fitness", MAX_CLASS_FITNESS_MINUTES, deficit);
+          if (fitnessAdd) repairs.push(`体能课课练增加${fitnessAdd}分钟`);
+          deficit -= fitnessAdd;
+        }
+        if (deficit > 0) {
+          const inClassAdd = addMinutesWithinLimit(fixed, "inClass", 8, deficit);
+          if (inClassAdd) repairs.push(`个性化练习预留增加${inClassAdd}分钟`);
+          deficit -= inClassAdd;
+        }
+        fixed.classTotal = fixed.warmup + fixed.common + fixed.inClass + fixed.fitness;
+        fixed.repairs = repairs;
+        fixed.unresolvedDeficit = Math.max(0, deficit);
+        return fixed;
+      }
+
+      function appendTimeRepairNote(value = "", note = "", max = 260) {
+        const base = cleanString(value, max);
+        const cleanNote = cleanString(note, 120);
+        if (!cleanNote || base.includes(cleanNote)) return base;
+        return cleanString(base ? `${base}；${cleanNote}` : cleanNote, max);
+      }
+
+      function addMinutesToWarmup(classWarmup = {}, minutes = 0) {
+        const add = Math.max(0, Math.round(Number(minutes || 0)));
+        if (!add) return 0;
+        classWarmup.estimatedMinutes = Math.min(8, Number(classWarmup.estimatedMinutes || 0) + add);
+        const segments = arr(classWarmup.segments);
+        if (segments.length) {
+          const last = segments[segments.length - 1];
+          last.durationMinutes = Number(last.durationMinutes || 1) + add;
+          last.instructions = arr(last.instructions);
+          if (!last.instructions.some((item) => /时间补足|过渡准备/.test(item))) {
+            last.instructions.push("根据课堂时间补足专项准备或过渡准备，教师用短口令提醒动作质量。" );
+          }
+          classWarmup.segments = segments;
+        }
+        classWarmup.timeStructure = classWarmup.timeStructure || {};
+        classWarmup.timeStructure.specialPreparationMinutes = Number(classWarmup.timeStructure.specialPreparationMinutes || segments.at(-1)?.durationMinutes || 0) + add;
+        classWarmup.timeStructure.totalMinutes = Number(classWarmup.estimatedMinutes || classWarmup.timeStructure.totalMinutes || 0);
+        classWarmup.timeStructure.summary = arr(classWarmup.segments).map((segment) => `${segment.title}${segment.durationMinutes}分钟`).join("，");
+        classWarmup.dose = appendTimeRepairNote(classWarmup.dose, `已补足${add}分钟热身专项准备或过渡准备`);
+        return add;
+      }
+
+      function addMinutesToClassFitness(classFitness = {}, minutes = 0) {
+        const add = Math.max(0, Math.round(Number(minutes || 0)));
+        if (!add) return 0;
+        classFitness.estimatedMinutes = Math.min(MAX_CLASS_FITNESS_MINUTES, Number(classFitness.estimatedMinutes || MIN_CLASS_FITNESS_MINUTES) + add);
+        classFitness.timeStructure = classFitness.timeStructure || {};
+        classFitness.timeStructure.totalMinutes = Number(classFitness.estimatedMinutes || classFitness.timeStructure.totalMinutes || 0);
+        classFitness.timeStructure.effectivePracticeMinutes = Number(classFitness.timeStructure.effectivePracticeMinutes || Math.ceil(classFitness.timeStructure.totalMinutes / 2)) + add;
+        if (numberOrNull(classFitness.timeStructure.organizationMinutes) === null) classFitness.timeStructure.organizationMinutes = 1;
+        if (numberOrNull(classFitness.timeStructure.restOrTransitionMinutes) === null) classFitness.timeStructure.restOrTransitionMinutes = 1;
+        if (numberOrNull(classFitness.timeStructure.feedbackMinutes) === null) classFitness.timeStructure.feedbackMinutes = 1;
+        classFitness.dose = appendTimeRepairNote(classFitness.dose, `已补足${add}分钟有效练习或整理反馈`);
+        const blocks = arr(classFitness.exerciseBlocks);
+        if (blocks.length) {
+          const last = blocks[blocks.length - 1];
+          last.durationPlan = appendTimeRepairNote(last.durationPlan, `可增加${add}分钟同动作低风险练习或教师反馈`, 180);
+          classFitness.exerciseBlocks = blocks;
+        }
+        return add;
+      }
+
+      function addMinutesToLearningTasks(task = {}, minutes = 0) {
+        let add = Math.max(0, Math.round(Number(minutes || 0)));
+        if (!add || !arr(task.learningTasks).length) return 0;
+        const tasks = arr(task.learningTasks);
+        const fourth = tasks[3] || tasks[tasks.length - 1];
+        const targets = [fourth, ...tasks.filter((item) => item !== fourth).reverse()];
+        let added = 0;
+        targets.forEach((item, index) => {
+          if (!add) return;
+          const part = index === 0 ? add : 0;
+          if (!part) return;
+          item.estimatedMinutes = Number(item.estimatedMinutes || 0) + part;
+          item.dose = appendTimeRepairNote(item.dose, `课堂时间不足时补充${part}分钟，可增加一轮或延长教师点评反馈`);
+          item.progressionFromPrevious = appendTimeRepairNote(item.progressionFromPrevious, "本项可作为时间补足环节，优先保持动作质量和安全组织", 320);
+          added += part;
+          add -= part;
+        });
+        task.learningTasks = tasks;
+        const sum = tasks.reduce((total, item) => total + Number(item.estimatedMinutes || 0), 0);
+        task.totalEstimatedMinutes = sum;
+        task.autoCompletedFields = [...new Set([...(task.autoCompletedFields || []), "课堂时间不足兜底补齐"] )].slice(0, 20);
+        return added;
+      }
+
+      function repairGeneratedClassTime(value = {}, input = {}, understanding = {}) {
+        value.task1 = value.task1 || {};
+        value.classWarmup = value.classWarmup || defaultClassWarmup(input, understanding);
+        value.classFitness = value.classFitness || defaultClassFitness(input, understanding);
+        const budget = resolvedTimeBudget(input, understanding);
+        const repairs = [];
+        let timing = fullClassTiming(input, understanding, value.task1, value.classWarmup, value.classFitness);
+
+        const targetWarmup = budget.warmupMinutes ?? DEFAULT_WARMUP_MINUTES;
+        if (timing.classTotal < MIN_CLASS_TOTAL_MINUTES && timing.warmup < targetWarmup) {
+          const added = addMinutesToWarmup(value.classWarmup, Math.min(targetWarmup - timing.warmup, MIN_CLASS_TOTAL_MINUTES - timing.classTotal));
+          if (added) repairs.push(`热身补足${added}分钟`);
+          timing = fullClassTiming(input, understanding, value.task1, value.classWarmup, value.classFitness);
+        }
+
+        const targetFitness = Math.max(MIN_CLASS_FITNESS_MINUTES, budget.classFitnessMinutes ?? MIN_CLASS_FITNESS_MINUTES);
+        if (timing.classTotal < MIN_CLASS_TOTAL_MINUTES && timing.fitness < targetFitness) {
+          const added = addMinutesToClassFitness(value.classFitness, Math.min(targetFitness - timing.fitness, MIN_CLASS_TOTAL_MINUTES - timing.classTotal));
+          if (added) repairs.push(`体能课课练补足${added}分钟`);
+          timing = fullClassTiming(input, understanding, value.task1, value.classWarmup, value.classFitness);
+        }
+
+        if (timing.classTotal < MIN_CLASS_TOTAL_MINUTES) {
+          const added = addMinutesToLearningTasks(value.task1, MIN_CLASS_TOTAL_MINUTES - timing.classTotal);
+          if (added) repairs.push(`4个学练补足${added}分钟`);
+          timing = fullClassTiming(input, understanding, value.task1, value.classWarmup, value.classFitness);
+        }
+
+        if (timing.classTotal < MIN_CLASS_TOTAL_MINUTES && understanding?.timeAllocationDecision) {
+          const current = numberOrNull(understanding.timeAllocationDecision.inClassMinutes) ?? budget.inClassMinutes ?? 5;
+          const add = Math.min(8 - current, MIN_CLASS_TOTAL_MINUTES - timing.classTotal);
+          if (add > 0) {
+            understanding.timeAllocationDecision.inClassMinutes = current + add;
+            repairs.push(`个性化练习预留补足${add}分钟`);
+            timing = fullClassTiming(input, understanding, value.task1, value.classWarmup, value.classFitness);
+          }
+        }
+
+        if (repairs.length) {
+          value.timeAutoRepair = {
+            targetMinutes: MIN_CLASS_TOTAL_MINUTES,
+            finalClassTotal: timing.classTotal,
+            repairs,
+            note: "放松练习、结束整理和课后作业说明不计入本项40分钟有效课堂作业链校验；系统已在热身、4个学练、个性化练习预留或体能课课练中自动补足。",
+            repairedAt: nowISO(),
+          };
+        }
+        return value;
+      }
+
+      function effectiveCommonTaskMinutes(input = {}, understanding = {}) {
+        const budget = resolvedTimeBudget(input, understanding);
+        const target = MIN_CLASS_TOTAL_MINUTES - Number(budget.warmupMinutes ?? DEFAULT_WARMUP_MINUTES) - Number(budget.inClassMinutes ?? 5) - Number(budget.classFitnessMinutes ?? MIN_CLASS_FITNESS_MINUTES);
+        return Math.max(Number(budget.commonTaskMinutes || 0), target, 18);
+      }
+
       function normalizeAiTimeBudget(input = {}, raw = {}, coreItemCount = 1) {
         const duration = Math.max(numberOrNull(input.duration) ?? getTeachingProfile().defaultDuration ?? MIN_CLASS_TOTAL_MINUTES, MIN_CLASS_TOTAL_MINUTES);
         const teacherWarmup = numberOrNull(input.warmupMinutes);
@@ -4313,14 +4496,11 @@ ${JSON.stringify(schemaExample, null, 2)}`;
         if (teacherCommon !== null) common = teacherCommon;
         else common = clamp(Number.isFinite(common) && common ? common : availableForLearning, 18, Math.max(18, Math.min(25, availableForLearning)));
 
-        // 若教师只改了部分时间，优先保证完整课堂链达到40分钟且不轻易压缩体能。
-        const currentTotal = warmup + common + inClass + fitness;
-        if (currentTotal < MIN_CLASS_TOTAL_MINUTES && teacherCommon === null) {
-          common += MIN_CLASS_TOTAL_MINUTES - currentTotal;
-        }
-        if (duration && warmup + common + inClass + fitness > duration && teacherCommon === null) {
-          common = Math.max(18, duration - warmup - inClass - fitness);
-        }
+        const repaired = repairTimeBudgetToMinimum({ warmup, common, inClass, fitness });
+        warmup = repaired.warmup;
+        common = repaired.common;
+        inClass = repaired.inClass;
+        fitness = repaired.fitness;
 
         if (teacherAfter !== null) afterClass = teacherAfter;
         else afterClass = clamp(Number.isFinite(afterClass) && afterClass ? afterClass : 8, 5, 12);
@@ -4330,6 +4510,7 @@ ${JSON.stringify(schemaExample, null, 2)}`;
           inClassMinutes: Math.round(inClass),
           classFitnessMinutes: Math.round(fitness),
           afterClassMinutes: Math.round(afterClass),
+          autoRepair: repaired.repairs,
         };
       }
 
@@ -5747,10 +5928,10 @@ ${JSON.stringify(contract, null, 2)}`;
         if (task.learningTasks.length && titles.size !== task.learningTasks.length) warnings.push("部分递进学练标题相同，建议教师快速区分");
         if (!arr(task.overallCompletionCriteria).length) warnings.push("统一学练未单列整体完成标准");
         if (!arr(task.overallSafetyNotes).length) warnings.push("[发布前确认] 统一学练未形成共同安全提醒，请教师结合本课实际确认");
-        const available = resolvedTimeBudget(input, understanding).commonTaskMinutes;
+        const available = effectiveCommonTaskMinutes(input, understanding);
         if (available === null) errors.push("统一学练时间预算缺失");
-        else if (sumMinutes < available - 1) errors.push(`4个学练总时长${sumMinutes}分钟，低于本课学练时间${available}分钟，难以支撑完整40分钟课堂`);
-        else if (sumMinutes > available + 2) errors.push(`4个学练总时长${sumMinutes}分钟，超过本课学练时间${available}分钟`);
+        else if (sumMinutes < available - 1) errors.push(`4个学练总时长${sumMinutes}分钟，低于本课有效学练最低需要${available}分钟，难以支撑完整40分钟课堂`);
+        else if (sumMinutes > available + 2) warnings.push(`4个学练总时长比有效需要时间多${sumMinutes - available}分钟，教师可现场压缩轮次`);
         else if (sumMinutes > available) warnings.push(`4个学练总时长比建议时间多${sumMinutes - available}分钟，教师可现场压缩轮次`);
         if (Math.abs(Number(task.totalEstimatedMinutes || 0) - sumMinutes) > 1) warnings.push("统一学练总时间与各学练时间之和不一致");
         const combined = `${task.title}${task.overallGoal}${task.progressionLogic}${task.learningTasks.map((item) => `${item.title}${item.goal}${arr(item.technicalPoints).join("")}${item.difficultyFocus}${item.designRationale}${arr(item.instructions).join("")}`).join("")}`;
@@ -6800,6 +6981,7 @@ ${JSON.stringify(contract, null, 2)}`;
         evidence.autoCompletedFields = [...new Set(evidenceNotes)].slice(0, 20);
         value.classWarmup = completeClassWarmupForClassroom(classWarmupSource, input, understanding);
         value.classFitness = completeClassFitnessForClassroom(classFitnessSource, input, understanding);
+        repairGeneratedClassTime(value, input, understanding);
         return value;
       }
 
@@ -6831,7 +7013,7 @@ ${JSON.stringify(contract, null, 2)}`;
         const errors = [...taskReport.errors, ...evidenceReport.errors, ...warmupReport.errors, ...fitnessReport.errors];
         const warnings = [...arr(taskReport.warnings), ...arr(evidenceReport.warnings), ...arr(warmupReport.warnings), ...arr(fitnessReport.warnings)];
         const timing = fullClassTiming(input, understanding, bundle.task1, bundle.classWarmup, bundle.classFitness);
-        if (timing.classTotal < MIN_CLASS_TOTAL_MINUTES) errors.push(`热身、4个学练、个性化练习和体能课课练合计${timing.classTotal}分钟，低于${MIN_CLASS_TOTAL_MINUTES}分钟要求`);
+        if (timing.classTotal < MIN_CLASS_TOTAL_MINUTES) errors.push(`系统已尝试自动补足时间，但热身、4个学练、个性化练习和体能课课练合计仍为${timing.classTotal}分钟，低于${MIN_CLASS_TOTAL_MINUTES}分钟要求`);
         if (timing.duration && timing.classTotal > timing.duration + 2) warnings.push(`课堂主流程合计${timing.classTotal}分钟，超过本课${timing.duration}分钟课时，教师可现场压缩轮次`);
         return validation(errors.length === 0, errors, warnings);
       }
@@ -7000,11 +7182,12 @@ ${JSON.stringify(contract, null, 2)}`;
             task1: parts.task1,
             evidenceModel: parts.task1Evidence,
             classFitness: parts.classFitness || defaultClassFitness(input, understanding),
+            timeAutoRepair: parts.timeAutoRepair || null,
             qualityAudit: audit,
           },
           contentTags: understanding.contentTags,
           abilityTags: understanding.abilityTags,
-          promptVersion: "v2.8-warmup-segments",
+          promptVersion: "v3.0-time-budget-fallback",
           generationTrace: clone(runtime.processTrace),
         };
       }
@@ -7059,7 +7242,7 @@ ${JSON.stringify(contract, null, 2)}`;
         const warmupReport = validateClassWarmup(task1Package.classWarmup || defaultClassWarmup(packageData.teacherInput, packageData.understanding), packageData.teacherInput, packageData.understanding);
         const fitnessReport = validateClassFitness(task1Package.classFitness || defaultClassFitness(packageData.teacherInput, packageData.understanding), packageData.teacherInput, packageData.understanding, task1Package.task1);
         const timing = fullClassTiming(packageData.teacherInput, packageData.understanding, task1Package.task1, task1Package.classWarmup || defaultClassWarmup(packageData.teacherInput, packageData.understanding), task1Package.classFitness || defaultClassFitness(packageData.teacherInput, packageData.understanding));
-        if (timing.classTotal < MIN_CLASS_TOTAL_MINUTES) issues.push(makeIssue({ section: "system", level: "blocker", category: "time-budget", title: "课堂主流程时间不足", message: `热身、4个学练、个性化练习和体能课课练合计${timing.classTotal}分钟，低于${MIN_CLASS_TOTAL_MINUTES}分钟要求。`, basis: "课堂主流程必须覆盖完整一课时。", suggestedFix: "重新生成或调整热身、学练、个性化练习和体能时间。" }));
+        if (timing.classTotal < MIN_CLASS_TOTAL_MINUTES) issues.push(makeIssue({ section: "system", level: "blocker", category: "time-budget", title: "课堂主流程时间不足", message: `系统已尝试自动补足时间，但热身、4个学练、个性化练习和体能课课练合计仍为${timing.classTotal}分钟，低于${MIN_CLASS_TOTAL_MINUTES}分钟要求。`, basis: "课堂主流程必须覆盖完整一课时；放松练习、结束整理和课后作业说明不计入该40分钟口径。", suggestedFix: "请增加热身、学练、个性化练习预留或体能课课练时间。" }));
         arr(taskReport.errors).forEach((message) => issues.push(classifyCoreIssue(message)));
         arr(evidenceReport.errors).forEach((message) => issues.push(classifyCoreIssue(message)));
         arr(warmupReport.errors).forEach((message) => issues.push(makeIssue({ section: "classWarmup", level: "blocker", category: "warmup", title: "统一热身需要修复", message, basis: "热身属于课堂固定结构，必须统一、安全、可执行。", suggestedFix: "重新生成或调整统一热身。" })));
@@ -7144,6 +7327,7 @@ ${JSON.stringify(contract, null, 2)}`;
         candidate.task1 = bundle.task1;
         candidate.task1Evidence = bundle.evidenceModel;
         candidate.classFitness = bundle.classFitness;
+        candidate.timeAutoRepair = bundle.timeAutoRepair || null;
         return candidate;
       }
 
@@ -7175,6 +7359,7 @@ ${JSON.stringify(contract, null, 2)}`;
           task1: clone(packageData.task1Package.task1),
           task1Evidence: clone(packageData.task1Package.evidenceModel),
           classFitness: clone(packageData.task1Package.classFitness || defaultClassFitness(packageData.teacherInput, packageData.understanding)),
+          timeAutoRepair: clone(packageData.task1Package.timeAutoRepair || null),
         };
         runtime.stage1Draft = packageData;
         saveCurrentDraft(packageData.teacherInput);
@@ -7203,6 +7388,7 @@ ${JSON.stringify(contract, null, 2)}`;
             candidate.task1 = bundle.task1;
             candidate.task1Evidence = bundle.evidenceModel;
             candidate.classFitness = bundle.classFitness;
+            candidate.timeAutoRepair = bundle.timeAutoRepair || null;
                 runtime.stage1Parts = clone(candidate);
             saveCurrentDraft(input);
             done.push("task1Bundle");
@@ -7510,6 +7696,7 @@ ${JSON.stringify(contract, null, 2)}`;
         task1Package.evidenceModel = evidence;
         task1Package.classWarmup = classWarmup;
         task1Package.classFitness = classFitness;
+        if (completed.timeAutoRepair) task1Package.timeAutoRepair = completed.timeAutoRepair;
         delete task1Package.teacherMaterials;
         const timing = fullClassTiming(packageData.teacherInput, packageData.understanding, task1, classWarmup, classFitness);
         const audit = localStage1AuditFromReport(validateStage1Cross(packageData), task1Package.reviewDecisions || {});
@@ -7536,6 +7723,7 @@ ${JSON.stringify(contract, null, 2)}`;
             <div class="status-tile"><b>教师状态</b>${esc(isPublished ? "已发布" : auditLabel)}</div>
             <div class="status-tile"><b>后续生成</b>取得真实表现后再进行</div>
           </div>
+          ${task1Package.timeAutoRepair ? `<div class="notice ok" style="margin-top:12px"><b>时间已自动补足：</b>${esc(arr(task1Package.timeAutoRepair.repairs).join("；"))}。放松练习、结束整理和课后作业说明不计入40分钟有效课堂作业链校验。</div>` : ""}
           ${auditPanel}
           <div class="block"><div class="block-title"><h3>教师上课执行卡</h3><div class="actions" style="margin-top:0"><button class="btn btn-small btn-light" id="copyTask1Btn">复制上课执行卡</button></div></div>${renderClassroomExecutionCard(task1, evidence, classWarmup, classFitness, packageData.teacherInput, packageData.understanding)}</div>
           <div class="block"><div class="block-title"><h3>课堂表现记录</h3></div><p class="small muted">${esc(evidence.collectionMethod)}；预计填写${esc(evidence.estimatedInputSeconds)}秒。</p>${renderQuickEvidenceTable(evidence)}</div>
@@ -8084,6 +8272,81 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
         return `<div class="notice ${type}"><b>系统分流：${esc(routeLabel(route))}</b><br>${esc(route.reason || "")} ${esc(action)}</div>`;
       }
 
+      const TASK2_DIFFICULTY_TIERS = Object.freeze({
+        base_repair: {
+          label: "基础修复",
+          description: "核心动作还不稳定，先修正一个最关键问题，降低速度和复杂度。",
+        },
+        application_reinforce: {
+          label: "应用强化",
+          description: "基本能完成动作，在接近课堂应用的情境中提高稳定性。",
+        },
+        extension_challenge: {
+          label: "拓展挑战",
+          description: "动作较稳定，在不新增高风险内容的前提下增加观察、节奏或情境变化。",
+        },
+      });
+
+      function normalizeTask2DifficultyTier(value = "") {
+        const raw = text(value);
+        if (/基础|修复|补偿|纠错|base|repair/i.test(raw)) return "base_repair";
+        if (/拓展|挑战|提高|提升|extension|challenge/i.test(raw)) return "extension_challenge";
+        if (/应用|强化|巩固|reinforce|apply/i.test(raw)) return "application_reinforce";
+        return "application_reinforce";
+      }
+
+      function task2DifficultyTierLabel(value = "") {
+        const key = normalizeTask2DifficultyTier(value);
+        return TASK2_DIFFICULTY_TIERS[key]?.label || TASK2_DIFFICULTY_TIERS.application_reinforce.label;
+      }
+
+      function task2DifficultyTierDescription(value = "") {
+        const key = normalizeTask2DifficultyTier(value);
+        return TASK2_DIFFICULTY_TIERS[key]?.description || TASK2_DIFFICULTY_TIERS.application_reinforce.description;
+      }
+
+      function normalizeTask2DifficultyTierObject(object = {}) {
+        const tier = normalizeTask2DifficultyTier(object.tier || object.label || object.name || object.difficultyTier || "");
+        return {
+          tier,
+          label: task2DifficultyTierLabel(tier),
+          reason: cleanString(object.reason || object.rationale || "", 360),
+        };
+      }
+
+      function readTask1ProblemReasonNote(record = {}) {
+        return cleanString(record?.task1Evidence?.problemReasonNote || record?.task1Evidence?.manualReasonNote || record?.task1Evidence?.causeNote || "", 260);
+      }
+
+      function collectTask1ProblemReasonNote(containerId) {
+        const root = $(containerId);
+        if (!root) return "";
+        return cleanString(root.querySelector("[data-problem-reason-note]")?.value || "", 260);
+      }
+
+      function populateTask1ProblemReasonNote(containerId, note = "") {
+        const root = $(containerId);
+        if (!root) return;
+        const element = root.querySelector("[data-problem-reason-note]");
+        if (element) element.value = cleanString(note, 260);
+      }
+
+      function inferTask2DifficultyTier(record = {}, plan = deriveTask2Plan(record)) {
+        if (["low_load", "observe", "teacher_decision"].includes(plan.mode)) {
+          return { tier: "base_repair", label: "基础修复", reason: `${routeLabel(plan)}路线下先降低难度，优先保证安全和核心动作修正。` };
+        }
+        const fields = Object.values(task1PerformanceFields(record));
+        const valuesText = fields.map((item) => `${item.label || ""}${item.value || ""}`).join(" ");
+        const note = readTask1ProblemReasonNote(record);
+        if (/非标准输入|暂不能|不准确|不稳定|不连贯|偏高|偏低|还说不清|不能|不会|不会做|怕|害怕|紧张|低头|失控|掉球|混乱|力量小|重心|原因不清/.test(valuesText + note)) {
+          return { tier: "base_repair", label: "基础修复", reason: "统一学练记录或原因补充显示核心动作仍不稳定，先修复最关键问题。" };
+        }
+        if (fields.length && fields.every((item) => /能稳定|合适|准确|稳定|连贯|能主动|能说清/.test(String(item.value || ""))) && !note) {
+          return { tier: "extension_challenge", label: "拓展挑战", reason: "统一学练记录整体稳定，可在本课内容范围内增加低风险挑战。" };
+        }
+        return { tier: "application_reinforce", label: "应用强化", reason: "学生基本能完成统一学练，但仍需要在应用情境中提高稳定性。" };
+      }
+
       function formFieldHtml(field, phase) {
         if (!["select", "scale"].includes(field.inputType)) {
           field = {
@@ -8488,6 +8751,7 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
               fieldId: safeId(item.fieldId), label: cleanString(item.label, 100), value: cleanString(item.value, 120), interpretation: cleanString(item.interpretation, 300),
             })).filter((item) => item.fieldId),
           },
+          difficultyTier: normalizeTask2DifficultyTierObject(object.difficultyTier || object.task2?.difficultyTier || {}),
           task2: {
             taskId: safeId(object.task2?.taskId || uid("task2")),
             title: cleanString(object.task2?.title, 130),
@@ -8575,6 +8839,7 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
       function applyTask2Plan(task2Result, plan, lesson = null) {
         task2Result.route = clone(plan);
         task2Result.task2.activityMode = plan.activityMode;
+        task2Result.difficultyTier = normalizeTask2DifficultyTierObject(task2Result.difficultyTier || {});
         task2Result.fitnessModule = buildClassFitnessParticipation(plan, lesson);
         return task2Result;
       }
@@ -8596,6 +8861,9 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
         const value = task2Result;
         value.studentId = record.studentId;
         value.lessonId = lesson.lessonId;
+        const inferredTier = inferTask2DifficultyTier(record, value.route || deriveTask2Plan(record));
+        value.difficultyTier = normalizeTask2DifficultyTierObject(value.difficultyTier || inferredTier);
+        if (!value.difficultyTier.reason) value.difficultyTier.reason = inferredTier.reason;
         const actualFields = task1PerformanceFields(record);
         const configById = new Map(arr(lesson.task1Package?.evidenceModel?.fields).map((field) => [field.fieldId, field]));
         value.task1Diagnosis = value.task1Diagnosis || {};
@@ -8644,6 +8912,10 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
         const classification = task2Result.task1Diagnosis.problemClassification || {};
         if (!classification.mainCategory || !classification.reason) errors.push("个性化练习必须先完成主问题分类并说明优先依据");
         if (arr(classification.targetPointIds).length > 3) errors.push("个性化练习聚焦点过多");
+        const difficultyTier = normalizeTask2DifficultyTierObject(task2Result.difficultyTier || {});
+        if (!difficultyTier.label || !difficultyTier.reason) errors.push("个性化练习必须明确难度分层及理由：基础修复、应用强化或拓展挑战");
+        if (["low_load", "observe", "teacher_decision"].includes(plan.mode) && difficultyTier.tier !== "base_repair") errors.push("低负荷、观察或教师处理路线下，个性化练习难度只能为基础修复");
+        if (difficultyTier.tier === "extension_challenge" && plan.mode !== "practice") errors.push("拓展挑战只允许在正常练习路线下使用");
         const learningTaskIds = new Set(lesson.task1Package.task1.learningTasks.map((item) => item.learningTaskId));
         const performanceItems = task2Result.task1Diagnosis.performanceByLearningTask;
         if (performanceItems.length !== learningTaskIds.size) errors.push("必须逐项概括已发布学练的表现");
@@ -8668,6 +8940,7 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
         if (taskMinutes === null || !Number.isInteger(taskMinutes) || taskMinutes < 0) errors.push("个性化练习缺少可校验的整数分钟数");
         if (task.instructions.length > 5) errors.push("个性化练习步骤过多，应控制为2—5步");
         const taskText = `${task.title}${task.goal}${task.instructions.join("")}${task.dose}${task.organization}${task.actionCues.join("")}${task.successCriteria.join("")}`;
+        if (difficultyTier.tier === "extension_challenge" && containsAffirmedPattern(taskText, /新技术|新动作|对抗|冲刺|高强度|极限|力竭/)) errors.push("拓展挑战不得引入新技术、高强度或明显对抗风险");
         if (/多个问题|全面提升|综合强化|整套|全面练习/.test(taskText)) errors.push("个性化练习应只聚焦一个优先问题");
         if (["practice", "low_load"].includes(plan.mode) && containsAffirmedPattern(taskText, /两人一组|同伴|伙伴|队友|家长|家人|别人|他人|同学|协助|帮助|喊口令|喊信号|设障碍|设置障碍|手臂.*障碍|人为障碍|互相配合/)) errors.push("个性化练习是每名学生自己的个性化练习，必须以本人独立完成为主，不能依赖同伴、家长或其他学生帮助设障碍、喊信号、观察或配合");
         if (["practice", "low_load"].includes(plan.mode) && !/独立|本人|自己|个人|自我|教师巡视|教师提示/.test(taskText)) errors.push("个性化练习组织方式需明确学生本人独立完成，教师可巡视提示");
@@ -8752,6 +9025,11 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
             performanceByLearningTask: lesson.task1Package.task1.learningTasks.map((item) => ({ learningTaskId: item.learningTaskId, title: item.title, summary: "本阶段不继续增加运动负荷，表现记录保留供教师参考。" })),
             usedEvidence: fields.slice(0, 3).map((item) => ({ fieldId: item.fieldId, label: item.label, value: String(item.value ?? ""), interpretation: "作为教师判断的背景信息，不用于继续加练。" })),
           },
+          difficultyTier: {
+            tier: "base_repair",
+            label: "基础修复",
+            reason: "教师处理路线下不进入应用强化或拓展挑战。",
+          },
           task2: {
             taskId: uid("task2_teacher"),
             title: "暂停练习，先由教师确认",
@@ -8790,6 +9068,8 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
         const timeBudget = lesson.lessonContract?.timeBudget || resolvedTimeBudget(lesson.teacherInput || {}, lesson.understanding || {});
         if (numberOrNull(timeBudget.inClassMinutes) === null) throw new PrerequisiteError("个性化练习时间预算缺失。", "请回到课前草稿重新形成并发布本课时间分配。 ");
         const history = getRelatedHistory(record.studentId, lesson);
+        const problemReasonNote = readTask1ProblemReasonNote(record);
+        const suggestedDifficultyTier = inferTask2DifficultyTier(record, plan);
         const modeInstruction = plan.mode === "low_load"
           ? "生成低负荷、短时、可随时停止的调整练习；统一体能课课练不生成个人专属动作，只给出降低负荷参与档位。"
           : plan.mode === "observe"
@@ -8805,7 +9085,7 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
         const result = await generateJsonReliable({
           stage: "task2_generate",
           system: BASE_SYSTEM,
-          userPrompt: `【本课已发布统一学练】\n${JSON.stringify(lessonTask1Context(lesson), null, 2)}\n\n【本地已确定的生成路线】\n${JSON.stringify(plan, null, 2)}\n\n【学生标识】\n学生ID：${record.studentId}\n课次ID：${lesson.lessonId}\n\n【统一学练动作表现证据】\n${JSON.stringify(task1PerformanceFields(record), null, 2)}\n\n【健康与安全信号】\n${JSON.stringify(task1HealthSignal(record), null, 2)}\n\n【相关历史摘要，仅作次要参考】\n${JSON.stringify(history, null, 2)}\n\n现在生成该学生的个性化练习。本阶段个性化练习用时不得超过${timeBudget.inClassMinutes}分钟；正常练习和低负荷练习均要保证约4—6分钟的独立练习与自我检查时间，若本阶段预算为5分钟应优先按5分钟设计，不得生成3分钟以内的草率练习。统一体能课课练由教师在课堂最后统一组织，不计入个性化练习个性化生成预算，AI不得为该学生另创一套个人体能动作。先逐项概括已发布学练表现，只确定一个优先问题，最多兼顾一个辅助问题。${modeInstruction} 个性化练习必须以学生本人在个人练习区独立完成为主，可写教师巡视提示，但不得要求同伴、家长、其他学生帮助设障碍、喊信号、观察或配合。fitnessModule字段只允许表达“统一体能课课练参与档位”，必须写明它由教师统一组织、个人只记录参与情况和负荷感受；不得写成个人专属体能训练方案。只设计个性化练习自身的1—2项低负担变化记录，所有记录字段必须是select或scale选项，选项应便于学生自评或教师观察，如“明显改善/有所改善/暂未改善”，不得使用数字、米数、次数、百分比或长文本；统一体能课课练参与情况和身体反应由系统固定字段单独采集，不得混入AI证据字段。usedEvidence中的fieldId必须来自真实记录，label和value由系统按fieldId回填，不要改写、追加单位或重新计算；如果证据值显示为“非标准输入”，只能作为待教师核对的背景，不能强行解释为某个标准等级。不得改变本地已确定的路线。${teacherInstruction ? `\n\n教师补充要求：${teacherInstruction}` : ""}`,
+          userPrompt: `【本课已发布统一学练】\n${JSON.stringify(lessonTask1Context(lesson), null, 2)}\n\n【本地已确定的生成路线】\n${JSON.stringify(plan, null, 2)}\n\n【学生标识】\n学生ID：${record.studentId}\n课次ID：${lesson.lessonId}\n\n【统一学练动作表现证据】\n${JSON.stringify(task1PerformanceFields(record), null, 2)}\n\n【健康与安全信号】\n${JSON.stringify(task1HealthSignal(record), null, 2)}\n\n【教师/学生补充的问题原因；可为空，不是成绩】\n${problemReasonNote || "未填写"}\n\n【系统建议难度层】\n${JSON.stringify(suggestedDifficultyTier, null, 2)}\n\n【相关历史摘要，仅作次要参考】\n${JSON.stringify(history, null, 2)}\n\n现在生成该学生的个性化练习。本阶段个性化练习用时不得超过${timeBudget.inClassMinutes}分钟；正常练习和低负荷练习均要保证约4—6分钟的独立练习与自我检查时间，若本阶段预算为5分钟应优先按5分钟设计，不得生成3分钟以内的草率练习。统一体能课课练由教师在课堂最后统一组织，不计入个性化练习个性化生成预算，AI不得为该学生另创一套个人体能动作。先逐项概括已发布学练表现，再结合“问题原因补充”判断同样表现背后的原因，只确定一个优先问题，最多兼顾一个辅助问题。必须输出difficultyTier，tier只能是base_repair、application_reinforce、extension_challenge之一，并给出中文label与reason：基础修复=核心动作还不稳定，先降低复杂度修正；应用强化=基本能完成，在接近课堂应用的情境中稳定；拓展挑战=表现较稳定，在不新增高风险内容和新技术的前提下提高观察、节奏或情境要求。低负荷、观察或教师处理路线只能选择基础修复。${modeInstruction} 个性化练习必须以学生本人在个人练习区独立完成为主，可写教师巡视提示，但不得要求同伴、家长、其他学生帮助设障碍、喊信号、观察或配合。fitnessModule字段只允许表达“统一体能课课练参与档位”，必须写明它由教师统一组织、个人只记录参与情况和负荷感受；不得写成个人专属体能训练方案。只设计个性化练习自身的1—2项低负担变化记录，所有记录字段必须是select或scale选项，选项应便于学生自评或教师观察，如“明显改善/有所改善/暂未改善”，不得使用数字、米数、次数、百分比或长文本；统一体能课课练参与情况和身体反应由系统固定字段单独采集，不得混入AI证据字段。usedEvidence中的fieldId必须来自真实记录，label和value由系统按fieldId回填，不要改写、追加单位或重新计算；如果证据值显示为“非标准输入”，只能作为待教师核对的背景，不能强行解释为某个标准等级。不得改变本地已确定的路线。${teacherInstruction ? `\n\n教师补充要求：${teacherInstruction}` : ""}`,
           schemaExample,
           normalize: (value) => bindTask2SystemEvidence(applyTask2Plan(normalizeTask2(value), plan, lesson), lesson, record),
           validate: (value) => validateTask2(value, lesson, record, plan),
@@ -8896,6 +9176,11 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
           <details class="collapsible-block" style="margin-top:14px"><summary><h3>查看本课统一学练</h3></summary>${renderStudentLearningOverview(task, lesson.task1Package.classWarmup || defaultClassWarmup(lesson.teacherInput, lesson.understanding), lesson.task1Package.classFitness)}${renderTask1LearningChain(task, lesson.task1Package.classWarmup || defaultClassWarmup(lesson.teacherInput, lesson.understanding), lesson.task1Package.classFitness)}</details>
           <form id="task1EvidenceForm">
             ${renderGroupedEvidenceFields(fields, task, "task1")}
+            <div class="form-section">
+              <label style="margin-top:0" for="task1ProblemReasonNote">问题原因补充（可选）</label>
+              <textarea id="task1ProblemReasonNote" data-problem-reason-note maxlength="180" placeholder="用于区分同样表现背后的不同原因，如：低头看球、按拍力量小、没听清信号、不敢加速、重心降不下去。不确定可留空。"></textarea>
+              <div class="field-help">这不是成绩，只作为AI生成个性化练习时的辅助判断；建议短句填写，最多180字。</div>
+            </div>
             ${healthStatusHtml("task1", "task2RoutePreview")}
             <div class="actions"><button class="btn btn-primary full" type="submit" id="submitTask1EvidenceBtn" disabled>请先完成必填记录</button></div>
             <div class="loading-line" id="task2Loading" aria-live="polite"><span class="spinner"></span><span>系统正在先判断安全路线，再生成相应的个性化练习……</span></div>
@@ -8910,6 +9195,7 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
         const loadButton = $("loadPreviousTask1EvidenceBtn");
         if (loadButton) loadButton.onclick = () => {
           populateEvidenceFields("task1EvidenceForm", task1PerformanceFields(record));
+          populateTask1ProblemReasonNote("task1EvidenceForm", readTask1ProblemReasonNote(record));
           populateHealthSignal("task1EvidenceForm", task1HealthSignal(record));
           updateTask2RoutePreview(record);
           toast("已载入上次记录，可修改后重新提交。", "ok");
@@ -8931,9 +9217,11 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
         let record = null;
         try {
           const performanceFields = collectEvidenceFields("task1EvidenceForm", fields);
+          const problemReasonNote = collectTask1ProblemReasonNote("task1EvidenceForm");
           const healthSignal = collectHealthSignal("task1EvidenceForm", "task1");
           const newEvidence = {
             performanceEvidence: { fields: performanceFields },
+            problemReasonNote,
             healthSignal,
             submittedAt: nowISO(),
             lessonRevision: lesson.revision,
@@ -9078,6 +9366,7 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
 安全：${fitness.safetyNote || "出现不适及时报告教师"}`;
         return `${draft.task2.title}
 模式：${routeLabel(draft.route)}
+难度分层：${draft.difficultyTier?.label || task2DifficultyTierLabel(draft.difficultyTier?.tier)}${draft.difficultyTier?.reason ? `（${draft.difficultyTier.reason}）` : ""}
 目标：${draft.task2.goal}
 步骤：${draft.task2.instructions.join("；")}
 练习量：${draft.task2.dose}
@@ -9207,6 +9496,7 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
           <div class="student-primary-card">
             <h3>${esc(displayDraft.task2.title)}</h3>
             <div class="task-line"><b>任务模式</b><span>${esc(routeLabel(route))}</span></div>
+            <div class="task-line"><b>难度分层</b><span><span class="tag purple">${esc(displayDraft.difficultyTier?.label || task2DifficultyTierLabel(displayDraft.difficultyTier?.tier))}</span><br>${esc(displayDraft.difficultyTier?.reason || task2DifficultyTierDescription(displayDraft.difficultyTier?.tier))}</span></div>
             <div class="task-line"><b>我先处理什么</b><span>${esc(displayDraft.task1Diagnosis.priorityNeed)}</span></div>
             <div class="task-line"><b>本轮目标</b><span>${esc(displayDraft.task2.goal)}</span></div>
             <div class="task-line"><b>怎么做</b><span>${esc(displayDraft.task2.instructions.join("；"))}</span></div>
@@ -9223,6 +9513,8 @@ ${pending.map((item) => `• ${item.title}：${item.excerpt || item.message}`).j
             <p><b>整体表现：</b>${esc(displayDraft.task1Diagnosis.evidenceSummary)}</p>
             <div class="resource-grid">${displayDraft.task1Diagnosis.performanceByLearningTask.map((item, index) => `<div class="resource-card"><div class="resource-title">学练${cnIndex(index + 1)}｜${esc(item.title)}</div><p class="small">${esc(item.summary)}</p></div>`).join("")}</div>
             <p><b>主问题分类：</b>${esc(displayDraft.task1Diagnosis.problemClassification?.mainCategory || "")}</p>
+            <p><b>难度分层：</b>${esc(displayDraft.difficultyTier?.label || task2DifficultyTierLabel(displayDraft.difficultyTier?.tier))}｜${esc(displayDraft.difficultyTier?.reason || "")}</p>
+            <p><b>问题原因补充：</b>${esc(readTask1ProblemReasonNote(record) || "未填写")}</p>
             <p><b>处理理由：</b>${esc(displayDraft.task1Diagnosis.problemClassification?.reason || "")}</p>
             <p><b>个性化调整：</b>${esc(displayDraft.personalization.adjustments.join("；"))}</p>
             <p><b>教师审核依据：</b>${esc(displayDraft.teacherRationale)}</p>
